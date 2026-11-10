@@ -8,6 +8,8 @@ A community-maintained continuation of the **Cyberpunk RED** system, modernized 
 
 > **Unofficial Fan Build:** This repository is an independent community project and is not an official Foundry VTT or R. Talsorian Games product.
 
+**Current release: [v0.1.0](https://github.com/HeiseiRei/FVTT-Cyberpunk-RED---next/releases/tag/v0.1.0)** — the first public GitHub release. It targets Foundry VTT 14 and is verified on 14.369.
+
 ---
 
 ## Installation in Foundry VTT
@@ -20,15 +22,19 @@ A community-maintained continuation of the **Cyberpunk RED** system, modernized 
 https://github.com/HeiseiRei/FVTT-Cyberpunk-RED---next/releases/latest/download/system.json
 ```
 
-4. Click **Install**. Foundry will download the system archive and use this URL to check for future updates automatically.
+4. Click **Install**. Foundry downloads the latest release. Keep this stable manifest URL to check for future updates from Foundry.
 
 ---
 
-## What's New in "Next"
+## What's Included in v0.1.0
 
-* **Foundry v14 Port:** Updated from v12 codebase to fully support modern Foundry v14 APIs and architecture.
-* **Bug Fixes:** Resolved legacy calculation errors, interaction bugs, and sheet desync issues.
-* **Next-Gen Interface:** A modern redesign centered around style, intuitive usability, and immersive table flow.
+This initial public release packages the current CPR Core — Next project for Foundry VTT 14.
+
+* **Foundry v14 support:** The package targets Foundry 14 and is verified on 14.369.
+* **Updated system:** Includes the project's accumulated bug fixes, interface and usability refinements, and optimizations.
+* **Compendiums:** Includes Core, DLC, Black Chrome, and Other content, with an in-game **Changelog** compendium.
+
+See the [v0.1.0 release](https://github.com/HeiseiRei/FVTT-Cyberpunk-RED---next/releases/tag/v0.1.0) for the installable archive and checksums. Future release notes are published on the [Releases page](https://github.com/HeiseiRei/FVTT-Cyberpunk-RED---next/releases).
 
 ---
 
@@ -57,16 +63,16 @@ find . -type f -name '*.js' -not -path './.git/*' -not -path './.github/*' -not 
 ### Publishing Releases
 Automated via GitHub Actions when a version tag is pushed:
 
-1. Update the `version` field and its corresponding download URL inside `system.json`.
-2. Commit and push the changes to `main`.
-3. Create and push a version tag matching `system.json` (for example, `v1.0.0`):
+1. Update the `version` field and matching versioned `download` URL in `system.json` (for example, `v0.1.1`).
+2. Run `node scripts/validate-system.mjs`, then commit and push the changes to the GitHub default branch (currently `pre-alpha-sht`).
+3. Create and push a tag matching the manifest version:
 
 ```bash
-git tag v1.0.0
-git push origin v1.0.0
+git tag -a v0.1.1 -m "CPR Core v0.1.1"
+git push origin v0.1.1
 ```
 
-The CI workflow will run syntax validation, package the Foundry-ready ZIP, generate SHA-256 checksums, and publish the GitHub Release automatically.
+The release workflow verifies that the tag matches `system.json`, validates the project, packages the Foundry-ready ZIP, generates SHA-256 checksums, and publishes the GitHub Release automatically. The workflow generates the release manifest at the stable URL used in the installation instructions above.
 
 ---
 
