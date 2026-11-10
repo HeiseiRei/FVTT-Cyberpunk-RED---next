@@ -667,14 +667,6 @@ export class CPRCharacterActorSheetV2 extends CPRCharacterActorSheetMixin(
 
     _applyCprSheetTheme() {
       const theme = game.settings.get(game.system.id, "theme") || "default";
-      const foundryTheme = theme === "darkmode" ? "dark" : "light";
-      this.element.classList.remove(
-        "themed",
-        "theme-sheetDefault",
-        "theme-dark",
-        "theme-light"
-      );
-      this.element.classList.add("themed", `theme-${foundryTheme}`);
       this.element.dataset.cprTheme = theme;
     }
 

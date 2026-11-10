@@ -132,12 +132,6 @@ export default class CPRCharacterActorSheetND extends CPRCharacterActorSheetV2 {
   };
 
   _applyCprSheetTheme() {
-    this.element.classList.remove(
-      "themed",
-      "theme-sheetDefault",
-      "theme-dark",
-      "theme-light"
-    );
     delete this.element.dataset.cprTheme;
   }
 

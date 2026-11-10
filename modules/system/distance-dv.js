@@ -274,7 +274,7 @@ async function getDvTables() {
 }
 
 function tableName(table) {
-  return table.getFlag("babele", "originalName") ?? table.name;
+  return table.flags?.babele?.originalName ?? table.name;
 }
 
 function findTable(tables, name) {

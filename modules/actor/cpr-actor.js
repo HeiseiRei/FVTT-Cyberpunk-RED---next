@@ -1191,7 +1191,7 @@ export default class CPRActor extends Actor {
    * @returns {Number}
    */
   getHands() {
-    const originalName = (item) => item.getFlag("babele", "originalName") ?? item.name;
+    const originalName = (item) => item.flags?.babele?.originalName ?? item.name;
     const lostHands = this.itemTypes.criticalInjury.filter((injury) =>
       ["Dismembered Arm", "Dismembered Hand"].includes(originalName(injury))
     ).length;
