@@ -377,7 +377,9 @@ export default class CPRActiveEffectSheet extends DocumentSheet {
     }
 
     for (const skill of skillList) {
-      skillMap["bonuses.".concat(SystemUtils.slugify(skill.name))] = skill.name;
+      skillMap["bonuses.".concat(
+        SystemUtils.slugify(SystemUtils.GetOriginalName(skill))
+      )] = skill.name;
     }
 
     const skillOptionConfigs = Object.entries(skillMap).map(([key, value]) => {

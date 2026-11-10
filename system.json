@@ -649,11 +649,6 @@
       "path": "lang/pt-BR.json"
     },
     {
-      "lang": "ru",
-      "name": "Russian",
-      "path": "lang/ru.json"
-    },
-    {
       "lang": "uk-UA",
       "name": "Ukrainian",
       "path": "lang/uk-UA.json"

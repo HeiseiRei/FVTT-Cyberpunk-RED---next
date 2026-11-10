@@ -127,7 +127,9 @@ export default class CPRMookActorSheet extends CPRActorSheet {
         name: s.name,
         level: s.system.level,
         stat: this.actor.system.stats[s.system.stat].value,
-        mod: this.actor.bonuses[SystemUtils.slugify(s.name)],
+        mod: this.actor.bonuses[
+          SystemUtils.slugify(SystemUtils.GetOriginalName(s))
+        ],
       };
       skillObj[s.id] = skillRef;
     });
@@ -153,7 +155,7 @@ export default class CPRMookActorSheet extends CPRActorSheet {
           `you changed ${oldSkill.name} from ${oldSkill.level} to ${newSkill.level}`
         );
         const [updatedSkill] = this.actor.itemTypes.skill.filter(
-          (s) => oldSkill.name === s.name
+          (skill) => skill.id === oldSkill.id
         );
         updatedSkill.setSkillLevel(newSkill.level);
         updatedSkills.push({

@@ -61,6 +61,13 @@ export default class CPRActor extends Actor {
         type: item.type,
         system: updatedSystem,
       };
+      if (item.flags?.babele?.originalName) {
+        cprItem.flags = {
+          babele: {
+            originalName: item.flags.babele.originalName,
+          },
+        };
+      }
       createData.items.push(cprItem);
     });
 
@@ -126,7 +133,7 @@ export default class CPRActor extends Actor {
     this.bonuses = {};
     const skills = this.items.filter((i) => i.type === "skill");
     skills.forEach((skill) => {
-      this.bonuses[SystemUtils.slugify(skill.name)] = 0;
+      this.bonuses[SystemUtils.slugify(SystemUtils.GetOriginalName(skill))] = 0;
     });
     const roles = this.items.filter((i) => i.type === "role");
     roles.forEach((role) => {
@@ -644,7 +651,11 @@ export default class CPRActor extends Actor {
    * @returns {Number} - skill level or 0 if not found
    */
   getSkillLevel(skillName) {
-    const skillList = this.itemTypes.skill.filter((s) => s.name === skillName);
+    const skillList = this.itemTypes.skill.filter(
+      (skill) =>
+        skill.name === skillName ||
+        SystemUtils.GetOriginalName(skill) === skillName
+    );
     if (skillList.length > 0) {
       const relevantSkill = skillList[0];
       return parseInt(relevantSkill.system.level, 10);
@@ -1191,16 +1202,17 @@ export default class CPRActor extends Actor {
    * @returns {Number}
    */
   getHands() {
-    const originalName = (item) => item.flags?.babele?.originalName ?? item.name;
     const lostHands = this.itemTypes.criticalInjury.filter((injury) =>
-      ["Dismembered Arm", "Dismembered Hand"].includes(originalName(injury))
+      ["Dismembered Arm", "Dismembered Hand"].includes(
+        SystemUtils.GetOriginalName(injury)
+      )
     ).length;
     const shoulderMounts = this.itemTypes.cyberware.filter(
       (item) =>
         item.system.type === "borgware" &&
         item.system.isFoundational &&
         item.system.isInstalledInActor &&
-        originalName(item) === "Artificial Shoulder Mount"
+        SystemUtils.GetOriginalName(item) === "Artificial Shoulder Mount"
     );
     const shoulderMountIds = new Set(shoulderMounts.map((item) => item.id));
     const shoulderCyberarms = this.itemTypes.cyberware.filter(

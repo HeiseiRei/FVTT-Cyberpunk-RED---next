@@ -114,7 +114,7 @@ export default class CommonSchema extends CPRSystemDataModel {
       // Get the total Mods from Active Effects
       const skillMods = CPRMod.getRelevantMods(
         filteredMods,
-        SystemUtils.slugify(skill.name)
+        SystemUtils.slugify(SystemUtils.GetOriginalName(skill))
       ).reduce((acc, mod) => {
         if (mod.changeMode === 2) {
           return acc + mod.value;
@@ -122,7 +122,7 @@ export default class CommonSchema extends CPRSystemDataModel {
         return acc;
       }, 0);
 
-      output[SystemUtils.slugify(skill.name)] = {
+      output[SystemUtils.slugify(SystemUtils.GetOriginalName(skill))] = {
         level: skill.system.level,
         stat: this.parent.system.stats[skill.system.stat].value,
         mods: skillMods,

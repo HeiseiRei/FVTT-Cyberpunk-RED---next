@@ -8,6 +8,20 @@ import LOGGER from "./cpr-logger.js";
 export default class CPRSystemUtils {
   /* COMPENDIA AND FOLDER UTILS */
 
+  /**
+   * Return the untranslated document name when Babele preserves it.
+   *
+   * @param {Document|Object} document
+   * @returns {String}
+   */
+  static GetOriginalName(document) {
+     return (
+       document?.flags?.babele?.originalName ??
+       document?.originalName ??
+       document?.name
+     );
+   }
+
   static GetWorldCompendia(ctype = null) {
     if (!game.packs) return [];
     const packs = game.packs.filter((p) => p.metadata.packageType === "world");
@@ -29,7 +43,10 @@ export default class CPRSystemUtils {
   static async GetCompendiumDoc(cname, dname) {
     const comp = game.packs.get(cname);
     return comp.getDocument(
-      comp.index.contents.filter((i) => i.name === dname)[0]._id
+      comp.index.contents.find(
+        (item) =>
+          item.name === dname || this.GetOriginalName(item) === dname
+      )._id
     );
   }
 
@@ -142,7 +159,7 @@ export default class CPRSystemUtils {
     const martialArtSkills = new Set(
       actorData.itemTypes.skill.reduce((acc, item) => {
         if (item.system.skillType === "martialArt") {
-          acc.push(this.slugify(item.name));
+        acc.push(this.slugify(this.GetOriginalName(item)));
         }
         return acc;
       }, [])
@@ -164,7 +181,7 @@ export default class CPRSystemUtils {
     const defaultAttackSkills = new Set(
       actorData.itemTypes.skill.reduce((acc, item) => {
         const itemCategory = item.system.category;
-        const itemName = this.slugify(item.name);
+        const itemName = this.slugify(this.GetOriginalName(item));
         const weaponSkills = ["rangedweaponSkills", "fightingSkills"];
         const excludeSkills = ["evasion"];
         if (

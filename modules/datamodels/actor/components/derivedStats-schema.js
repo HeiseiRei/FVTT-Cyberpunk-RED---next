@@ -120,7 +120,8 @@ export default class DerivedStatsSchema extends CPRSystemDataModel {
       // a translation, or it doesn't have a translation in lang/*.json
       if (SystemUtils.slugify(translatedSkill) !== skillSlug) {
         const skillItem = actorData.items.find(
-          (item) => SystemUtils.slugify(item.name) === skillSlug
+          (item) =>
+            SystemUtils.slugify(SystemUtils.GetOriginalName(item)) === skillSlug
         );
         return skillItem.name;
       }
@@ -252,7 +253,10 @@ export default class DerivedStatsSchema extends CPRSystemDataModel {
 
     // Solo rank >= 4
     for (const role of actorData.itemTypes.role) {
-      if (SystemUtils.slugify(role.name) === "solo" && role.system.rank >= 4) {
+      if (
+        SystemUtils.slugify(SystemUtils.GetOriginalName(role)) === "solo" &&
+        role.system.rank >= 4
+      ) {
         const roleName = SystemUtils.Localize("CPR.global.role.solo.name");
         const reason = SystemUtils.Format(
           "CPR.characterSheet.leftPane.hardened.reasons.solo",

@@ -13,7 +13,14 @@ const InitializeBabeleIntegration = () => {
    * @public
    * @memberof hookEvents
    */
-  const register = (babele) => babele.setSystemTranslationsDir("babele");
+  const register = (babele) => {
+    babele.setSystemTranslationsDir("babele");
+    babele.registerMapping({
+      Item: {
+        dvTable: "system.dvTable",
+      },
+    });
+  };
   if (game.babele) register(game.babele);
   else Hooks.once("babele.init", register);
 };

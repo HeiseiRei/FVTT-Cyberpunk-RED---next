@@ -37,7 +37,9 @@ export default class CPRRoleItem extends CPRItem {
       if (cprItemData.skill !== "--" && cprItemData.skill !== "varying") {
         skillName = cprItemData.skill;
         const skillObject = actor.itemTypes.skill.find(
-          (i) => skillName === i.name
+          (item) =>
+            skillName === item.name ||
+            skillName === SystemUtils.GetOriginalName(item)
         );
         if (skillObject !== undefined) {
           skillValue = skillObject.system.level;
@@ -72,7 +74,9 @@ export default class CPRRoleItem extends CPRItem {
       if (subRoleAbility.skill !== "--" && subRoleAbility.skill !== "varying") {
         skillName = subRoleAbility.skill.name;
         const skillObject = actor.itemTypes.skill.find(
-          (i) => skillName === i.name
+          (item) =>
+            skillName === item.name ||
+            skillName === SystemUtils.GetOriginalName(item)
         );
         if (skillObject !== undefined) {
           skillValue = skillObject.system.level;

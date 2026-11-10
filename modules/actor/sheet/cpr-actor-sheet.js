@@ -1201,7 +1201,9 @@ function CPRActorSheetMixin(Base, isV2 = false) {
     for (const injury of table.results) {
       if (
         this.actor.itemTypes.criticalInjury.filter(
-          (i) => i.name === injury.text
+          (item) =>
+            item.name === injury.text ||
+            SystemUtils.GetOriginalName(item) === injury.text
         ).length > 0
       ) {
         hurts += 1;
@@ -1239,7 +1241,11 @@ function CPRActorSheetMixin(Base, isV2 = false) {
 
       // check whether the actor has this injury already
       if (
-        this.actor.itemTypes.criticalInjury.find((i) => i.name === injury.name)
+        this.actor.itemTypes.criticalInjury.find(
+          (item) =>
+            item.name === injury.name ||
+            SystemUtils.GetOriginalName(item) === injury.name
+        )
       ) {
         if (dupeSetting === "reroll") {
           await this._drawCriticalInjuryTable(table, iteration + 1);

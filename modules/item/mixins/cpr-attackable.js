@@ -69,14 +69,17 @@ const Attackable = function Attackable() {
     const weaponName = this.name;
     const { weaponType } = cprWeaponData;
     let skillItem = actor.items.find(
-      (i) => i.name === cprWeaponData.weaponSkill
+      (item) =>
+        SystemUtils.GetOriginalName(item) === cprWeaponData.weaponSkill
     );
 
     if (
       type === CPRRolls.rollTypes.SUPPRESSIVE ||
       type === CPRRolls.rollTypes.AUTOFIRE
     ) {
-      skillItem = actor.items.find((i) => i.name === "Autofire");
+      skillItem = actor.items.find(
+        (item) => SystemUtils.GetOriginalName(item) === "Autofire"
+      );
       if (!cprWeaponData.fireModes.suppressiveFire) {
         if (
           cprWeaponData.weaponType !== "smg" &&
@@ -88,7 +91,8 @@ const Attackable = function Attackable() {
       }
     }
     const skillName = skillItem.name;
-    const skillValue = actor.getSkillLevel(skillName);
+    const originalSkillName = SystemUtils.GetOriginalName(skillItem);
+    const skillValue = actor.getSkillLevel(originalSkillName);
 
     let statName;
     if (cprWeaponData.isRanged && cprWeaponData.weaponType !== "thrownWeapon") {
@@ -102,7 +106,7 @@ const Attackable = function Attackable() {
     let roleMods = [];
     // Get all mods for skills from role abilities and subRole abilities
     actor.itemTypes.role.forEach((r) => {
-      roleMods = roleMods.concat(r.getRoleMods(skillName));
+      roleMods = roleMods.concat(r.getRoleMods(originalSkillName));
     });
     // Get all mods for attack bonuses directly from role abilities (not indirectly from skills)
     actor.itemTypes.role.forEach((r) => {
@@ -129,9 +133,9 @@ const Attackable = function Attackable() {
     );
 
     const skillMods = CPRMod.getRelevantMods(filteredMods, [
-      SystemUtils.slugify(skillName),
-      `${SystemUtils.slugify(skillName)}Hearing`,
-      `${SystemUtils.slugify(skillName)}Sight`,
+      SystemUtils.slugify(originalSkillName),
+      `${SystemUtils.slugify(originalSkillName)}Hearing`,
+      `${SystemUtils.slugify(originalSkillName)}Sight`,
     ]);
 
     const attackMods = CPRMod.getRelevantMods(filteredMods, "universalAttack");

@@ -1096,7 +1096,9 @@ export default function registerHandlebarsHelpers() {
         skillList = game.items.filter((i) => i.type === "skill");
       }
       for (const skill of skillList) {
-        skillMap["bonuses.".concat(SystemUtils.slugify(skill.name))] =
+        skillMap["bonuses.".concat(
+          SystemUtils.slugify(SystemUtils.GetOriginalName(skill))
+        )] =
           skill.name;
       }
       return SystemUtils.Localize(skillMap[key]);
