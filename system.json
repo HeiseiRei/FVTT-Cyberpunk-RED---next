@@ -1,5 +1,5 @@
 {
-  "version": "v0.92.4",
+  "version": "v0.1.0",
   "flags": {
     "featureVideoURL": ""
   },
@@ -669,6 +669,6 @@
   "background": "systems/cyberpunk-red-core/images/Foundry-Background.webp",
   "url": "https://github.com/HeiseiRei/FVTT-Cyberpunk-RED---next",
   "manifest": "https://github.com/HeiseiRei/FVTT-Cyberpunk-RED---next/releases/latest/download/system.json",
-  "download": "https://github.com/HeiseiRei/FVTT-Cyberpunk-RED---next/releases/download/v0.92.4/cyberpunk-red-core-v0.92.4.zip",
+  "download": "https://github.com/HeiseiRei/FVTT-Cyberpunk-RED---next/releases/download/v0.1.0/cyberpunk-red-core-v0.1.0.zip",
   "license": "GPL v3"
 }
