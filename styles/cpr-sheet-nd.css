@@ -1,0 +1,3070 @@
+@font-face {
+  font-family: "CPR ND Oswald";
+  src: url("../fonts/cpr-sheet-nd/Oswald-Variable.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 200 700;
+}
+
+@font-face {
+  font-family: "CPR ND Mono";
+  src: url("../fonts/cpr-sheet-nd/IBMPlexMono-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "CPR ND Mono";
+  src: url("../fonts/cpr-sheet-nd/IBMPlexMono-Bold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "CPR ND Glitch";
+  src: url("../fonts/cpr-sheet-nd/RubikGlitch-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+}
+
+.cpr-sheet-nd {
+  --cpr-nd-yellow: #fcee0a;
+  --cpr-nd-yellow-rgb: 252 238 10;
+  --cpr-nd-black: #0a0a0c;
+  --cpr-nd-green: #00ff66;
+  --cpr-nd-cyan: #00f0ff;
+  --cpr-nd-crimson: #ff003c;
+  --cpr-nd-panel: #1a1a24;
+  --cpr-nd-ink: #f0f0f2;
+  --cpr-nd-muted: #d8d8e0;
+  --cpr-font-primary: "CPR ND Mono", monospace;
+  --cpr-font-hero: "CPR ND Oswald", Impact, sans-serif;
+  --cpr-background-window: var(--cpr-nd-black);
+  --cpr-text-normal: var(--cpr-nd-ink);
+  --cpr-background-foundry-input: var(--cpr-nd-panel);
+  --cpr-text-foundry-input: var(--cpr-nd-ink);
+  --cpr-background-dialog-border: var(--cpr-nd-cyan);
+}
+
+.cpr-sheet-nd .window-content {
+  padding: 0;
+  overflow: hidden;
+  color: var(--cpr-nd-ink);
+  background: var(--cpr-nd-black);
+}
+
+.cpr-nd-root {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.cpr-nd-surface,
+.cpr-nd-surface * {
+  box-sizing: border-box;
+}
+
+.cpr-nd-surface {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  color: var(--cpr-nd-ink);
+  background:
+    radial-gradient(ellipse at 48% 32%, rgb(0 240 255 / 3%), transparent 48%),
+    linear-gradient(135deg, rgb(var(--cpr-nd-yellow-rgb) / 3%) 0 1px, transparent 1px 12px),
+    var(--cpr-nd-black);
+  font-family: "CPR ND Mono", monospace;
+  font-size: 12px;
+}
+
+.cpr-nd-header {
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(245px, 0.9fr) minmax(180px, 2fr) minmax(180px, 1fr);
+  align-items: center;
+  gap: 12px;
+  min-height: 78px;
+  padding: 10px 16px;
+  border-bottom: 3px solid var(--cpr-nd-yellow);
+  background: linear-gradient(100deg, #121218, #0d0d10 60%, #181820);
+  box-shadow: 0 5px 25px rgb(var(--cpr-nd-yellow-rgb) / 7%);
+}
+
+.cpr-nd-brand,
+.cpr-nd-header-meta,
+.cpr-nd-weapon-top,
+.cpr-nd-weapon-meta,
+.cpr-nd-weapon-actions,
+.cpr-nd-panel-label,
+.cpr-nd-vital > div,
+.cpr-nd-death,
+.cpr-nd-drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 9px;
+}
+
+.cpr-nd-brand {
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.cpr-nd-brand-mark {
+  color: var(--cpr-nd-yellow);
+  font-family: "CPR ND Glitch", "CPR ND Oswald", sans-serif;
+  font-size: 2rem;
+  line-height: 1;
+  text-shadow: 2px 0 var(--cpr-nd-green), -1px 0 rgb(0 240 255 / 50%);
+}
+
+.cpr-nd-brand strong,
+.cpr-nd-brand small,
+.cpr-nd-panel-label,
+.cpr-nd-header-meta small,
+.cpr-nd-name-wrap small,
+.cpr-nd-vital small,
+.cpr-nd-euro small,
+.cpr-nd-drawer-head small {
+  display: block;
+  color: var(--cpr-nd-muted);
+  font-size: 0.68rem;
+  letter-spacing: 0.09em;
+}
+
+.cpr-nd-brand strong {
+  color: var(--cpr-nd-ink);
+  font: 700 1.15rem "CPR ND Oswald", sans-serif;
+}
+
+.cpr-nd-brand small {
+  margin-top: 2px;
+  white-space: nowrap;
+}
+
+.cpr-nd-name-wrap {
+  min-width: 0;
+}
+
+.cpr-nd-name {
+  width: 100%;
+  height: 40px;
+  padding: 0 10px;
+  border: 0 !important;
+  border-bottom: 2px solid var(--cpr-nd-yellow) !important;
+  border-radius: 0;
+  color: var(--cpr-nd-yellow) !important;
+  background: transparent !important;
+  font: 700 clamp(1.3rem, 3vw, 2rem) "CPR ND Oswald", sans-serif;
+  text-shadow: 2px 0 var(--cpr-nd-green), -1px 0 rgb(0 240 255 / 50%);
+  text-transform: uppercase;
+}
+
+.cpr-nd-header-meta {
+  align-items: stretch;
+  justify-content: flex-end;
+}
+
+.cpr-nd-role,
+.cpr-nd-rep {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 70px;
+  padding: 5px 8px;
+  border: 0;
+  border-left: 2px solid var(--cpr-nd-yellow);
+  background: linear-gradient(100deg, #121218, #0d0d10 60%, #181820);
+}
+
+.cpr-nd-rep {
+  appearance: none;
+  align-items: flex-start;
+  align-self: stretch;
+  border-radius: 0;
+  color: var(--cpr-nd-ink);
+  cursor: pointer;
+  font: inherit;
+  height: auto;
+  min-height: 0;
+  text-align: left;
+}
+
+.cpr-nd-rep:focus-visible {
+  outline: 2px solid var(--cpr-nd-cyan);
+  outline-offset: 2px;
+}
+
+.cpr-nd-role strong,
+.cpr-nd-rep strong,
+.cpr-nd-ledger-value {
+  display: block;
+  max-width: 180px;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  color: var(--cpr-nd-ink);
+  background: transparent;
+  font: 700 1rem "CPR ND Oswald", sans-serif;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cpr-nd-ledger-value {
+  cursor: pointer;
+}
+
+.cpr-nd-ledger-value:hover {
+  color: var(--cpr-nd-cyan);
+  text-shadow: 0 0 7px currentColor;
+}
+
+.cpr-nd-role b {
+  color: var(--cpr-nd-cyan);
+}
+
+.cpr-nd-rep strong {
+  color: var(--cpr-nd-cyan);
+  font-size: 1.25rem;
+}
+
+.cpr-nd-columns {
+  display: grid;
+  flex: 1 1 auto;
+  grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.15fr) minmax(0, 0.9fr);
+  gap: 10px;
+  min-height: 0;
+  padding: 10px 12px 44px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-color: var(--cpr-nd-yellow) var(--cpr-nd-black);
+}
+
+.cpr-nd-column {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  min-width: 0;
+}
+
+.cpr-nd-panel {
+  position: relative;
+  isolation: isolate;
+  min-width: 0;
+  padding: 9px;
+  border: 1px solid var(--cpr-nd-yellow);
+  background:
+    linear-gradient(145deg, rgb(255 255 255 / 2%), transparent 40%) padding-box,
+    linear-gradient(var(--cpr-nd-panel), var(--cpr-nd-panel)) padding-box;
+  box-shadow: 0 0 8px rgb(var(--cpr-nd-yellow-rgb) / 8%);
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+}
+
+.cpr-nd-panel::after {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border: 1px solid var(--cpr-nd-green);
+  content: "";
+  opacity: 0.7;
+  pointer-events: none;
+  transform: translate(2px, 2px);
+}
+
+.cpr-nd-panel-label {
+  min-height: 19px;
+  margin: 0 0 7px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid rgb(var(--cpr-nd-yellow-rgb) / 35%);
+  font-size: 0.65rem;
+}
+
+.cpr-nd-weapons > .cpr-nd-panel-label {
+  margin-bottom: 3px;
+}
+
+.cpr-nd-weapons > .cpr-nd-panel-label + .cpr-nd-weapon {
+  padding-top: 2px;
+}
+
+.cpr-nd-panel-label > span:first-child {
+  color: var(--cpr-nd-yellow);
+}
+
+.cpr-nd-panel-label b {
+  padding: 2px 5px;
+  color: var(--cpr-nd-black);
+  background: var(--cpr-nd-cyan);
+  font: 700 0.75rem "CPR ND Oswald", sans-serif;
+}
+
+.cpr-nd-lifepath .cpr-nd-panel-label img {
+  width: 25px;
+  height: 25px;
+  filter: drop-shadow(0 0 4px var(--cpr-nd-yellow));
+}
+
+.cpr-nd-note {
+  padding: 5px 7px;
+  border-left: 2px solid var(--cpr-nd-yellow);
+  background: #111117;
+}
+
+.cpr-nd-note + .cpr-nd-note {
+  margin-top: 5px;
+}
+
+.cpr-nd-note small {
+  display: block;
+  margin-bottom: 2px;
+  color: var(--cpr-nd-yellow);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+}
+
+.cpr-nd-note span {
+  display: block;
+  overflow-wrap: anywhere;
+  color: var(--cpr-nd-ink);
+  font-size: 0.7rem;
+}
+
+.cpr-nd-cyan {
+  color: var(--cpr-nd-cyan);
+}
+
+.cpr-nd-crimson {
+  color: var(--cpr-nd-crimson) !important;
+}
+
+.cpr-nd-role-feature {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 4px 0 7px;
+  color: var(--cpr-nd-ink);
+  font: 700 1.15rem "CPR ND Oswald", sans-serif;
+}
+
+.cpr-nd-role-feature strong {
+  color: var(--cpr-nd-cyan);
+  font: 0.65rem "CPR ND Mono", monospace;
+}
+
+.cpr-nd-button,
+.cpr-nd-weapon-actions button,
+.cpr-nd-armor-row button,
+.cpr-nd-death-content button,
+.cpr-nd-empathy-content button {
+  border: 1px solid var(--cpr-nd-cyan);
+  border-radius: 0;
+  color: var(--cpr-nd-cyan);
+  background: rgb(0 240 255 / 5%);
+  font: 700 0.68rem "CPR ND Mono", monospace;
+}
+
+.cpr-nd-button-cyan {
+  width: 100%;
+  padding: 6px;
+  border-color: var(--cpr-nd-cyan);
+  color: var(--cpr-nd-cyan);
+  background: rgb(0 240 255 / 5%);
+}
+
+.cpr-nd-button:hover:not(:disabled),
+.cpr-nd-weapon-actions button:hover:not(:disabled),
+.cpr-nd-armor-row button:hover:not(:disabled),
+.cpr-nd-death-content button:hover:not(:disabled),
+.cpr-nd-empathy-content button:hover:not(:disabled) {
+  background: rgb(0 240 255 / 20%);
+  box-shadow: 0 0 8px var(--cpr-nd-cyan);
+}
+
+.cpr-nd-cyber-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+}
+
+.cpr-nd-chrome {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  min-height: 130px;
+}
+
+.cpr-nd-cyber-row,
+.cpr-nd-gear-list button,
+.cpr-nd-criticals button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 7px;
+  padding: 5px 2px;
+  border: 0;
+  border-bottom: 1px dashed #45454b;
+  border-radius: 0;
+  color: var(--cpr-nd-ink);
+  background: transparent;
+  text-align: left;
+}
+
+.cpr-nd-cyber-row span:nth-child(2),
+.cpr-nd-gear-list button span {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cpr-nd-cyber-row small {
+  color: var(--cpr-nd-muted);
+  white-space: nowrap;
+}
+
+.cpr-nd-criticals small {
+  color: var(--cpr-nd-crimson);
+  white-space: nowrap;
+}
+
+.cpr-nd-led {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--cpr-nd-cyan);
+  box-shadow: 0 0 6px var(--cpr-nd-cyan);
+}
+
+.cpr-nd-vitals {
+  min-height: clamp(175px, 22vh, 220px);
+  padding-bottom: 12px;
+  overflow: hidden;
+  background: transparent;
+}
+
+.cpr-nd-vitals-portrait {
+  position: absolute;
+  top: 59%;
+  left: 50%;
+  z-index: 0;
+  width: min(58%, 230px);
+  height: 82%;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  transform: translate(-50%, -50%);
+}
+
+.cpr-nd-vitals-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: contrast(1.12) saturate(0.85);
+  transition: filter 180ms ease;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 88%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 88%, transparent 100%);
+  pointer-events: none;
+}
+
+.cpr-nd-vitals-portrait:hover img,
+.cpr-nd-vitals-portrait:focus-visible img {
+  filter: contrast(1.12) saturate(0.85) drop-shadow(0 0 12px rgb(var(--cpr-nd-yellow-rgb) / 45%)) drop-shadow(0 0 20px rgb(var(--cpr-nd-yellow-rgb) / 24%));
+}
+
+.cpr-sheet-nd .window-content .cpr-nd-vitals-portrait,
+.cpr-sheet-nd .window-content .cpr-nd-vitals-portrait:hover:not(:disabled),
+.cpr-sheet-nd .window-content .cpr-nd-vitals-portrait:focus-visible {
+  background: transparent;
+  background-color: transparent;
+  box-shadow: none;
+  filter: none;
+}
+
+.cpr-nd-vitals > .cpr-nd-panel-label {
+  display: flex;
+  position: relative;
+  z-index: 2;
+}
+
+.cpr-nd-vitals > .cpr-nd-criticals {
+  position: absolute;
+  z-index: 2;
+  bottom: 10px;
+  left: 12px;
+  width: 45%;
+  text-align: left;
+}
+
+.cpr-nd-vitals > .cpr-nd-criticals > .cpr-nd-critical-roll {
+  display: block;
+  width: auto;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: var(--cpr-nd-muted);
+  background: transparent;
+  font: inherit;
+  font-size: 0.55rem;
+  letter-spacing: 0.09em;
+  text-align: left;
+  cursor: pointer;
+}
+
+.cpr-nd-vitals > .cpr-nd-criticals > .cpr-nd-wound-count {
+  display: block;
+  width: auto;
+  min-height: 0;
+  margin: 1px 0 0;
+  padding: 0;
+  border: 0;
+  color: var(--cpr-nd-ink);
+  background: transparent;
+  font: 700 0.8rem "CPR ND Mono", monospace;
+  text-align: left;
+  cursor: pointer;
+}
+
+.cpr-nd-vitals > .cpr-nd-criticals > .cpr-nd-wound-count.has-open-wounds {
+  color: var(--cpr-nd-crimson);
+}
+
+.cpr-nd-vitals > .cpr-nd-criticals > .cpr-nd-critical-roll:hover:not(:disabled),
+.cpr-nd-vitals > .cpr-nd-criticals > .cpr-nd-critical-roll:focus-visible {
+  color: var(--cpr-nd-yellow);
+  outline: 0;
+  background: transparent;
+  box-shadow: none;
+  filter: none;
+  text-shadow: 0 0 4px rgb(var(--cpr-nd-yellow-rgb) / 45%);
+}
+
+.cpr-nd-vitals > .cpr-nd-criticals > .cpr-nd-wound-count:hover:not(:disabled),
+.cpr-nd-vitals > .cpr-nd-criticals > .cpr-nd-wound-count:focus,
+.cpr-nd-vitals > .cpr-nd-criticals > .cpr-nd-wound-count:active {
+  outline: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  filter: none;
+}
+
+.cpr-nd-vitals > .cpr-nd-criticals > .cpr-nd-wound-count:not(.has-open-wounds):hover:not(:disabled),
+.cpr-nd-vitals > .cpr-nd-criticals > .cpr-nd-wound-count:not(.has-open-wounds):focus-visible {
+  color: var(--cpr-nd-ink);
+  text-shadow: 0 0 4px rgb(255 255 255 / 70%), 0 0 10px rgb(255 255 255 / 45%);
+  filter: drop-shadow(0 0 3px rgb(255 255 255 / 40%));
+}
+
+.cpr-nd-vitals > .cpr-nd-criticals > .cpr-nd-wound-count.has-open-wounds:hover:not(:disabled),
+.cpr-nd-vitals > .cpr-nd-criticals > .cpr-nd-wound-count.has-open-wounds:focus-visible {
+  color: var(--cpr-nd-crimson);
+  text-shadow: 0 0 4px rgb(255 0 60 / 70%), 0 0 10px rgb(255 0 60 / 45%);
+  filter: drop-shadow(0 0 3px rgb(255 0 60 / 45%));
+}
+
+.cpr-nd-wound-list {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 5px;
+  min-height: 0;
+  margin-top: 6px;
+  overflow-y: auto;
+  scrollbar-color: var(--cpr-nd-crimson) var(--cpr-nd-black);
+}
+
+.cpr-nd-wound-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 10px;
+  padding: 8px;
+  border: 1px solid rgb(255 0 60 / 45%);
+  color: var(--cpr-nd-ink);
+  background: transparent;
+  text-align: left;
+}
+
+.cpr-nd-wound-item small {
+  color: var(--cpr-nd-crimson);
+}
+
+.cpr-nd-wound-name {
+  display: flex;
+  align-items: center;
+  flex: 1 1 auto;
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 0;
+  height: auto;
+  gap: 7px;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.cpr-nd-wound-name i {
+  flex: none;
+  color: var(--cpr-nd-crimson);
+}
+
+.cpr-nd-wound-name span {
+  min-width: 0;
+}
+
+.cpr-nd-wound-name:hover,
+.cpr-nd-wound-name:focus-visible {
+  color: var(--cpr-nd-ink);
+  background: transparent;
+  box-shadow: none;
+  text-shadow: 0 0 4px rgb(255 255 255 / 65%), 0 0 9px rgb(255 255 255 / 40%);
+}
+
+.cpr-nd-wound-item:hover {
+  border-color: var(--cpr-nd-crimson);
+  box-shadow: 0 0 5px rgb(255 0 60 / 45%);
+}
+
+.cpr-nd-wound-list .cpr-nd-empty {
+  margin: 0;
+  padding: 8px;
+  border: 1px dashed rgb(255 255 255 / 20%);
+  text-align: center;
+}
+
+.cpr-nd-vital {
+  position: absolute;
+  z-index: 1;
+  top: 58px;
+  width: 34%;
+}
+
+.cpr-nd-vital-hp {
+  left: 16px;
+}
+
+.cpr-nd-vital-humanity {
+  right: 16px;
+  text-align: right;
+}
+
+.cpr-nd-vital small {
+  color: var(--cpr-nd-cyan);
+}
+
+.cpr-nd-vital-humanity small {
+  color: var(--cpr-nd-yellow);
+}
+
+.cpr-nd-vital > div {
+  justify-content: flex-start;
+  gap: 3px;
+  margin-top: 4px;
+  font: 700 1rem "CPR ND Oswald", sans-serif;
+}
+
+.cpr-nd-vital-humanity > div {
+  justify-content: flex-end;
+}
+
+.cpr-nd-vital input {
+  width: 48px;
+  height: 36px;
+  padding: 0;
+  border: 0 !important;
+  color: var(--cpr-nd-cyan) !important;
+  background: transparent !important;
+  font: 700 1.75rem "CPR ND Oswald", sans-serif;
+  text-align: center;
+}
+
+.cpr-nd-vital-humanity input {
+  color: var(--cpr-nd-yellow) !important;
+}
+
+.cpr-nd-vitals.is-seriously-wounded {
+  border-color: var(--cpr-nd-crimson);
+  animation: cpr-nd-critical-pulse 1.7s ease-in-out infinite;
+}
+
+.cpr-nd-vitals.is-seriously-wounded .cpr-nd-vital-hp input {
+  color: var(--cpr-nd-crimson) !important;
+}
+
+.cpr-nd-vitals.is-seriously-wounded .cpr-nd-vital-hp small {
+  color: var(--cpr-nd-crimson);
+}
+
+.cpr-nd-cyberpsycho {
+  position: absolute;
+  z-index: 2;
+  right: 7px;
+  bottom: 5px;
+  left: 7px;
+  color: var(--cpr-nd-ink);
+  background: var(--cpr-nd-crimson);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-align: center;
+  animation: cpr-nd-critical-pulse 1.1s ease-in-out infinite;
+}
+
+.cpr-nd-spine-panel {
+  display: grid;
+  grid-template-areas:
+    "heading heading heading"
+    "empathy spine luck";
+  grid-template-columns: minmax(55px, 1fr) 196px minmax(55px, 1fr);
+  grid-template-rows: auto 216px;
+  column-gap: 8px;
+}
+
+.cpr-nd-spine-panel > .cpr-nd-panel-label {
+  grid-area: heading;
+}
+
+.cpr-nd-spine-panel > .cpr-nd-spine {
+  grid-area: spine;
+  width: 196px;
+  justify-self: center;
+}
+
+.cpr-nd-spine-panel > .cpr-nd-bottom-grid {
+  display: contents;
+}
+
+.cpr-nd-spine-panel .cpr-nd-empathy,
+.cpr-nd-spine-panel .cpr-nd-luck {
+  display: flex;
+  height: 216px;
+  min-width: 0;
+  flex-direction: column;
+  padding: 6px 5px;
+}
+
+.cpr-nd-spine-panel .cpr-nd-empathy {
+  grid-area: empathy;
+  padding-bottom: 0;
+}
+
+.cpr-nd-spine-panel .cpr-nd-luck {
+  grid-area: luck;
+  padding-bottom: 0;
+}
+
+.cpr-nd-spine-panel .cpr-nd-empathy > .cpr-nd-panel-label,
+.cpr-nd-spine-panel .cpr-nd-luck > .cpr-nd-panel-label {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 2px;
+  min-height: 0;
+  margin-bottom: 8px;
+  font-size: 0.5rem;
+  line-height: 1.2;
+}
+
+.cpr-nd-spine-panel .cpr-nd-empathy > .cpr-nd-panel-label span,
+.cpr-nd-spine-panel .cpr-nd-luck > .cpr-nd-panel-label span {
+  white-space: nowrap;
+}
+
+.cpr-nd-spine-panel .cpr-nd-empathy > .cpr-nd-panel-label {
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.cpr-nd-spine-panel .cpr-nd-luck > .cpr-nd-panel-label {
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.cpr-nd-spine-panel .cpr-nd-luck > .cpr-nd-panel-label > span:first-child {
+  color: var(--cpr-nd-yellow);
+  font: 700 1rem "CPR ND Oswald", sans-serif;
+}
+
+.cpr-nd-spine-panel .cpr-nd-empathy > .cpr-nd-panel-label > .cpr-nd-empathy-roll {
+  padding: 0;
+  border: 0;
+  color: var(--cpr-nd-yellow);
+  background: transparent;
+  font: 700 1rem "CPR ND Oswald", sans-serif;
+  cursor: pointer;
+}
+
+.cpr-nd-spine-panel .cpr-nd-empathy > .cpr-nd-panel-label > .cpr-nd-empathy-roll:hover {
+  color: var(--cpr-nd-cyan);
+  text-shadow: 0 0 6px var(--cpr-nd-cyan);
+}
+
+.cpr-nd-spine-panel .cpr-nd-empathy-capacity {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.cpr-nd-spine-panel .cpr-nd-empathy-capacity > span {
+  padding: 0;
+  border: 0;
+  color: var(--cpr-nd-muted);
+}
+
+.cpr-nd-spine-panel .cpr-nd-empathy > .cpr-nd-panel-label > span {
+  color: var(--cpr-nd-yellow);
+  font: inherit;
+}
+
+.cpr-nd-empathy-capacity,
+.cpr-nd-luck-capacity {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--cpr-nd-muted);
+  font: 700 0.42rem "CPR ND Mono", monospace;
+}
+
+.cpr-nd-empathy-capacity input,
+.cpr-nd-luck-capacity input {
+  width: 20px;
+  height: 18px;
+  padding: 0 2px;
+  border: 0 !important;
+  border-bottom: 1px solid var(--cpr-nd-cyan) !important;
+  color: var(--cpr-nd-yellow) !important;
+  background: transparent !important;
+  font: 700 0.7rem "CPR ND Oswald", sans-serif;
+  text-align: center;
+}
+
+.cpr-nd-spine-panel .cpr-nd-empathy-content,
+.cpr-nd-spine-panel .cpr-nd-luck-track {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column-reverse;
+  justify-content: flex-start;
+  gap: 2px;
+  min-height: 0;
+  margin: 0 -5px;
+  padding: 0 5px 5px;
+  user-select: none;
+}
+
+.cpr-nd-spine-panel .cpr-nd-empathy-content.is-editable {
+  cursor: pointer;
+}
+
+.cpr-nd-spine-panel .cpr-nd-luck-track.is-editable {
+  cursor: pointer;
+}
+
+.cpr-nd-spine-panel > .cpr-nd-panel-label span:last-child {
+  padding-left: 8px;
+  border-left: 1px solid rgb(0 240 255 / 45%);
+  color: var(--cpr-nd-cyan);
+  white-space: nowrap;
+}
+
+.cpr-nd-spine {
+  --cpr-nd-spine-width: 50px;
+}
+
+.cpr-nd-stat-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--cpr-nd-spine-width) minmax(0, 1fr);
+  grid-template-rows: repeat(9, 24px);
+  min-height: 216px;
+}
+
+.cpr-nd-stat {
+  position: relative;
+  isolation: isolate;
+  z-index: 1;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0;
+  min-width: 0;
+  grid-row-end: span 2;
+  width: 100%;
+  height: 36px;
+  padding: 0;
+  border: 1px solid rgb(0 229 255 / 40%);
+  border-radius: 0;
+  background: transparent;
+}
+
+.cpr-nd-stat-int { grid-column: 1; grid-row: 1 / 3; }
+.cpr-nd-stat-ref { grid-column: 3; grid-row: 2 / 4; }
+.cpr-nd-stat-dex { grid-column: 1; grid-row: 3 / 5; }
+.cpr-nd-stat-tech { grid-column: 3; grid-row: 4 / 6; }
+.cpr-nd-stat-cool { grid-column: 1; grid-row: 5 / 7; }
+.cpr-nd-stat-will { grid-column: 3; grid-row: 6 / 8; }
+.cpr-nd-stat-move { grid-column: 1; grid-row: 7 / 9; }
+.cpr-nd-stat-body { grid-column: 3; grid-row: 8 / 10; }
+.cpr-nd-stat-cable {
+  z-index: 0;
+  grid-column: 2;
+  grid-row: 1 / -1;
+  width: 100%;
+  height: 100%;
+  background: url("../icons/sheets/cpr-sheet-nd/core-stats-spine.svg") center / 100% 100% no-repeat;
+  pointer-events: none;
+}
+
+.cpr-nd-stat:nth-child(odd) {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+.cpr-nd-stat:nth-child(even) {
+  flex-direction: row;
+}
+
+.cpr-nd-stat button {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0 6px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #d8f4ff;
+  font: 700 0.72rem "CPR ND Oswald", sans-serif;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.cpr-nd-stat > button {
+  display: block;
+}
+
+.cpr-nd-stat:nth-child(odd) > button {
+  text-align: left;
+}
+
+.cpr-nd-stat:nth-child(even) > button {
+  text-align: right;
+}
+
+.cpr-nd-empathy-roll {
+  margin-left: 5px;
+}
+
+.cpr-nd-stat-value {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: 0 0 29px;
+  width: 29px;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.cpr-nd-stat:nth-child(odd) > .cpr-nd-stat-value {
+  border-right: 1px solid rgb(0 229 255 / 30%);
+}
+
+.cpr-nd-stat:nth-child(even) > .cpr-nd-stat-value {
+  border-left: 1px solid rgb(0 229 255 / 30%);
+}
+
+.cpr-nd-stat-value input {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0 !important;
+  color: var(--cpr-nd-yellow) !important;
+  background: transparent !important;
+  font: 900 1.05rem "CPR ND Oswald", sans-serif;
+  text-align: center;
+  text-shadow: none;
+}
+
+.cpr-nd-stat button:hover {
+  color: var(--cpr-nd-cyan);
+  text-shadow: 0 0 8px var(--cpr-nd-cyan);
+}
+
+.cpr-nd-bottom-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.cpr-nd-luck-segment {
+  flex: 1 1 0;
+  min-height: 0;
+  width: 100%;
+  border: 1px solid rgb(var(--cpr-nd-yellow-rgb) / 24%);
+  border-radius: 0;
+  background: rgb(var(--cpr-nd-yellow-rgb) / 5%);
+  pointer-events: none;
+}
+
+.cpr-nd-luck-segment:first-child {
+  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.cpr-nd-luck-segment:last-child {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.cpr-nd-luck-segment.is-filled {
+  border-color: var(--cpr-nd-yellow);
+  background: var(--cpr-nd-yellow);
+  box-shadow: 0 0 7px rgb(var(--cpr-nd-yellow-rgb) / 55%);
+}
+
+.cpr-nd-luck-track:hover .cpr-nd-luck-segment.is-filled {
+  filter: brightness(1.18);
+}
+
+.cpr-nd-death-content {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  min-height: 37px;
+}
+
+.cpr-nd-death-content img {
+  width: 35px;
+  height: 35px;
+}
+
+.cpr-nd-death-content > div {
+  flex: 1;
+}
+
+.cpr-nd-death-content small {
+  display: block;
+  color: var(--cpr-nd-muted);
+  font-size: 0.58rem;
+}
+
+.cpr-nd-death-content strong {
+  color: var(--cpr-nd-crimson);
+  font: 700 1.3rem "CPR ND Oswald", sans-serif;
+}
+
+.cpr-nd-death-content button {
+  padding: 5px;
+  white-space: nowrap;
+}
+
+.cpr-nd-empathy-content {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column-reverse;
+  min-height: 0;
+}
+
+.cpr-nd-empathy-segment {
+  flex: 1 1 0;
+  min-height: 0;
+  width: 100%;
+  border: 1px solid rgb(0 240 255 / 24%);
+  border-radius: 0;
+  background: rgb(0 240 255 / 5%);
+  pointer-events: none;
+}
+
+.cpr-nd-empathy-segment:first-child {
+  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.cpr-nd-empathy-segment:last-child {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.cpr-nd-empathy-segment.is-filled {
+  border-color: var(--cpr-nd-cyan);
+  background: var(--cpr-nd-cyan);
+  box-shadow: 0 0 5px rgb(0 240 255 / 55%);
+}
+
+.cpr-nd-empathy-content.is-low .cpr-nd-empathy-segment.is-filled {
+  border-color: var(--cpr-nd-crimson);
+  background: var(--cpr-nd-crimson);
+  box-shadow: 0 0 5px rgb(255 0 60 / 55%);
+}
+
+.cpr-nd-empathy-content:hover .cpr-nd-empathy-segment.is-filled {
+  filter: brightness(1.18);
+}
+
+.cpr-nd-death {
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+  gap: 0;
+}
+
+.cpr-nd-death > .cpr-nd-panel-label {
+  margin-bottom: 7px;
+}
+
+.cpr-nd-favorites {
+  min-height: 50px;
+}
+
+.cpr-nd-panel-label button {
+  padding: 0;
+  border: 0 !important;
+  border-radius: 0 !important;
+  color: var(--cpr-nd-cyan);
+  background: transparent !important;
+  box-shadow: none !important;
+  font: 0.6rem "CPR ND Mono", monospace;
+}
+
+.cpr-nd-weapon-top > .cpr-nd-item-name,
+.cpr-nd-cyber-row {
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+.cpr-nd-favorite-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.cpr-nd-quick-checks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 5px;
+  width: 100%;
+}
+
+.cpr-nd-favorite-list .cpr-nd-quick-skill-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 0;
+  text-align: left;
+}
+
+.cpr-nd-quick-skill-card > span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cpr-nd-favorite-list button {
+  padding: 4px 6px;
+  border: 1px solid rgb(0 240 255 / 35%);
+  color: var(--cpr-nd-ink);
+  background: #101016;
+  font-size: 0.65rem;
+}
+
+.cpr-nd-favorite-list b {
+  margin-left: 4px;
+  color: var(--cpr-nd-muted);
+}
+
+.cpr-nd-weapon {
+  padding: 7px 0;
+  border-bottom: 1px dashed #484850;
+  transition: background-color 120ms ease, opacity 120ms ease;
+}
+
+.cpr-nd-weapon.is-dragging {
+  opacity: 0.45;
+}
+
+.cpr-nd-weapon.is-drop-target {
+  background: rgb(0 240 255 / 8%);
+}
+
+.cpr-nd-weapon-top {
+  min-width: 0;
+}
+
+.cpr-nd-item-name {
+  min-width: 0;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  color: var(--cpr-nd-ink);
+  background: transparent;
+  font: 700 1rem "CPR ND Oswald", sans-serif;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cpr-nd-weapon-drag {
+  cursor: grab;
+}
+
+.cpr-nd-weapon-drag:active {
+  cursor: grabbing;
+}
+
+.cpr-nd-damage {
+  flex: none;
+  color: var(--cpr-nd-ink);
+  font: 700 0.95rem "CPR ND Oswald", sans-serif;
+}
+
+.cpr-nd-weapon-meta {
+  justify-content: flex-start;
+  gap: 12px;
+  margin: 3px 0 5px;
+  color: var(--cpr-nd-muted);
+  font-size: 0.62rem;
+}
+
+.cpr-nd-weapon-rof {
+  flex: none;
+  white-space: nowrap;
+}
+
+.cpr-nd-weapon-meta span:nth-child(2) {
+  color: var(--cpr-nd-muted);
+}
+
+.cpr-nd-ammo-count {
+  color: var(--cpr-nd-cyan);
+}
+
+.cpr-nd-weapon-actions {
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.cpr-nd-weapon-primary-actions {
+  flex: none;
+  flex-wrap: nowrap;
+}
+
+.cpr-nd-weapon-utility-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.cpr-nd-weapon-actions button {
+  padding: 4px 5px;
+  border-color: var(--cpr-nd-cyan);
+  color: var(--cpr-nd-cyan);
+  background: rgb(0 240 255 / 5%);
+}
+
+.cpr-nd-weapon-actions button[data-cpr-nd-action="roll-damage"] i {
+  margin-right: 2px;
+  font-size: 0.75em;
+}
+
+.cpr-nd-weapon-actions button[data-cpr-nd-action="roll-weapon"],
+.cpr-nd-weapon-actions button[data-cpr-nd-action="roll-damage"] {
+  border-color: #8f001f;
+  color: var(--cpr-nd-crimson);
+  background: var(--cpr-nd-panel);
+}
+
+.cpr-nd-weapon-actions button:hover:not(:disabled) {
+  background: rgb(0 240 255 / 20%);
+  box-shadow: 0 0 8px var(--cpr-nd-cyan);
+}
+
+.cpr-nd-weapon-actions button[data-cpr-nd-action="roll-weapon"]:hover:not(:disabled),
+.cpr-nd-weapon-actions button[data-cpr-nd-action="roll-damage"]:hover:not(:disabled) {
+  background: var(--cpr-nd-panel);
+  box-shadow: 0 0 8px var(--cpr-nd-crimson);
+}
+
+.cpr-nd-weapon-load-actions button {
+  padding: 4px;
+  font-size: 0.55rem;
+  white-space: nowrap;
+}
+
+.cpr-nd-weapon-load-actions {
+  flex: 0 1 auto;
+}
+
+.cpr-nd-weapon-mode {
+  flex: 0 1 auto;
+  margin: 0;
+}
+
+.cpr-nd-weapon-mode ul {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cpr-nd-weapon-mode li {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--cpr-nd-cyan);
+  font: 700 0.58rem "CPR ND Mono", monospace;
+}
+
+.cpr-nd-mode-toggle,
+.cpr-nd-peek-selector {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 16px;
+  width: 16px;
+  min-width: 16px;
+  height: 16px;
+  min-height: 16px;
+  padding: 0 2px;
+  border: 0;
+  color: var(--cpr-nd-cyan);
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.65rem;
+  line-height: 1;
+}
+
+.cpr-nd-mode-toggle i,
+.cpr-nd-peek-selector i {
+  margin: 0;
+  font-size: inherit;
+}
+
+.cpr-nd-mode-toggle[aria-pressed="true"],
+.cpr-nd-peek-selector.is-active {
+  color: var(--cpr-nd-yellow);
+  text-shadow: 0 0 6px var(--cpr-nd-cyan);
+}
+
+.cpr-nd-armor-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 0;
+  border-bottom: 1px dashed #484850;
+  font-size: 0.62rem;
+}
+
+.cpr-nd-armor-row span {
+  color: var(--cpr-nd-muted);
+  white-space: nowrap;
+}
+
+.cpr-nd-armor-row b {
+  color: var(--cpr-nd-cyan);
+}
+
+.cpr-nd-armor-row button {
+  padding: 2px 5px;
+}
+
+.cpr-nd-gear-list {
+  max-height: 135px;
+  overflow: auto;
+}
+
+.cpr-nd-gear {
+  flex-shrink: 0;
+  min-height: 120px;
+}
+
+.cpr-nd-gear .cpr-nd-panel-label {
+  padding-right: 28px;
+}
+
+.cpr-nd-gear .cpr-nd-gear-list {
+  width: calc(100% - 28px);
+  padding-right: 0;
+}
+
+.cpr-nd-inventory-trigger {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  padding: 6px 4px;
+  border: 0;
+  border-left: 1px solid var(--cpr-nd-cyan);
+  border-radius: 0;
+  color: var(--cpr-nd-cyan);
+  background: repeating-linear-gradient(135deg, rgb(0 240 255 / 8%) 0 1px, transparent 1px 9px), rgb(0 240 255 / 5%);
+  font: 700 0.75rem "CPR ND Mono", monospace;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  overflow-wrap: normal;
+  word-break: keep-all;
+  writing-mode: vertical-rl;
+}
+
+.cpr-nd-inventory-trigger:hover:not(:disabled) {
+  background: repeating-linear-gradient(135deg, rgb(0 240 255 / 12%) 0 1px, transparent 1px 9px), rgb(0 240 255 / 20%);
+  box-shadow: 0 0 8px var(--cpr-nd-cyan);
+}
+
+.cpr-nd-gear-list button {
+  font-size: 0.66rem;
+}
+
+.cpr-nd-gear-list b {
+  color: var(--cpr-nd-muted);
+}
+
+.cpr-nd-criticals button {
+  font-size: 0.65rem;
+}
+
+.cpr-nd-criticals i {
+  color: var(--cpr-nd-crimson);
+}
+
+.cpr-nd-criticals button:hover:not(:disabled) {
+  color: var(--cpr-nd-crimson);
+  box-shadow: 0 0 8px var(--cpr-nd-crimson);
+}
+
+.cpr-nd-euro {
+  position: absolute;
+  z-index: 2;
+  right: 12px;
+  bottom: 10px;
+  text-align: right;
+}
+
+.cpr-nd-euro small {
+  color: var(--cpr-nd-muted);
+  font-size: 0.55rem;
+}
+
+.cpr-nd-euro .cpr-nd-ledger-value {
+  display: block;
+  margin-top: 1px;
+  max-width: 100%;
+  color: var(--cpr-nd-ink);
+  font: 700 0.8rem "CPR ND Mono", monospace;
+  background: transparent;
+  text-align: right;
+}
+
+.cpr-sheet-nd .window-content .cpr-nd-euro > .cpr-nd-ledger-value,
+.cpr-sheet-nd .window-content .cpr-nd-euro > .cpr-nd-ledger-value:hover,
+.cpr-sheet-nd .window-content .cpr-nd-euro > .cpr-nd-ledger-value:focus-visible {
+  background: transparent !important;
+}
+
+.cpr-nd-empty {
+  margin: 4px 0;
+  color: var(--cpr-nd-muted);
+  font-size: 0.65rem;
+}
+
+.cpr-nd-drawer-trigger {
+  position: absolute;
+  z-index: 4;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  min-height: 34px;
+  border: 0;
+  border-top: 1px solid var(--cpr-nd-cyan);
+  border-radius: 0;
+  color: var(--cpr-nd-cyan);
+  background: repeating-linear-gradient(135deg, rgb(0 240 255 / 8%) 0 1px, transparent 1px 9px), rgb(0 240 255 / 5%);
+  font: 700 0.75rem "CPR ND Mono", monospace;
+  letter-spacing: 0.08em;
+}
+
+.cpr-nd-drawer-trigger:hover:not(:disabled) {
+  background: repeating-linear-gradient(135deg, rgb(0 240 255 / 12%) 0 1px, transparent 1px 9px), rgb(0 240 255 / 20%);
+  box-shadow: 0 0 8px var(--cpr-nd-cyan);
+}
+
+.cpr-nd-skills-drawer {
+  position: absolute;
+  z-index: 3;
+  inset: auto 0 0;
+  display: flex;
+  flex-direction: column;
+  height: min(72%, 620px);
+  padding: 14px;
+  border-top: 3px solid var(--cpr-nd-cyan);
+  background: rgb(10 10 13 / 97%);
+  box-shadow: 0 -12px 38px rgb(0 240 255 / 12%);
+  transform: translateY(105%);
+  transition: transform 260ms ease;
+}
+
+.cpr-nd-wounds-drawer {
+  position: absolute;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  max-height: 300px;
+  padding: 8px;
+  border: 1px solid var(--cpr-nd-crimson);
+  border-top: 3px solid var(--cpr-nd-crimson);
+  background: rgb(10 10 13 / 97%);
+  box-shadow: 0 8px 26px rgb(255 0 60 / 20%);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-8px);
+  visibility: hidden;
+  transition: opacity 180ms ease, transform 180ms ease, visibility 180ms ease;
+}
+
+.cpr-nd-skills-open .cpr-nd-skills-drawer {
+  transform: translateY(0);
+}
+
+.cpr-nd-wounds-open .cpr-nd-wounds-drawer {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+  visibility: visible;
+}
+
+.cpr-nd-drawer-head {
+  flex: none;
+  padding-bottom: 9px;
+  border-bottom: 1px solid rgb(0 240 255 / 45%);
+}
+
+.cpr-nd-drawer-head h2 {
+  margin: 3px 0 0;
+  color: var(--cpr-nd-yellow);
+  font: 700 1.4rem "CPR ND Oswald", sans-serif;
+}
+
+.cpr-nd-drawer-head h2 span {
+  color: var(--cpr-nd-cyan);
+}
+
+.cpr-nd-drawer-head input {
+  width: min(34%, 260px);
+  min-width: 130px;
+  border: 1px solid var(--cpr-nd-cyan) !important;
+  border-radius: 0;
+  color: var(--cpr-nd-ink) !important;
+  background: var(--cpr-nd-black) !important;
+}
+
+.cpr-nd-skills-filter {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cpr-nd-skills-filter button {
+  padding: 4px 6px;
+  border: 1px solid var(--cpr-nd-cyan);
+  color: var(--cpr-nd-ink);
+  background: var(--cpr-nd-black);
+  font: 0.65rem "CPR ND Mono", monospace;
+  white-space: nowrap;
+}
+
+.cpr-nd-skills-filter button.active {
+  color: var(--cpr-nd-yellow);
+  box-shadow: 0 0 6px var(--cpr-nd-cyan);
+}
+
+.cpr-nd-drawer-head > button {
+  border: 0;
+  color: var(--cpr-nd-cyan);
+  background: transparent;
+  font-size: 1.3rem;
+}
+
+.cpr-nd-wounds-drawer .cpr-nd-drawer-head {
+  padding-bottom: 4px;
+  border-bottom-color: rgb(255 0 60 / 45%);
+}
+
+.cpr-nd-wounds-drawer .cpr-nd-drawer-head small {
+  margin-left: 6px;
+}
+
+.cpr-nd-wounds-drawer .cpr-nd-drawer-head h2 span,
+.cpr-nd-wounds-drawer .cpr-nd-drawer-head > button {
+  color: var(--cpr-nd-crimson);
+}
+
+.cpr-nd-wounds-drawer .cpr-nd-drawer-head > button {
+  min-height: 0;
+  height: 24px;
+  padding: 0;
+  font-size: 1rem;
+}
+
+.cpr-nd-skill-groups {
+  display: grid;
+  flex: 1 1 auto;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  align-items: start;
+  gap: 10px;
+  min-height: 0;
+  min-width: 0;
+  margin-top: 9px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-color: var(--cpr-nd-cyan) var(--cpr-nd-black);
+}
+
+.cpr-nd-skill-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.cpr-nd-skill-group {
+  width: 100%;
+  min-width: 0;
+  padding: 9px;
+  border: 1px solid rgb(0 240 255 / 28%);
+  background: linear-gradient(145deg, rgb(24 29 38 / 96%), rgb(15 17 23 / 94%));
+  box-shadow: inset 2px 0 rgb(0 240 255 / 22%), 0 4px 12px rgb(0 0 0 / 24%);
+}
+
+.cpr-nd-skill-group h3 {
+  margin: 0 0 7px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid rgb(0 240 255 / 24%);
+  color: var(--cpr-nd-cyan);
+  font: 700 0.8rem "CPR ND Oswald", sans-serif;
+  text-transform: uppercase;
+}
+
+.cpr-nd-skill-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  padding: 3px 0;
+  border-top: 1px dotted #343840;
+}
+
+.cpr-nd-skill-roll {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  gap: 6px;
+  min-width: 0;
+  padding: 2px;
+  border: 0;
+  color: var(--cpr-nd-ink);
+  background: transparent;
+  font: inherit;
+  text-align: left;
+}
+
+.cpr-nd-skill-roll span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cpr-nd-skill-roll small {
+  flex: none;
+  color: var(--cpr-nd-muted);
+  font-size: 0.6rem;
+}
+
+.cpr-nd-pin {
+  padding: 3px 5px;
+  border: 0;
+  color: #5f6068;
+  background: transparent;
+}
+
+.cpr-nd-pin.is-pinned {
+  color: var(--cpr-nd-yellow) !important;
+}
+
+.cpr-nd-skill-row[hidden],
+.cpr-nd-skill-group[hidden] {
+  display: none;
+}
+
+.cpr-nd-surface button:hover:not(:disabled) {
+  filter: brightness(1.2);
+  text-shadow: 0 0 7px currentColor;
+}
+
+.cpr-nd-surface .cpr-nd-stat > button:hover:not(:disabled),
+.cpr-nd-surface .cpr-nd-stat > button:focus-visible {
+  background: transparent;
+  box-shadow: none;
+  filter: none;
+}
+
+.cpr-nd-surface button:disabled,
+.cpr-nd-surface input:disabled {
+  cursor: default;
+  opacity: 0.65;
+}
+
+@keyframes cpr-nd-critical-pulse {
+  50% { box-shadow: 0 0 15px rgb(255 0 60 / 38%); }
+}
+
+@media (max-width: 850px) {
+  .cpr-nd-header {
+    grid-template-columns: 110px minmax(150px, 1fr) minmax(120px, 0.7fr);
+    gap: 6px;
+    padding: 8px;
+  }
+
+  .cpr-nd-brand small {
+    display: none;
+  }
+
+  .cpr-nd-columns {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    gap: 6px;
+    padding-right: 7px;
+    padding-left: 7px;
+  }
+
+  .cpr-nd-right {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+
+  .cpr-nd-panel {
+    padding: 7px;
+  }
+
+}
+
+@media (max-width: 650px) {
+  .cpr-nd-header {
+    grid-template-columns: 110px minmax(100px, 1fr) auto;
+  }
+
+  .cpr-nd-brand-mark {
+    font-size: 1.5rem;
+  }
+
+  .cpr-nd-brand strong {
+    font-size: 0.9rem;
+  }
+
+  .cpr-nd-role {
+    display: none;
+  }
+
+  .cpr-nd-columns {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  }
+
+  .cpr-nd-right {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cpr-nd-surface *,
+  .cpr-nd-surface *::before,
+  .cpr-nd-surface *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.cpr-nd-inventory-drawer {
+  position: absolute;
+  z-index: 6;
+  inset: 0 0 0 auto;
+  display: flex;
+  width: min(calc(94% + 30px), 1130px);
+  max-width: 100%;
+  min-width: 0;
+  min-height: 0;
+  clip-path: inset(0 0 0 100%);
+  pointer-events: none;
+  visibility: hidden;
+  transition: clip-path 260ms ease, visibility 0s linear 260ms;
+}
+
+.cpr-nd-inventory-open .cpr-nd-inventory-drawer {
+  clip-path: inset(0);
+  pointer-events: auto;
+  visibility: visible;
+  transition: clip-path 260ms ease;
+}
+
+.cpr-nd-inventory-dragging .cpr-nd-inventory-drawer {
+  opacity: 0.03;
+  pointer-events: none;
+  transition: opacity 120ms ease-out;
+}
+
+.cpr-nd-weapons.cpr-drop-target-active,
+.cpr-nd-armor.cpr-drop-target-active {
+  outline: 2px dashed var(--cpr-nd-cyan);
+  outline-offset: -2px;
+}
+
+.cpr-nd-inventory-view {
+  position: absolute;
+  inset: 0 30px 0 auto;
+  display: flex;
+  flex-direction: column;
+  width: min(calc(100% - 30px), 1100px);
+  min-width: 0;
+  min-height: 0;
+  padding: 14px;
+  gap: 12px;
+  border-left: 3px solid var(--cpr-nd-cyan);
+  background:
+    radial-gradient(ellipse at 48% 32%, rgb(0 240 255 / 3%), transparent 48%),
+    linear-gradient(135deg, rgb(var(--cpr-nd-yellow-rgb) / 3%) 0 1px, transparent 1px 12px),
+    rgb(10 10 13 / 95%);
+  box-shadow: -12px 0 38px rgb(0 240 255 / 16%);
+}
+
+.cpr-nd-inventory-heading,
+.cpr-nd-backpack-title,
+.cpr-nd-loadout-weapon-head,
+.cpr-nd-deck-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.cpr-nd-inventory-heading {
+  flex: none;
+  min-height: 48px;
+  padding: 0 2px 9px;
+  border-bottom: 2px solid var(--cpr-nd-yellow);
+}
+
+.cpr-nd-inventory-heading small,
+.cpr-nd-inventory-heading h2 {
+  margin: 0;
+}
+
+.cpr-nd-inventory-heading small,
+.cpr-nd-backpack-title > span {
+  color: var(--cpr-nd-muted);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+}
+
+.cpr-nd-inventory-heading h2,
+.cpr-nd-inventory-title,
+.cpr-nd-backpack-title h3 {
+  color: var(--cpr-nd-yellow);
+  font: 700 1.15rem "CPR ND Oswald", sans-serif;
+  letter-spacing: 0.05em;
+}
+
+.cpr-nd-inventory-heading h2 span {
+  color: var(--cpr-nd-cyan);
+  font-size: 0.7em;
+}
+
+.cpr-nd-inventory-back {
+  position: absolute;
+  z-index: 7;
+  inset: 0 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 41px;
+  height: 100%;
+  min-height: 0;
+  padding: 6px 4px;
+  border: 0;
+  border-left: 1px solid var(--cpr-nd-cyan);
+  border-radius: 0;
+  color: var(--cpr-nd-cyan);
+  background: rgb(10 10 13 / 98%);
+  box-shadow: -4px 0 10px rgb(0 0 0 / 70%);
+  font: 700 0.75rem "CPR ND Mono", monospace;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  white-space: nowrap;
+  overflow-wrap: normal;
+  word-break: keep-all;
+  text-align: center;
+  writing-mode: vertical-rl;
+}
+
+.cpr-nd-inventory-back:hover:not(:disabled) {
+  background: rgb(10 10 13 / 100%);
+  box-shadow: 0 0 8px var(--cpr-nd-cyan);
+}
+
+.cpr-nd-inventory-grid {
+  display: grid;
+  flex: 1 1 auto;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 14px;
+  min-height: 0;
+}
+
+.cpr-nd-inventory-column {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.cpr-nd-inventory-title {
+  flex: none;
+  margin: 0;
+  padding: 3px 0 6px;
+  border-bottom: 1px solid rgb(var(--cpr-nd-yellow-rgb) / 35%);
+}
+
+.cpr-nd-inventory-column > .cpr-nd-panel {
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+.cpr-nd-loadout-list,
+.cpr-nd-deck-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.cpr-nd-loadout-weapon {
+  padding: 6px 0;
+  border-bottom: 1px dashed #484850;
+}
+
+.cpr-nd-loadout-weapon-head strong {
+  overflow: hidden;
+  color: var(--cpr-nd-ink);
+  font: 700 0.8rem "CPR ND Oswald", sans-serif;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cpr-nd-loadout-weapon-head span,
+.cpr-nd-loadout-melee {
+  flex: none;
+  color: var(--cpr-nd-muted);
+  font-size: 0.58rem;
+}
+
+.cpr-nd-ammo-meter {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  margin: 5px 0;
+  color: var(--cpr-nd-cyan);
+  font-size: 0.58rem;
+}
+
+.cpr-nd-ammo-meter > div {
+  height: 5px;
+  overflow: hidden;
+  background: #34343c;
+}
+
+.cpr-nd-ammo-meter i {
+  display: block;
+  height: 100%;
+  background: var(--cpr-nd-cyan);
+}
+
+.cpr-nd-loadout-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.cpr-nd-loadout-actions button,
+.cpr-nd-armor-track button {
+  padding: 3px 7px;
+  border: 1px solid var(--cpr-nd-cyan);
+  color: var(--cpr-nd-cyan);
+  background: rgb(0 240 255 / 5%);
+  font-size: 0.57rem;
+}
+
+.cpr-nd-armor-track {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto auto;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 0;
+  border-bottom: 1px dashed #484850;
+  color: var(--cpr-nd-muted);
+  font-size: 0.6rem;
+}
+
+.cpr-nd-armor-track b {
+  color: var(--cpr-nd-cyan);
+  white-space: nowrap;
+}
+
+.cpr-nd-armor-track button {
+  min-width: 23px;
+  padding: 2px 5px;
+}
+
+.cpr-nd-consumables {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.cpr-nd-consumable-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  max-width: 100%;
+  padding: 4px 6px;
+  border: 1px solid rgb(0 255 102 / 45%);
+  color: var(--cpr-nd-green);
+  background: rgb(0 255 102 / 5%);
+  font-size: 0.58rem;
+}
+
+.cpr-nd-consumable-chip span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cpr-nd-consumable-chip b {
+  flex: none;
+  color: var(--cpr-nd-ink);
+}
+
+.cpr-nd-deck-row {
+  min-width: 0;
+  padding: 5px 0;
+  border-bottom: 1px dashed #484850;
+  color: var(--cpr-nd-cyan);
+  font-size: 0.6rem;
+}
+
+.cpr-nd-deck-row span {
+  flex: 1;
+  overflow: hidden;
+  color: var(--cpr-nd-ink);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cpr-nd-deck-row b {
+  flex: none;
+}
+
+.cpr-nd-backpack {
+  border: 1px solid rgb(var(--cpr-nd-yellow-rgb) / 25%);
+  background: rgb(26 26 36 / 45%);
+}
+
+.cpr-nd-backpack-head {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  border-bottom: 1px solid rgb(var(--cpr-nd-yellow-rgb) / 30%);
+}
+
+.cpr-nd-backpack-title h3 {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.cpr-nd-backpack-head input[type="search"] {
+  width: 100%;
+  min-height: 30px;
+  padding: 5px 8px;
+  border: 1px solid #44444c;
+  color: var(--cpr-nd-ink);
+  background: #101016;
+  font: 0.65rem "CPR ND Mono", monospace;
+}
+
+.cpr-nd-inventory-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.cpr-nd-inventory-filters button {
+  padding: 4px 7px;
+  border: 1px solid #484850;
+  color: var(--cpr-nd-muted);
+  background: #101016;
+  font-size: 0.57rem;
+}
+
+.cpr-nd-inventory-filters button.is-active {
+  border-color: var(--cpr-nd-yellow);
+  color: var(--cpr-nd-black);
+  background: var(--cpr-nd-yellow);
+}
+
+.cpr-nd-inventory-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding: 0 10px 8px;
+}
+
+.cpr-nd-inventory-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 5px 2px;
+  border-bottom: 1px solid rgb(216 216 224 / 12%);
+  background: rgb(10 10 12 / 25%);
+}
+
+.cpr-nd-inventory-row[hidden] {
+  display: none;
+}
+
+.cpr-nd-inventory-item-name {
+  min-width: 0;
+}
+
+.cpr-nd-inventory-item-name .gear-name-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 7px;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  color: var(--cpr-nd-ink);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.cpr-nd-inventory-item-name img {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border: 1px solid #44444c;
+  object-fit: cover;
+}
+
+.cpr-nd-inventory-item-name span {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  font-size: 0.63rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cpr-nd-inventory-item-name small {
+  color: var(--cpr-nd-muted);
+  font-size: 0.5rem;
+}
+
+.cpr-nd-inventory-amount {
+  grid-column: 3;
+  grid-row: 1;
+  text-align: right;
+}
+
+.cpr-nd-inventory-amount label {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--cpr-nd-muted);
+  font-size: 0.62rem;
+}
+
+.cpr-nd-inventory-amount input {
+  width: 40px;
+  padding: 2px;
+  border: 1px solid #3e3e48;
+  color: var(--cpr-nd-ink);
+  background: #101016;
+  text-align: center;
+}
+
+.cpr-nd-no-amount {
+  color: #777780;
+}
+
+.cpr-nd-inventory-actions {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.cpr-nd-inventory-actions > a,
+.cpr-nd-inventory-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  min-height: 22px;
+  box-sizing: border-box;
+  padding: 2px;
+  border: 1px solid #45454f;
+  color: var(--cpr-nd-cyan);
+  background: #101016;
+  font-size: 0.75rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.cpr-nd-inventory-actions > a.item-action[data-action="reload-ammo"] {
+  display: none;
+}
+
+.cpr-nd-inventory-actions .pinned {
+  color: var(--cpr-nd-yellow);
+}
+
+.cpr-nd-inventory-actions .gear-equip-menu:not(:popover-open) {
+  display: none;
+}
+
+.cpr-nd-inventory-actions .gear-equip-menu:popover-open {
+  display: flex;
+  position: fixed;
+  inset: auto;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 10rem;
+  margin: 0;
+  padding: 0.25rem;
+  border: 1px solid var(--cpr-background-dialog-border);
+  border-radius: 0.25rem;
+  background: rgb(10 10 13 / 90%);
+  color: #f5f2eb;
+  box-shadow: 0 0.25rem 0.75rem rgb(0 0 0 / 45%);
+  opacity: 1;
+  z-index: 10000;
+}
+
+.cpr-nd-inventory-actions .gear-equip-option {
+  display: grid;
+  grid-template-columns: 1.25rem 1fr 1rem;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  padding: 0.4rem 0.5rem !important;
+  border-radius: 0.15rem !important;
+  color: #f5f2eb !important;
+  background: transparent !important;
+  text-align: left;
+}
+
+.cpr-nd-inventory-actions .gear-equip-option:hover,
+.cpr-nd-inventory-actions .gear-equip-option[aria-checked="true"] {
+  color: #101016 !important;
+  background: var(--cpr-nd-cyan) !important;
+}
+
+.cpr-nd-inventory-row .gear-item-description {
+  grid-column: 1 / -1;
+  padding: 7px 9px;
+  border-left: 2px solid var(--cpr-nd-cyan);
+  color: var(--cpr-nd-muted);
+  background: #111117;
+  font-size: 0.62rem;
+}
+
+@media (max-width: 760px) {
+  .cpr-nd-inventory-grid {
+    grid-template-columns: minmax(0, 1fr);
+    overflow: auto;
+  }
+  .cpr-nd-inventory-column {
+    overflow: visible;
+  }
+  .cpr-nd-backpack {
+    min-height: 320px;
+  }
+}
+
+.cpr-nd-inventory-column .cpr-nd-panel-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  column-gap: 12px;
+}
+
+.cpr-nd-loadout {
+  overflow-y: auto;
+}
+
+
+.cpr-nd-loadout {
+  order: 2;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  order: 1;
+  border: 1px solid rgb(var(--cpr-nd-yellow-rgb) / 25%);
+  background: rgb(26 26 36 / 45%);
+}
+
+.cpr-nd-loadout-head {
+  flex: none;
+  border-bottom: 1px solid rgb(var(--cpr-nd-yellow-rgb) / 30%);
+}
+
+.cpr-nd-loadout-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding: 0 10px 8px;
+}
+
+.cpr-nd-loadout-group + .cpr-nd-loadout-group {
+  margin-top: 8px;
+}
+
+.cpr-nd-loadout-group .cpr-nd-panel-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0;
+  padding: 7px 2px 5px;
+  border-bottom: 1px solid rgb(var(--cpr-nd-yellow-rgb) / 22%);
+}
+
+.cpr-nd-loadout-group .cpr-nd-inventory-row:first-of-type {
+  border-top: 0;
+}
+
+.cpr-nd-row-detail {
+  color: var(--cpr-nd-cyan);
+  font-size: 0.55rem;
+  white-space: nowrap;
+}
+
+.cpr-nd-inventory-group[hidden] {
+  display: none;
+}
+
+.cpr-nd-inventory-group-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 7px 2px 5px;
+  border-bottom: 1px solid rgb(var(--cpr-nd-yellow-rgb) / 28%);
+  color: var(--cpr-nd-yellow);
+  font-size: 0.62rem;
+  letter-spacing: 0.07em;
+}
+
+.cpr-nd-inventory-group-label b {
+  color: var(--cpr-nd-muted);
+  font-size: 0.56rem;
+}
+
+.cpr-nd-inventory-group + .cpr-nd-inventory-group {
+  margin-top: 7px;
+}
+
+.cpr-nd-loadout .cpr-nd-inventory-row {
+  grid-template-columns: minmax(0, 1fr) minmax(105px, auto) auto;
+}
+
+.cpr-nd-loadout .cpr-nd-ammo-meter {
+  width: 105px;
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: 5px;
+}
+
+.cpr-nd-loadout .cpr-nd-inventory-actions > button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 2px;
+  border: 1px solid #45454f;
+  color: var(--cpr-nd-cyan);
+  background: #101016;
+  cursor: pointer;
+}
+
+.cpr-nd-loadout .cpr-nd-inventory-actions > button:hover {
+  border-color: var(--cpr-nd-cyan);
+}
+
+@media (max-width: 760px) {
+  .cpr-nd-loadout {
+    min-height: 340px;
+  }
+}
+
+.cpr-nd-weapon-replacement-dialog {
+  --cpr-nd-yellow: #fcee0a;
+  --cpr-nd-yellow-rgb: 252 238 10;
+  --cpr-nd-black: #0a0a0c;
+  --cpr-nd-green: #00ff66;
+  --cpr-nd-cyan: #00f0ff;
+  --cpr-nd-crimson: #ff003c;
+  --cpr-nd-panel: #1a1a24;
+  --cpr-nd-ink: #f0f0f2;
+  --cpr-nd-muted: #d8d8e0;
+  --cpr-font-primary: "CPR ND Mono", monospace;
+  --cpr-font-hero: "CPR ND Oswald", Impact, sans-serif;
+  min-width: min(520px, calc(100vw - 24px));
+  border: 1px solid var(--cpr-nd-cyan);
+  border-top: 3px solid var(--cpr-nd-yellow);
+  color: var(--cpr-nd-ink);
+  background: var(--cpr-nd-black);
+  box-shadow: 0 0 24px rgb(0 240 255 / 18%), 0 0 4px var(--cpr-nd-cyan);
+  font-family: var(--cpr-font-primary);
+}
+
+.cpr-nd-weapon-replacement-dialog .window-header {
+  min-height: 46px;
+  padding: 8px 14px;
+  border-bottom: 1px solid rgb(0 240 255 / 45%);
+  color: var(--cpr-nd-yellow);
+  background: linear-gradient(100deg, #121218, #0d0d10 60%, #181820);
+}
+
+.cpr-nd-weapon-replacement-dialog .window-title {
+  color: var(--cpr-nd-yellow);
+  font: 700 1.15rem var(--cpr-font-hero);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.cpr-nd-weapon-replacement-dialog .window-content {
+  padding: 0;
+  color: var(--cpr-nd-ink);
+  background:
+    radial-gradient(ellipse at 48% 32%, rgb(0 240 255 / 4%), transparent 58%),
+    var(--cpr-nd-black);
+}
+
+.cpr-nd-weapon-replacement-content {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  font: 12px/1.5 var(--cpr-font-primary);
+}
+
+.cpr-nd-weapon-replacement-alert {
+  display: grid;
+  gap: 5px;
+  padding: 11px 12px;
+  border-left: 3px solid var(--cpr-nd-crimson);
+  background: linear-gradient(90deg, rgb(255 0 60 / 11%), rgb(26 26 36 / 75%));
+}
+
+.cpr-nd-weapon-replacement-kicker {
+  color: var(--cpr-nd-crimson);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+}
+
+.cpr-nd-weapon-replacement-alert strong {
+  color: var(--cpr-nd-ink);
+  font: 600 1.1rem var(--cpr-font-hero);
+}
+
+.cpr-nd-weapon-replacement-instructions {
+  margin: 0;
+  color: var(--cpr-nd-muted);
+}
+
+.cpr-nd-weapon-replacement-options {
+  display: grid;
+  gap: 8px;
+  max-height: min(38vh, 260px);
+  margin: 0;
+  padding: 0 4px 0 0;
+  overflow-y: auto;
+  border: 0;
+}
+
+.cpr-nd-weapon-replacement-option {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 54px;
+  padding: 9px 11px;
+  border: 1px solid rgb(216 216 224 / 25%);
+  border-radius: 0;
+  color: var(--cpr-nd-ink);
+  background: linear-gradient(100deg, rgb(26 26 36 / 96%), rgb(12 12 16 / 96%));
+  font: 12px/1.4 var(--cpr-font-primary);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 120ms ease, background-color 120ms ease, box-shadow 120ms ease;
+}
+
+.cpr-nd-weapon-replacement-option::before {
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--cpr-nd-muted);
+  border-radius: 50%;
+  content: "";
+}
+
+.cpr-nd-weapon-replacement-option:hover,
+.cpr-nd-weapon-replacement-option:focus-visible {
+  border-color: var(--cpr-nd-cyan);
+  outline: none;
+}
+
+.cpr-nd-weapon-replacement-option.is-selected {
+  border-color: var(--cpr-nd-yellow);
+  background: linear-gradient(100deg, rgb(var(--cpr-nd-yellow-rgb) / 9%), rgb(0 240 255 / 7%));
+  box-shadow: inset 3px 0 var(--cpr-nd-yellow), 0 0 8px rgb(0 240 255 / 12%);
+}
+
+.cpr-nd-weapon-replacement-option.is-selected::before {
+  border: 4px solid var(--cpr-nd-cyan);
+  background: var(--cpr-nd-black);
+  box-shadow: 0 0 5px var(--cpr-nd-cyan);
+}
+
+.cpr-nd-weapon-replacement-name,
+.cpr-nd-weapon-replacement-hands {
+  grid-column: 2;
+}
+
+.cpr-nd-weapon-replacement-name {
+  color: var(--cpr-nd-ink);
+}
+
+.cpr-nd-weapon-replacement-hands {
+  color: var(--cpr-nd-cyan);
+  font-size: 0.68rem;
+}
+
+.cpr-nd-weapon-replacement-dialog .dialog-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 10px 18px 14px;
+  border-top: 1px solid rgb(0 240 255 / 32%);
+  background: rgb(10 10 12 / 90%);
+}
+
+.cpr-nd-weapon-replacement-dialog .dialog-buttons button {
+  min-height: 34px;
+  padding: 6px 12px;
+  border: 1px solid var(--cpr-nd-cyan);
+  border-radius: 0;
+  color: var(--cpr-nd-cyan);
+  background: transparent;
+  font: 700 0.72rem var(--cpr-font-primary);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.cpr-nd-weapon-replacement-dialog .dialog-buttons button.default,
+.cpr-nd-weapon-replacement-dialog .dialog-buttons button:hover {
+  border-color: var(--cpr-nd-yellow);
+  color: var(--cpr-nd-black);
+  background: var(--cpr-nd-yellow);
+}
+
+@media (max-width: 560px) {
+  .cpr-nd-weapon-replacement-dialog {
+    min-width: 0;
+    width: calc(100vw - 24px) !important;
+  }
+}
+
+.cpr-nd-dashboard.tab.active,
+.cpr-nd-dossier.tab.active {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.cpr-nd-primary-tabs {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 6px;
+  padding: 6px 12px 0;
+  border-bottom: 1px solid rgb(0 229 255 / 28%);
+  background: #080d13;
+}
+
+.cpr-nd-primary-tab {
+  display: block;
+  padding: 8px 12px;
+  border: 1px solid transparent;
+  border-bottom: 0;
+  color: #5c8a99;
+  cursor: pointer;
+  font: 700 0.72rem var(--cpr-font-primary);
+  letter-spacing: 0.04em;
+  text-decoration: none;
+}
+
+.cpr-nd-primary-tab:hover,
+.cpr-nd-primary-tab.active {
+  border-color: rgb(0 229 255 / 42%);
+  color: #00e5ff;
+  background: rgb(0 229 255 / 5%);
+  text-shadow: 0 0 8px rgb(0 229 255 / 35%);
+}
+
+.cpr-nd-panel-label .cpr-nd-lifepath-link {
+  padding: 0;
+  border: 0 !important;
+  border-radius: 0 !important;
+  color: #f3b72c;
+  background: transparent !important;
+  box-shadow: none !important;
+  cursor: pointer;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: left;
+}
+
+.cpr-nd-panel-label .cpr-nd-lifepath-link:hover,
+.cpr-nd-panel-label .cpr-nd-lifepath-link:focus-visible {
+  color: #00e5ff;
+  text-shadow: 0 0 8px rgb(0 229 255 / 55%);
+}
+
+.cpr-nd-pinned-lifepath {
+  display: grid;
+  gap: 5px;
+}
+
+.cpr-nd-pinned-lifepath-record,
+.cpr-nd-pinned-lifepath-empty {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding: 6px 8px;
+  border-left: 2px solid #f3b72c;
+  background: rgb(8 13 19 / 85%);
+}
+
+.cpr-nd-pinned-lifepath-record small {
+  color: #f3b72c;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+}
+
+.cpr-nd-pinned-lifepath-record span {
+  overflow-wrap: anywhere;
+  color: #e0f8ff;
+  font-size: 0.72rem;
+}
+
+.cpr-nd-pinned-lifepath-empty {
+  display: block;
+  border: 1px dashed rgb(0 229 255 / 28%);
+  color: #5c8a99;
+  text-align: center;
+}
+
+.cpr-nd-dossier {
+  gap: 10px;
+  padding: 10px 12px;
+  overflow: hidden;
+  background: rgb(8 13 19 / 82%);
+}
+
+.cpr-nd-dossier-active .cpr-nd-drawer-trigger {
+  display: none;
+}
+
+.cpr-nd-dossier-header {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 36px;
+  padding: 0 2px 8px;
+  border-bottom: 1px solid rgb(0 229 255 / 30%);
+}
+
+.cpr-nd-dossier-header h2 {
+  margin: 0;
+  color: #00e5ff;
+  font: 700 0.9rem var(--cpr-font-primary);
+  letter-spacing: 0.06em;
+}
+
+.cpr-nd-pin-counter {
+  padding: 5px 8px;
+  border: 1px solid rgb(243 183 44 / 40%);
+  color: #f3b72c;
+  font-size: 0.68rem;
+  white-space: nowrap;
+}
+
+.cpr-nd-pin-counter strong {
+  color: #e0f8ff;
+}
+
+.cpr-nd-pin-counter.is-shaking {
+  animation: cpr-nd-pin-shake 420ms ease-in-out;
+}
+
+@keyframes cpr-nd-pin-shake {
+  20%, 60% { transform: translateX(-5px); }
+  40%, 80% { transform: translateX(5px); }
+}
+
+.cpr-nd-dossier-grid {
+  display: grid;
+  flex: 1 1 auto;
+  grid-template-columns: minmax(0, 62fr) minmax(0, 38fr);
+  gap: 12px;
+  min-width: 0;
+  min-height: 0;
+}
+
+.cpr-nd-dossier-archive {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  min-width: 0;
+  min-height: 0;
+  padding-right: 5px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-color: #00e5ff #080d13;
+  scrollbar-width: thin;
+}
+
+.cpr-nd-dossier-file {
+  flex: 0 0 auto;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid rgb(0 229 255 / 25%);
+  background: rgb(10 18 26 / 85%);
+}
+
+.cpr-nd-dossier-file > h3 {
+  margin: 0 0 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgb(0 229 255 / 20%);
+  color: #00e5ff;
+  font: 700 0.72rem var(--cpr-font-primary);
+  letter-spacing: 0.04em;
+}
+
+.cpr-nd-dossier-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.cpr-nd-dossier-file-motives .cpr-nd-dossier-fields,
+.cpr-nd-dossier-file-family .cpr-nd-dossier-fields,
+.cpr-nd-dossier-file-role .cpr-nd-dossier-fields {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.cpr-nd-dossier-field {
+  min-width: 0;
+  padding: 7px;
+  border: 1px solid rgb(0 229 255 / 10%);
+  background: rgb(8 13 19 / 68%);
+}
+
+.cpr-nd-dossier-field.is-crisis {
+  border-left: 3px solid #f3b72c;
+}
+
+.cpr-nd-dossier-field-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.cpr-nd-dossier-field h4 {
+  margin: 2px 0 0;
+  color: #5c8a99;
+  font: 700 0.65rem var(--cpr-font-primary);
+  text-transform: uppercase;
+}
+
+.cpr-nd-dossier-field p {
+  margin: 5px 0 0;
+  color: #e0f8ff;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.cpr-nd-lifepath-pin {
+  flex: 0 0 auto;
+  width: 25px;
+  height: 25px;
+  padding: 0;
+  border: 1px solid rgb(58 85 101 / 55%);
+  color: #3a5565;
+  background: transparent;
+  cursor: pointer;
+}
+
+.cpr-nd-lifepath-pin:hover:not(:disabled),
+.cpr-nd-lifepath-pin:focus-visible {
+  border-color: #f3b72c;
+  color: #f3b72c;
+}
+
+.cpr-nd-lifepath-pin.is-pinned {
+  border-color: rgb(243 183 44 / 50%);
+  color: #f3b72c;
+  filter: drop-shadow(0 0 5px #f3b72c);
+}
+
+.cpr-nd-dossier-subject {
+  position: sticky;
+  top: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 8px;
+  min-width: 0;
+  min-height: 0;
+  align-self: stretch;
+}
+
+.cpr-nd-subject-frame {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: radial-gradient(ellipse at center, rgb(0 229 255 / 5%), transparent 72%);
+}
+
+.cpr-nd-subject-frame > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.cpr-nd-subject-corner {
+  position: absolute;
+  z-index: 1;
+  width: 12px;
+  height: 12px;
+  border-color: #00e5ff;
+  border-style: solid;
+  pointer-events: none;
+}
+
+.cpr-nd-subject-corner.top-left {
+  top: 0;
+  left: 0;
+  border-width: 2px 0 0 2px;
+}
+
+.cpr-nd-subject-corner.top-right {
+  top: 0;
+  right: 0;
+  border-width: 2px 2px 0 0;
+}
+
+.cpr-nd-subject-corner.bottom-left {
+  bottom: 0;
+  left: 0;
+  border-width: 0 0 2px 2px;
+}
+
+.cpr-nd-subject-corner.bottom-right {
+  right: 0;
+  bottom: 0;
+  border-width: 0 2px 2px 0;
+}
+
+.cpr-nd-subject-ruler {
+  position: absolute;
+  z-index: 1;
+  top: 8px;
+  bottom: 8px;
+  left: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  color: #2a4e5e;
+  font-size: 0.56rem;
+  pointer-events: none;
+}
+
+.cpr-nd-subject-ruler i {
+  width: 13px;
+  border-top: 1px solid #00e5ff;
+}
+
+.cpr-nd-subject-ruler i:nth-of-type(even) {
+  width: 8px;
+  border-color: #2a4e5e;
+}
+
+.cpr-nd-subject-id {
+  min-width: 0;
+  padding: 9px;
+  border: 1px solid rgb(0 229 255 / 25%);
+  background: #080d13;
+}
+
+.cpr-nd-subject-hazard {
+  height: 7px;
+  margin: -9px -9px 8px;
+  background: repeating-linear-gradient(135deg, #000 0 8px, #f3b72c 8px 16px);
+}
+
+.cpr-nd-subject-id h3 {
+  margin: 0;
+  color: #f3b72c;
+  font: 700 clamp(1.1rem, 2vw, 1.65rem) var(--cpr-font-hero);
+  overflow-wrap: anywhere;
+  text-transform: uppercase;
+}
+
+.cpr-nd-subject-role {
+  margin: 3px 0 8px;
+  color: #ff0055;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.cpr-nd-subject-status {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 10px;
+  color: #5c8a99;
+  font-size: 0.61rem;
+}
+
+.cpr-nd-subject-status b {
+  color: #00ff9d;
+}
+
+.cpr-nd-subject-reputation {
+  margin-top: 8px;
+  padding: 5px 8px;
+  border: 1px solid rgb(0 229 255 / 30%);
+  color: #e0f8ff;
+  background: transparent;
+  cursor: pointer;
+  font: 700 0.68rem var(--cpr-font-primary);
+  text-transform: uppercase;
+}
+
+.cpr-nd-subject-reputation strong {
+  color: #f3b72c;
+}
+
+@media (max-width: 760px) {
+  .cpr-nd-dossier-grid {
+    grid-template-columns: minmax(0, 1fr);
+    overflow-y: auto;
+  }
+
+  .cpr-nd-dossier-archive {
+    overflow: visible;
+  }
+
+  .cpr-nd-dossier-subject {
+    position: relative;
+    grid-template-rows: minmax(260px, 42vh) auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cpr-nd-pin-counter.is-shaking {
+    animation: none;
+  }
+}

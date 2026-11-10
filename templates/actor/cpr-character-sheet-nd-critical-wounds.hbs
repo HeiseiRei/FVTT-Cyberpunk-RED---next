@@ -1,0 +1,13 @@
+<section class="cpr-nd-wound-list">
+  {{#each injuries as |injury|}}
+    <div class="cpr-nd-wound-item" data-item-id="{{injury.id}}">
+      <button type="button" class="cpr-nd-wound-name" data-cpr-nd-action="open-critical-injury" data-item-id="{{injury.id}}">
+        <i class="fa-solid fa-burst" aria-hidden="true"></i>
+        <span>{{injury.name}}</span>
+      </button>
+      {{#if injury.deathSaveIncrease}}<small>DS +1</small>{{/if}}
+    </div>
+  {{else}}
+    <p class="cpr-nd-empty">NO CRITICAL TRAUMA</p>
+  {{/each}}
+</section>

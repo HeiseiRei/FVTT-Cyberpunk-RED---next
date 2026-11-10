@@ -1,0 +1,7 @@
+.cpr-distance-dv-select {
+  cursor: pointer;
+}
+
+.cpr-distance-dv-select i {
+  pointer-events: none;
+}

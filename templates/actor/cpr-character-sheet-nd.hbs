@@ -1,0 +1,422 @@
+<div class="cpr-nd-root">
+<main class="cpr-nd-surface">
+  <header class="cpr-nd-header">
+    <div class="cpr-nd-brand">
+      <span class="cpr-nd-brand-mark">EDGE</span>
+      <div><small>NEURAL//DOSSIER</small></div>
+    </div>
+    <label class="cpr-nd-name-wrap">
+      <small>HANDLE / NAME</small>
+      <input class="cpr-nd-name" type="text" name="name" value="{{actor.name}}" {{#unless isEditable}}disabled{{/unless}}>
+    </label>
+    <div class="cpr-nd-header-meta">
+      <div class="cpr-nd-role"><small>ROLE / RANK</small><strong>{{#if role}}{{localize (cprGetLocalizedlNameKey role)}} <b>{{role.system.rank}}</b>{{else}}UNASSIGNED{{/if}}</strong></div>
+      <button type="button" class="cpr-nd-rep" data-cpr-nd-action="open-ledger" data-ledger-property="reputation" aria-label="Open ledger"><small>REP</small><strong>{{actor.system.reputation.value}}</strong></button>
+    </div>
+  </header>
+
+  <nav class="cpr-nd-primary-tabs nav tabs" aria-label="Character dossier navigation">
+    <a class="cpr-nd-primary-tab active" data-action="tab" data-group="primary" data-tab="dashboard">
+      {{localize "CPR.characterSheetND.dossier.dashboardTab"}}
+    </a>
+    <a class="cpr-nd-primary-tab" data-action="tab" data-group="primary" data-tab="dossier">
+      {{localize "CPR.characterSheetND.dossier.dossierTab"}}
+    </a>
+  </nav>
+
+  <div class="tab active cpr-nd-dashboard" data-group="primary" data-tab="dashboard">
+  <div class="cpr-nd-inventory-drawer">
+    <div class="cpr-nd-inventory-view" id="cpr-nd-inventory-view" role="region" aria-label="Field inventory">
+      <div class="cpr-nd-inventory-heading">
+        <div><small>PERSONAL STORAGE // {{actor.name}}</small><h2>FIELD INVENTORY <span>/// FULL MANIFEST</span></h2></div>
+      </div>
+      <div class="cpr-nd-inventory-grid">
+        <section class="cpr-nd-inventory-column cpr-nd-loadout">
+          <div class="cpr-nd-backpack-head cpr-nd-loadout-head">
+            <div class="cpr-nd-backpack-title"><h3>TACTICAL LOADOUT</h3><span>{{loadoutItemCount}} ITEMS</span></div>
+          </div>
+          <div class="cpr-nd-loadout-list">
+            {{#each loadoutGroups as |group|}}
+              <section class="cpr-nd-loadout-group cpr-nd-inventory-group" data-inventory-group data-group-category="{{group.category}}">
+                <div class="cpr-nd-panel-label"><span>{{group.label}}</span><span>{{group.rows.length}} ITEMS</span></div>
+                {{#each group.rows as |row|}}
+                  <article class="cpr-nd-inventory-row item-row item" data-item-id="{{row.item.id}}" data-filter-category="{{row.category}}" data-searchable-text="{{row.searchableText}}" {{#if row.draggable}}draggable="true"{{/if}}>
+                    <div class="cpr-nd-inventory-item-name">
+                      <button type="button" class="gear-name-toggle" aria-expanded="false" aria-controls="gear-description-{{row.item.id}}">
+                        <img src="{{row.item.img}}" alt=""><span>{{row.item.name}}<small>{{row.equipLabel}}</small></span>
+                      </button>
+                    </div>
+                    <div class="cpr-nd-inventory-amount">
+                      {{#if (cprCompare row.item.type "===" "weapon")}}
+                        {{#if row.item.system.isRanged}}<div class="cpr-nd-ammo-meter"><span>{{row.item.system.magazine.value}} / {{row.item.system.magazine.max}}</span><div><i style="width: {{row.ammoPercent}}%"></i></div></div>{{else}}<span class="cpr-nd-row-detail">MELEE</span>{{/if}}
+                      {{else if (cprCompare row.item.type "===" "armor")}}
+                        {{#if row.item.system.isHeadLocation}}<span class="cpr-nd-row-detail">HEAD {{row.headCurrent}} / {{row.headMax}}</span>{{/if}}
+                        {{#if row.item.system.isBodyLocation}}<span class="cpr-nd-row-detail">BODY {{row.bodyCurrent}} / {{row.bodyMax}}</span>{{/if}}
+                      {{else if row.hasAmount}}<label><span>×</span><input class="gear-amount-input" type="number" min="0" name="item.system.amount" data-item-prop="item.system.amount" data-item-id="{{row.item.id}}" value="{{row.item.system.amount}}" aria-label="Amount of {{row.item.name}}" {{#unless ../../isEditable}}disabled{{/unless}}></label>
+                      {{else}}<span class="cpr-nd-no-amount">—</span>{{/if}}
+                    </div>
+                    <div class="gear-actions cpr-nd-inventory-actions actions">
+                      {{> "systems/cyberpunk-red-core/templates/actor/character/right-pane/tabs/gear/cpr-gear-edit-button.hbs" row.item}}
+                      {{> "systems/cyberpunk-red-core/templates/actor/mixin/actions/cpr-actions.hbs" row.item}}
+                    </div>
+                    {{> "systems/cyberpunk-red-core/templates/actor/character/right-pane/tabs/gear/cpr-gear-description.hbs" row.item}}
+                  </article>
+                {{else}}<p class="cpr-nd-empty">NO ITEMS IN CATEGORY</p>{{/each}}
+              </section>
+            {{/each}}
+          </div>
+        </section>
+
+        <section class="cpr-nd-inventory-column cpr-nd-backpack">
+          <div class="cpr-nd-backpack-head">
+            <div class="cpr-nd-backpack-title"><h3>BACKPACK / STORAGE</h3><span data-cpr-nd-inventory-count>{{backpackItemCount}} ITEMS</span></div>
+            <input type="search" value="{{inventorySearch}}" placeholder="SEARCH INVENTORY..." data-cpr-nd-inventory-search aria-label="Search inventory">
+            <div class="cpr-nd-inventory-filters" role="group" aria-label="Filter inventory">
+              <button type="button" data-cpr-nd-action="inventory-filter" data-filter="all" data-inventory-filter="all">ALL</button>
+              {{#each backpackGroups as |group|}}
+                <button type="button" data-cpr-nd-action="inventory-filter" data-filter="{{group.category}}" data-inventory-filter="{{group.category}}">{{group.label}}</button>
+              {{/each}}
+            </div>
+          </div>
+          <div class="cpr-nd-inventory-list">
+            {{#each backpackGroups as |group|}}
+              <section class="cpr-nd-inventory-group" data-inventory-group data-group-category="{{group.category}}">
+                <div class="cpr-nd-inventory-group-label"><span>{{group.label}}</span><b>{{group.rows.length}}</b></div>
+                {{#each group.rows as |row|}}
+                  <article class="cpr-nd-inventory-row item-row item" data-item-id="{{row.item.id}}" data-filter-category="{{row.category}}" data-searchable-text="{{row.searchableText}}" {{#if row.draggable}}draggable="true"{{/if}}>
+                    <div class="cpr-nd-inventory-item-name">
+                      <button type="button" class="gear-name-toggle" aria-expanded="false" aria-controls="gear-description-{{row.item.id}}">
+                        <img src="{{row.item.img}}" alt=""><span>{{row.item.name}}<small>{{row.typeLabel}}{{#if row.equipLabel}} · {{row.equipLabel}}{{/if}}</small></span>
+                      </button>
+                    </div>
+                    <div class="cpr-nd-inventory-amount">
+                      {{#if row.hasAmount}}
+                        <label><span>×</span><input class="gear-amount-input" type="number" min="0" name="item.system.amount" data-item-prop="item.system.amount" data-item-id="{{row.item.id}}" value="{{row.item.system.amount}}" aria-label="Amount of {{row.item.name}}" {{#unless ../../../isEditable}}disabled{{/unless}}></label>
+                      {{else}}<span class="cpr-nd-no-amount">—</span>{{/if}}
+                    </div>
+                    <div class="gear-actions cpr-nd-inventory-actions actions">
+                      {{> "systems/cyberpunk-red-core/templates/actor/character/right-pane/tabs/gear/cpr-gear-edit-button.hbs" row.item}}
+                      {{> "systems/cyberpunk-red-core/templates/actor/mixin/actions/cpr-actions.hbs" row.item}}
+                    </div>
+                    {{> "systems/cyberpunk-red-core/templates/actor/character/right-pane/tabs/gear/cpr-gear-description.hbs" row.item}}
+                  </article>
+                {{/each}}
+              </section>
+            {{else}}<p class="cpr-nd-empty">NO INVENTORY ITEMS</p>{{/each}}
+          </div>
+        </section>
+      </div>
+    </div>
+    <button type="button" class="cpr-nd-inventory-back" data-cpr-nd-action="close-inventory" aria-label="Back to dossier" aria-controls="cpr-nd-inventory-view" aria-expanded="{{inventoryOpen}}">[ /// BACK ]</button>
+  </div>
+  <div class="cpr-nd-columns">
+    <aside class="cpr-nd-column cpr-nd-left">
+      <section class="cpr-nd-panel cpr-nd-lifepath">
+        <div class="cpr-nd-panel-label">
+          <button type="button" class="cpr-nd-lifepath-link" data-action="tab" data-group="primary" data-tab="dossier">{{localize "CPR.characterSheetND.dossier.dashboardLifepath"}}</button>
+          <img src="systems/cyberpunk-red-core/icons/sheets/cpr-sheet-nd/raven.svg" alt="">
+        </div>
+        <div class="cpr-nd-pinned-lifepath">
+          {{#each pinnedLifepathSlots as |pin|}}
+            {{#if pin.isEmpty}}
+              <div class="cpr-nd-pinned-lifepath-empty">{{localize "CPR.characterSheetND.dossier.emptyRecord"}}</div>
+            {{else}}
+              <div class="cpr-nd-pinned-lifepath-record"><small>{{pin.label}}</small><span>{{pin.value}}</span></div>
+            {{/if}}
+          {{/each}}
+        </div>
+      </section>
+
+      <section class="cpr-nd-panel cpr-nd-role-panel">
+        <div class="cpr-nd-panel-label"><span>02 // ROLE MODULE</span><span class="cpr-nd-cyan">LIVE</span></div>
+        {{#if role}}
+          <div class="cpr-nd-role-feature">
+            <span>{{localize (cprGetLocalizedlNameKey role.system.mainRoleAbility "roleAbility")}}</span>
+            <strong>RANK {{role.system.rank}}</strong>
+          </div>
+          <button class="cpr-nd-button cpr-nd-button-cyan" type="button" data-cpr-nd-action="roll-role" data-item-id="{{role.id}}" data-roll-title="{{role.system.mainRoleAbility}}">ROLL ABILITY <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+        {{else}}
+          <p class="cpr-nd-empty">No role installed.</p>
+        {{/if}}
+      </section>
+
+      <section class="cpr-nd-panel cpr-nd-death">
+        <div class="cpr-nd-panel-label"><span>03 // DEATH SAVE</span><span class="cpr-nd-crimson">CRITICAL</span></div>
+        <div class="cpr-nd-death-content">
+          <img src="systems/cyberpunk-red-core/icons/sheets/cpr-sheet-nd/raven.svg" alt="">
+          <div data-tooltip="Death save: {{actor.system.derivedStats.deathSave.penalty}}<br>Critical injury: {{actor.system.derivedStats.deathSave.basePenalty}}"><small>DEATH SAVE / PENALTY</small><strong>{{actor.system.derivedStats.deathSave.value}}</strong></div>
+          <button type="button" data-cpr-nd-action="roll-death-save" data-roll-title="ROLL DEATH SAVE">ROLL <i class="fa-solid fa-skull-crossbones"></i></button>
+        </div>
+      </section>
+
+      <section class="cpr-nd-panel cpr-nd-chrome">
+        <div class="cpr-nd-panel-label"><span>04 // CHROME / BIO-MONITOR</span><span>{{cyberware.length}} INSTALLED</span></div>
+        <div class="cpr-nd-cyber-list">
+          {{#each cyberware as |item|}}
+            <button type="button" class="cpr-nd-cyber-row" data-cpr-nd-action="open-item" data-item-id="{{item.id}}">
+              <span class="cpr-nd-led"></span><span>{{item.name}}</span>
+              <small>{{item.system.humanityLoss.static}} HL</small>
+            </button>
+          {{else}}
+            <p class="cpr-nd-empty">NO CHROME DETECTED</p>
+          {{/each}}
+        </div>
+      </section>
+    </aside>
+
+    <section class="cpr-nd-column cpr-nd-center">
+      <section class="cpr-nd-panel cpr-nd-vitals {{#if seriouslyWounded}}is-seriously-wounded{{/if}}">
+        <div class="cpr-nd-panel-label"><span>00 // BIOMETRIC READOUT</span><span>SYNC {{actor.system.derivedStats.currentWoundState}}</span></div>
+        <button class="cpr-nd-vitals-portrait" type="button" data-cpr-nd-action="portrait" aria-label="Edit character token art" {{#unless isEditable}}disabled{{/unless}}>
+          <img src="{{actor.img}}" alt="{{actor.name}}">
+        </button>
+        <div class="cpr-nd-vital cpr-nd-vital-hp">
+          <small>VITALS / HP</small>
+          <div><input type="number" name="system.derivedStats.hp.value" value="{{actor.system.derivedStats.hp.value}}" data-dtype="Number" {{#unless isEditable}}disabled{{/unless}}><span>/ {{actor.system.derivedStats.hp.max}}</span></div>
+        </div>
+        <div class="cpr-nd-vital cpr-nd-vital-humanity">
+          <small>HUMANITY / MERCY</small>
+          <div><input type="number" name="system.derivedStats.humanity.value" value="{{actor.system.derivedStats.humanity.value}}" data-dtype="Number" {{#unless isEditable}}disabled{{/unless}}><span>/ {{actor.system.derivedStats.humanity.max}}</span></div>
+        </div>
+        <div class="cpr-nd-euro"><small>EUROBUCKS / WALLET</small><button type="button" class="cpr-nd-ledger-value" data-cpr-nd-action="open-ledger" data-ledger-property="wealth" aria-label="Open ledger">{{cprNumberFormat actor.system.wealth.value}} eb</button></div>
+        <div class="cpr-nd-criticals">
+          <button type="button" class="cpr-nd-critical-roll cpr-nd-wound-label" data-cpr-nd-action="roll-critical-injury">
+            CRIT DMG / WOUNDS
+          </button>
+          <button type="button" class="cpr-nd-wound-count{{#if hasOpenCriticalInjuries}} has-open-wounds{{/if}}" data-cpr-nd-action="open-critical-wounds">{{criticalInjuries.length}} WOUNDS OPEN</button>
+        </div>
+        {{#if cyberpsychosisWarning}}<div class="cpr-nd-cyberpsycho">!! CYBERPSYCHOSIS WARNING !!</div>{{/if}}
+      </section>
+
+      <section class="cpr-nd-panel cpr-nd-spine-panel">
+        <div class="cpr-nd-panel-label"><span>05 // CORE STATS</span></div>
+        <div class="cpr-nd-spine">
+          <div class="cpr-nd-stat-grid" role="group" aria-label="Core stats">
+            {{#each stats as |stat|}}
+              <div class="cpr-nd-stat cpr-nd-stat-{{stat.key}}" data-stat-key="{{stat.key}}">
+                <button type="button" data-cpr-nd-action="roll-stat" data-stat="{{stat.key}}">{{stat.label}}</button>
+                <div class="cpr-nd-stat-value">
+                  <input type="number" name="system.stats.{{stat.key}}.value" value="{{stat.value}}" data-dtype="Number" {{#unless ../isEditable}}disabled{{/unless}}>
+                </div>
+              </div>
+            {{/each}}
+            <div class="cpr-nd-stat-cable" aria-hidden="true"></div>
+          </div>
+        </div>
+
+        <div class="cpr-nd-bottom-grid">
+          <section class="cpr-nd-panel cpr-nd-luck">
+            <div class="cpr-nd-panel-label">
+              <span>LUCK</span>
+              <label class="cpr-nd-luck-capacity"><span>MAX</span><input type="text" name="system.stats.luck.max" value="{{actor.system.stats.luck.max}}" data-dtype="Number" aria-label="Maximum Luck" {{#unless isEditable}}disabled{{/unless}}></label>
+            </div>
+            <div class="cpr-nd-luck-track {{#if isEditable}}is-editable{{/if}}" role="group" aria-label="Luck {{luckValue}} of {{luckMax}}">
+              {{#each luckSegments as |segment|}}
+                <span class="cpr-nd-luck-segment {{#if segment.filled}}is-filled{{/if}}" aria-hidden="true"></span>
+              {{/each}}
+            </div>
+          </section>
+          <section class="cpr-nd-panel cpr-nd-empathy">
+            <div class="cpr-nd-panel-label">
+              <button type="button" class="cpr-nd-empathy-roll" data-cpr-nd-action="roll-stat" data-stat="emp">EMP</button>
+              <label class="cpr-nd-empathy-capacity"><span>MAX</span><input type="text" name="system.stats.emp.max" value="{{actor.system.stats.emp.max}}" data-dtype="Number" aria-label="Maximum Empathy" {{#unless isEditable}}disabled{{/unless}}></label>
+            </div>
+            <div class="cpr-nd-empathy-content {{#if lowEmpathy}}is-low{{/if}} {{#if isEditable}}is-editable{{/if}}" role="group" aria-label="Empathy {{actor.system.stats.emp.value}} of {{actor.system.stats.emp.max}}">
+              {{#each empathySegments as |segment|}}
+                <span class="cpr-nd-empathy-segment {{#if segment.filled}}is-filled{{/if}}" aria-hidden="true"></span>
+              {{/each}}
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="cpr-nd-panel cpr-nd-favorites">
+        <div class="cpr-nd-panel-label"><span>PINNED // QUICK CHECKS</span><button type="button" data-cpr-nd-action="toggle-skills">OPEN NEURAL DATABASE <i class="fa-solid fa-chevron-up"></i></button></div>
+        <div class="cpr-nd-favorite-list">
+          <div class="cpr-nd-quick-checks-grid">
+            {{#each pinnedSkills as |skill|}}
+              <button type="button" class="cpr-nd-quick-skill-card {{#if (eq skill.rank 0)}}is-zero{{/if}} {{#if skill.isHigh}}is-high{{/if}} {{#if skill.isMaster}}is-master{{/if}}" data-cpr-nd-action="roll-skill" data-cpr-nd-quick-skill data-item-id="{{skill.id}}" data-skill-id="{{skill.id}}" title="{{skill.statAbbr}} ({{skill.statValue}}) + {{localize (cprGetLocalizedlNameKey skill.document)}} ({{skill.rank}}) = {{skill.total}}">
+                <span>{{localize (cprGetLocalizedlNameKey skill.document)}}</span><b>+{{skill.total}}</b>
+              </button>
+            {{else}}<span class="cpr-nd-empty">Pin skills in the database to keep them here.</span>{{/each}}
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <aside class="cpr-nd-column cpr-nd-right">
+      <section class="cpr-nd-panel cpr-nd-weapons" data-equip-drop="weapon">
+        <div class="cpr-nd-panel-label"><span>06 // WEAPON SYSTEMS</span><span>{{handCount}} SLOTS - {{usedHands}} USED{{#if handsOverLimit}} / OVER LIMIT{{/if}}</span></div>
+        {{#each weapons as |weapon|}}
+          <article class="cpr-nd-weapon{{#if weapon.system.isRanged}} cprx-weapon{{/if}}" data-cpr-nd-weapon-drag draggable="true" data-item-id="{{weapon.id}}">
+            <div class="cpr-nd-weapon-top">
+              <button type="button" class="cpr-nd-item-name cpr-nd-weapon-drag" data-cpr-nd-weapon-drag draggable="true" data-cpr-nd-action="open-item" data-item-id="{{weapon.id}}">{{weapon.name}}</button>
+              <div class="cpr-nd-weapon-actions cpr-nd-weapon-primary-actions">
+                <button type="button" data-cpr-nd-action="roll-weapon" data-item-id="{{weapon.id}}"><i class="fa-solid fa-crosshairs"></i> <span class="cpr-nd-attack-label" data-default-label="ATTACK">ATTACK</span></button>
+                <button type="button" class="cpr-nd-damage" data-cpr-nd-action="roll-damage" data-item-id="{{weapon.id}}">{{weapon.system.damage}}</button>
+              </div>
+            </div>
+            <div class="cpr-nd-weapon-meta"><span class="cpr-nd-weapon-rof">RoF {{weapon.system.rof}}</span><span>{{#if weapon.system.isRanged}}{{#if weapon.system.hasAmmoLoaded}}{{weapon.system.loadedAmmo.name}} · {{/if}}<b class="cpr-nd-ammo-count">{{weapon.system.magazine.value}} / {{weapon.system.magazine.max}}</b> AMMO{{else}}MELEE{{/if}}</span></div>
+            {{#if weapon.system.isRanged}}
+              <div class="cpr-nd-weapon-utility-row">
+                <div class="cpr-nd-weapon-actions cpr-nd-weapon-load-actions">
+                  <button type="button" data-cpr-nd-action="reload-weapon" data-action="reload-ammo" data-item-id="{{weapon.id}}" {{#unless ../isEditable}}disabled{{/unless}}><i class="fa-solid fa-rotate-right"></i> RELOAD</button>
+                  <button type="button" data-cpr-nd-action="change-ammo" data-action="select-ammo" data-item-id="{{weapon.id}}" {{#unless ../isEditable}}disabled{{/unless}}><i class="fa-solid fa-arrow-right-arrow-left"></i> SWAP AMMO</button>
+                </div>
+                <div class="weapon-mode cpr-nd-weapon-mode">
+                  <ul>
+                    <li>
+                      <span>AIM</span>
+                      <button type="button" class="cpr-nd-mode-toggle" data-cpr-nd-action="aim-weapon" data-fire-mode="aimed" data-item-id="{{weapon.id}}" aria-pressed="{{weapon.isAimed}}" {{#unless ../isEditable}}disabled{{/unless}}>
+                        <i class="far fa-{{#if weapon.isAimed}}circle-dot{{else}}circle{{/if}}"></i>
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            {{/if}}
+          </article>
+        {{else}}<p class="cpr-nd-empty">NO WEAPON DATA</p>{{/each}}
+      </section>
+
+      <section class="cpr-nd-panel cpr-nd-armor" data-equip-drop="armor">
+        <div class="cpr-nd-panel-label"><span>07 // ARMOR / SP</span><span>ABLATION</span></div>
+        {{#each armor as |item|}}
+          <div class="cpr-nd-armor-row">
+            <button type="button" class="cpr-nd-item-name" data-cpr-nd-action="open-item" data-item-id="{{item.id}}">{{item.name}}</button>
+            {{#if item.system.isHeadLocation}}<span>HEAD <b>{{item.headCurrent}}/{{item.headMax}}</b></span><button type="button" data-cpr-nd-action="ablate-armor" data-location="head" {{#unless ../isEditable}}disabled{{/unless}}>−1</button>{{/if}}
+            {{#if item.system.isBodyLocation}}<span>BODY <b>{{item.bodyCurrent}}/{{item.bodyMax}}</b></span><button type="button" data-cpr-nd-action="ablate-armor" data-location="body" {{#unless ../isEditable}}disabled{{/unless}}>−1</button>{{/if}}
+          </div>
+        {{else}}<p class="cpr-nd-empty">NO EQUIPPED ARMOR</p>{{/each}}
+      </section>
+
+      <section class="cpr-nd-panel cpr-nd-gear">
+        <div class="cpr-nd-panel-label"><span>08 // STREET MANIFEST</span><span>{{pinnedItems.length}} PINNED</span></div>
+        <button type="button" class="cpr-nd-inventory-trigger" data-cpr-nd-action="toggle-inventory" aria-controls="cpr-nd-inventory-view" aria-expanded="{{inventoryOpen}}">INVENTORY</button>
+        <div class="cpr-nd-gear-list">
+          {{#each pinnedItems as |item|}}
+            <button type="button" data-cpr-nd-action="open-item" data-item-id="{{item.id}}"><span><i class="fa-solid fa-thumbtack"></i> {{item.name}}</span><b>{{#if item.system.amount}}×{{item.system.amount}}{{else}}OPEN{{/if}}</b></button>
+          {{else}}<p class="cpr-nd-empty">MANIFEST EMPTY</p>{{/each}}
+        </div>
+      </section>
+
+    </aside>
+  </div>
+  </div>
+
+  <section class="tab cpr-nd-dossier" data-group="primary" data-tab="dossier" aria-label="{{localize "CPR.characterSheetND.dossier.dossierTab"}}">
+    <header class="cpr-nd-dossier-header">
+      <h2>{{localize "CPR.characterSheetND.dossier.archiveTitle"}}</h2>
+      <div class="cpr-nd-pin-counter" data-cpr-nd-pin-counter aria-live="polite">
+        {{localize "CPR.characterSheetND.dossier.pinCounter"}}: <strong>{{pinnedLifepath.length}} / 3</strong>
+      </div>
+    </header>
+    <div class="cpr-nd-dossier-grid">
+      <div class="cpr-nd-dossier-archive">
+        {{#each lifePathModules as |module|}}
+          <section class="cpr-nd-dossier-file cpr-nd-dossier-file-{{module.id}}">
+            <h3>{{module.label}}</h3>
+            <div class="cpr-nd-dossier-fields">
+              {{#each module.fields as |field|}}
+                <article class="cpr-nd-dossier-field{{#if (cprCompare field.id "===" "familyCrisis")}} is-crisis{{/if}}">
+                  <div class="cpr-nd-dossier-field-heading">
+                    <h4>{{field.label}}</h4>
+                    <button type="button" class="cpr-nd-lifepath-pin{{#if field.isPinned}} is-pinned{{/if}}"
+                      data-cpr-nd-action="pin-lifepath" data-lifepath-id="{{field.id}}"
+                      aria-label="{{#if field.isPinned}}{{localize "CPR.characterSheetND.dossier.unpin"}}{{else}}{{localize "CPR.characterSheetND.dossier.pin"}}{{/if}}: {{field.label}}"
+                      data-tooltip="{{#if field.isPinned}}{{localize "CPR.characterSheetND.dossier.unpin"}}{{else}}{{localize "CPR.characterSheetND.dossier.pin"}}{{/if}}"
+                      aria-pressed="{{field.isPinned}}" {{#unless ../../isEditable}}disabled{{/unless}}>
+                      <i class="fa-solid fa-thumbtack" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                  <p>{{#if field.value}}{{field.value}}{{else}}—{{/if}}</p>
+                </article>
+              {{/each}}
+            </div>
+          </section>
+        {{/each}}
+      </div>
+      <aside class="cpr-nd-dossier-subject">
+        <div class="cpr-nd-subject-frame">
+          <div class="cpr-nd-subject-ruler" aria-label="{{localize "CPR.characterSheetND.dossier.heightRuler"}}">
+            <span>200 cm</span><i></i><span>190 cm</span><i></i><span>180 cm</span><i></i>
+            <span>170 cm</span><i></i><span>160 cm</span><i></i><span>150 cm</span><i></i><span>140 cm</span>
+          </div>
+          <span class="cpr-nd-subject-corner top-left"></span>
+          <span class="cpr-nd-subject-corner top-right"></span>
+          <span class="cpr-nd-subject-corner bottom-left"></span>
+          <span class="cpr-nd-subject-corner bottom-right"></span>
+          <img src="{{actor.img}}" alt="{{actor.name}}">
+        </div>
+        <section class="cpr-nd-subject-id">
+          <div class="cpr-nd-subject-hazard" aria-hidden="true"></div>
+          <h3>{{actor.name}}</h3>
+          <p class="cpr-nd-subject-role">
+            {{#if role}}{{localize (cprGetLocalizedlNameKey role)}} // {{localize "CPR.characterSheetND.dossier.rank"}} {{role.system.rank}}{{else}}{{localize "CPR.characterSheetND.dossier.unassigned"}}{{/if}}
+          </p>
+          <div class="cpr-nd-subject-status">
+            <span>{{localize "CPR.characterSheetND.dossier.status"}}: <b>{{localize "CPR.characterSheetND.dossier.active"}}</b></span>
+            <span>{{localize "CPR.characterSheetND.dossier.ncpdFile"}} #904-B</span>
+          </div>
+          <button type="button" class="cpr-nd-subject-reputation" data-cpr-nd-action="open-ledger" data-ledger-property="reputation">
+            {{localize "CPR.characterSheetND.dossier.reputation"}}: <strong>{{actor.system.reputation.value}}</strong>
+          </button>
+        </section>
+      </aside>
+    </div>
+  </section>
+
+  <button class="cpr-nd-drawer-trigger" type="button" data-cpr-nd-action="toggle-skills">[ /// SLIDE_OPEN: NEURAL_DATABASE // SKILLS ]</button>
+  <section class="cpr-nd-skills-drawer" aria-label="Neural database skills">
+    <div class="cpr-nd-drawer-head">
+      <div><small>ENCRYPTED CACHE // {{actor.itemTypes.skill.length}} NODES</small><h2>NEURAL DATABASE <span>/// SKILLS</span></h2></div>
+      <div class="cpr-nd-skills-filter" role="group" aria-label="{{localize "CPR.characterSheetND.skillsFilter.label"}}">
+        <button type="button" class="{{#if allSkillsFilterActive}}active{{/if}}" data-cpr-nd-action="filter-skills" data-filter="all" aria-pressed="{{allSkillsFilterActive}}">[ {{localize "CPR.characterSheetND.skillsFilter.all"}} ]</button>
+        <button type="button" class="{{#if trainedSkillsFilterActive}}active{{/if}}" data-cpr-nd-action="filter-skills" data-filter="trained" aria-pressed="{{trainedSkillsFilterActive}}">[ {{localize "CPR.characterSheetND.skillsFilter.trained"}} ]</button>
+      </div>
+      <button type="button" data-cpr-nd-action="close-skills" aria-label="Close skill database"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="cpr-nd-skill-groups filter-state-{{activeSkillsFilter}}">
+      {{#each skillColumns as |column|}}
+        <div class="cpr-nd-skill-column">
+          {{#each column as |group|}}
+            <section class="cpr-nd-skill-group" data-cpr-nd-skill-group data-category="{{group.category}}">
+              <h3>{{group.label}}</h3>
+              <div class="cpr-nd-skill-list">
+                {{#each group.skills as |skill|}}
+                  <article class="cpr-nd-skill-row {{#if (eq skill.rank 0)}}is-untrained{{/if}}" data-cpr-nd-skill-row data-item-id="{{skill.id}}" data-rank="{{skill.rank}}">
+                    <button type="button" class="cpr-nd-skill-roll" data-cpr-nd-action="roll-skill" data-item-id="{{skill.id}}">
+                      <span class="cpr-nd-skill-label">{{localize (cprGetLocalizedlNameKey skill.document)}}</span>
+                      <span class="cpr-nd-skill-meta"><small>{{skill.statAbbr}}</small><b>{{skill.rank}}</b></span>
+                    </button>
+                    <button type="button" class="cpr-nd-pin {{#if skill.isPinned}}is-pinned{{/if}}" data-cpr-nd-action="pin-skill" data-item-id="{{skill.id}}" aria-label="Toggle pin" {{#unless ../../../isEditable}}disabled{{/unless}}>{{#if skill.isPinned}}◆{{else}}◇{{/if}}</button>
+                  </article>
+                {{/each}}
+              </div>
+            </section>
+          {{/each}}
+        </div>
+      {{/each}}
+    </div>
+  </section>
+  <section class="cpr-nd-wounds-drawer" aria-label="Critical wounds">
+    <div class="cpr-nd-drawer-head">
+      <div><small>TRAUMA RECORD // {{criticalInjuries.length}} OPEN</small></div>
+      <button type="button" data-cpr-nd-action="close-critical-wounds" aria-label="Close wounds"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="cpr-nd-wound-list">
+      {{#each criticalInjuries as |injury|}}
+        <div class="cpr-nd-wound-item" data-item-id="{{injury.id}}">
+          <button type="button" class="cpr-nd-wound-name" data-cpr-nd-action="open-critical-injury" data-item-id="{{injury.id}}">
+            <i class="fa-solid fa-burst" aria-hidden="true"></i>
+            <span>{{injury.name}}</span>
+          </button>
+          {{#if injury.system.deathSaveIncrease}}<small>DS +1</small>{{/if}}
+        </div>
+      {{else}}
+        <p class="cpr-nd-empty">NO CRITICAL TRAUMA</p>
+      {{/each}}
+    </div>
+  </section>
+</main>
+</div>

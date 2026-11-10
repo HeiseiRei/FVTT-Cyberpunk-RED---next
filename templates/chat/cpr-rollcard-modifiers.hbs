@@ -1,0 +1,21 @@
+{{#each mods as |mod| }}
+  <div class="cpr-rollcard-detail-row">
+    <span class="cpr-rollcard-detail-name">
+      {{localize mod.source }}
+      {{#if mod.key}}
+        ({{cprGetChangeNameByKey false mod.category mod.key }})
+      {{/if}}
+    </span>
+    <span class="cpr-rollcard-detail-value">{{numberFormat mod.value sign=true }}</span>
+  </div>
+{{/each}}
+{{#if additionalMods }}
+  <div class="cpr-rollcard-detail-row">
+    <span class="cpr-rollcard-detail-name">{{localize "CPR.rolls.modifiers.additionalMods"}}</span>
+    <span class="cpr-rollcard-detail-value">
+      {{#each additionalMods as |mod| }}
+        {{numberFormat mod sign=true}}{{#unless @last}}, {{/unless}}
+      {{/each}}
+    </span>
+  </div>
+{{/if}}

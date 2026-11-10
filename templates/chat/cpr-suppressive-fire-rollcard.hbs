@@ -1,0 +1,100 @@
+<div class="rollcard cpr-combat-card">
+  <div class="rollcard-top">
+    <div class="cpr-block chat-rollTitle-stat">
+      <div class="text-center text-padding-top text-normal text-semi">
+        {{rollTitle}}
+      </div>
+      <div class="rollcard-subtitle">
+        <div class="rollcard-subtitle-center text-small">
+          {{localize "CPR.rolls.suppressiveFire"}}
+        </div>
+        <div class="rollcard-subtitle-right">
+          <a class="clickable"
+             data-action="rollDamage"
+             data-actor-id="{{entityData.actor}}"
+             data-damage-location="{{location}}"
+             data-token-id="{{entityData.token}}"
+             data-attack-type="suppressive"
+             data-item-id="{{entityData.item}}">
+            <i class="fas fa-droplet red-fg"
+               data-tooltip="{{localize "CPR.actorSheets.commonActions.rollDamage"}}"></i>
+          </a>
+        </div>
+        {{#if rollCardExtraArgs.ammoType }}
+          <div class="rollcard-subtitle-2-center text-small">
+            {{localize (cprFindConfigValue "ammoTypes" rollCardExtraArgs.ammoType)}}
+          </div>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+  <div class="rollcard-bottom">
+    <div class="cpr-block">
+      <div class="d10-rollcard-data">
+        <div class="d10-dice-div">
+          {{!-- die image for initialRoll --}}
+          {{#if criticalCard }}
+            {{#if wasCritSuccess }}
+              <img class="d10"
+                   src="systems/cyberpunk-red-core/icons/dice/red/d10_{{initialRoll}}_preem.svg"/>
+              <i class="fas fa-plus"></i>
+            {{else}}
+              <img class="d10"
+                   src="systems/cyberpunk-red-core/icons/dice/red/d10_{{initialRoll}}_fail.svg"/>
+              <i class="fas fa-minus"></i>
+            {{/if}}
+            <img class="d10"
+                 src="systems/cyberpunk-red-core/icons/dice/red/d10_{{cprMath "abs" criticalRoll}}.svg"/>
+          {{else}}
+            <img class="d10"
+                 src="systems/cyberpunk-red-core/icons/dice/black/d10_{{initialRoll}}.svg"/>
+          {{/if}}
+        </div>
+        <div class="d10-number-div">
+          <a><span class="clickable{{#if criticalCard }} text-semi{{/if }}"
+      data-action="toggleVisibility"
+      data-visible-element="d10-data-details">{{resultTotal}}</span></a>
+        </div>
+        <div class="d10-data-div">
+          <div class="d10-data-details hide">
+            <div class="cpr-rollcard-detail-row">
+              <span class="cpr-rollcard-detail-name">{{localize statName}}</span>
+              <span class="cpr-rollcard-detail-value">{{numberFormat statValue sign=true}}</span>
+            </div>
+            <div class="cpr-rollcard-detail-row">
+              <span class="cpr-rollcard-detail-name">
+                {{localize (cprGetLocalizedlNameKey skillName "skill")}}
+              </span>
+              <span class="cpr-rollcard-detail-value">{{numberFormat skillValue sign=true}}</span>
+            </div>
+            {{#if roleValue }}
+              <div class="cpr-rollcard-detail-row">
+                <span class="cpr-rollcard-detail-name">{{localize roleName}}</span>
+                <span class="cpr-rollcard-detail-value">{{numberFormat roleValue sign=true}}</span>
+              </div>
+            {{/if}}
+            {{#if (cprCompare mods.length "||" additionalMods.length) }}
+              {{> "systems/cyberpunk-red-core/templates/chat/cpr-rollcard-modifiers.hbs" this}}
+            {{/if}}
+            {{#if luck }}
+              <div class="cpr-rollcard-detail-row">
+                <span class="cpr-rollcard-detail-name">{{localize "CPR.global.stats.luck"}}</span>
+                <span class="cpr-rollcard-detail-value">{{numberFormat luck sign=true}}</span>
+              </div>
+            {{/if}}
+            <div class="cpr-rollcard-detail-row">
+              <span class="cpr-rollcard-detail-name">{{localize "CPR.rolls.diceResult"}}</span>
+              <span class="cpr-rollcard-detail-value">
+                {{#if (cprCompare initialRoll "===" 1)}}
+                  {{numberFormat (cprMath "subtract" initialRoll criticalRoll) sign=true}}
+                {{else}}
+                  {{numberFormat (cprMath "sum" initialRoll criticalRoll) sign=true}}
+                {{/if}}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

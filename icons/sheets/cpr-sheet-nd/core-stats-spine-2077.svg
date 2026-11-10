@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 216" preserveAspectRatio="none">
+  <defs>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <g fill="none" stroke="#ffc857" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)">
+    <path stroke-width="2" d="M16 24 S34 36 34 48 S16 60 16 72 S34 84 34 96 S16 108 16 120 S34 132 34 144 S16 156 16 168 S34 180 34 192"/>
+    <path stroke-width="1.5" opacity=".9" d="M16 24H0 M34 48H50 M16 72H0 M34 96H50 M16 120H0 M34 144H50 M16 168H0 M34 192H50"/>
+  </g>
+  <g fill="#101117" stroke="#ffc857" stroke-width="2" filter="url(#glow)">
+    <polygon points="16,17 23,24 16,31 9,24"/>
+    <polygon points="34,41 41,48 34,55 27,48"/>
+    <polygon points="16,65 23,72 16,79 9,72"/>
+    <polygon points="34,89 41,96 34,103 27,96"/>
+    <polygon points="16,113 23,120 16,127 9,120"/>
+    <polygon points="34,137 41,144 34,151 27,144"/>
+    <polygon points="16,161 23,168 16,175 9,168"/>
+    <polygon points="34,185 41,192 34,199 27,192"/>
+  </g>
+  <path fill="none" stroke="#ffc857" stroke-width="2" stroke-linecap="round" filter="url(#glow)" d="M14 24h4 M32 48h4 M14 72h4 M32 96h4 M14 120h4 M32 144h4 M14 168h4 M32 192h4"/>
+</svg>

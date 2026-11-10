@@ -1,0 +1,56 @@
+<button class="gear-equip-toggle"
+        type="button"
+        aria-haspopup="menu"
+        aria-controls="gear-equip-menu-{{id}}"
+        popovertarget="gear-equip-menu-{{id}}"
+        popovertargetaction="toggle"
+        data-item-id="{{id}}"
+        aria-label="{{#if @root.isNDSheet}}{{#if (cprCompare system.equipped "===" "equipped")}}{{localize "CPR.characterSheetND.inventory.equipState.equipped"}}{{else if (cprCompare system.equipped "===" "carried")}}{{localize "CPR.characterSheetND.inventory.equipState.carried"}}{{else}}{{localize "CPR.characterSheetND.inventory.equipState.owned"}}{{/if}}{{else}}{{localize (cprFindConfigValue "equipped" system.equipped)}}{{/if}}"
+        data-tooltip="{{#if @root.isNDSheet}}{{#if (cprCompare system.equipped "===" "equipped")}}{{localize "CPR.characterSheetND.inventory.equipState.equipped"}}{{else if (cprCompare system.equipped "===" "carried")}}{{localize "CPR.characterSheetND.inventory.equipState.carried"}}{{else}}{{localize "CPR.characterSheetND.inventory.equipState.owned"}}{{/if}}{{else}}{{localize (cprFindConfigValue "equipped" system.equipped)}}{{/if}}">
+  {{#if (cprCompare system.equipped "===" "equipped") }}
+    <i class="fas fa-hand"></i>
+  {{else if (cprCompare system.equipped "===" "carried") }}
+    <i class="fas fa-suitcase"></i>
+  {{else}}
+    <i class="fas fa-circle-notch"></i>
+  {{/if}}
+</button>
+<div class="gear-equip-menu"
+     id="gear-equip-menu-{{id}}"
+     popover="auto"
+     role="menu"
+     aria-label="{{#if @root.isNDSheet}}Actions{{else}}{{localize "CPR.global.generic.actions"}}{{/if}}">
+  <button class="gear-equip-option"
+          type="button"
+          role="menuitemradio"
+          aria-checked="{{#if (cprCompare system.equipped "===" "equipped")}}true{{else}}false{{/if}}"
+          data-item-id="{{id}}"
+          data-item-prop="system.equipped"
+          data-equip-state="equipped">
+    <i class="fas fa-hand"></i>
+    <span>{{#if @root.isNDSheet}}{{localize "CPR.characterSheetND.inventory.equipState.equipped"}}{{else}}{{localize "CPR.global.equipState.equipped"}}{{/if}}</span>
+    {{#if (cprCompare system.equipped "===" "equipped")}}<i class="fas fa-check"></i>{{/if}}
+  </button>
+  <button class="gear-equip-option"
+          type="button"
+          role="menuitemradio"
+          aria-checked="{{#if (cprCompare system.equipped "===" "carried")}}true{{else}}false{{/if}}"
+          data-item-id="{{id}}"
+          data-item-prop="system.equipped"
+          data-equip-state="carried">
+    <i class="fas fa-suitcase"></i>
+    <span>{{#if @root.isNDSheet}}{{localize "CPR.characterSheetND.inventory.equipState.carried"}}{{else}}{{localize "CPR.global.equipState.carried"}}{{/if}}</span>
+    {{#if (cprCompare system.equipped "===" "carried")}}<i class="fas fa-check"></i>{{/if}}
+  </button>
+  <button class="gear-equip-option"
+          type="button"
+          role="menuitemradio"
+          aria-checked="{{#if (cprCompare system.equipped "===" "owned")}}true{{else}}false{{/if}}"
+          data-item-id="{{id}}"
+          data-item-prop="system.equipped"
+          data-equip-state="owned">
+    <i class="fas fa-circle-notch"></i>
+    <span>{{#if @root.isNDSheet}}{{localize "CPR.characterSheetND.inventory.equipState.owned"}}{{else}}{{localize "CPR.global.equipState.owned"}}{{/if}}</span>
+    {{#if (cprCompare system.equipped "===" "owned")}}<i class="fas fa-check"></i>{{/if}}
+  </button>
+</div>
