@@ -959,8 +959,8 @@
 .chat-message:has(.rollcard) :is(h1, h2, h3, h4, h5, h6) {
   color: var(--cpr-text-chat-normal);
 }
-body.theme-dark #chat-log .message-content :is(h1, h2, h3, h4, h5, h6) {
-  color: var(--color-text-primary, var(--cpr-text-chat-normal));
+#chat-log .chat-message:has(.rollcard) .message-content :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--cpr-text-chat-normal);
 }
 .rollcard-top {
   padding-bottom: 0.313rem;
@@ -1904,13 +1904,13 @@ code {
 /****************************
  * Application V2 Overrides *
  ****************************/
-.application[data-cpr-theme="default"] a {
+.application .actor-sheet a {
   color: var(--cpr-color-red);
 }
-[data-cpr-theme="darkmode"] .theme-dark .application[data-cpr-theme="darkmode"] input[type="checkbox"]::before {
+.theme-dark:is(.application, .window-app) .actor-sheet input[type="checkbox"]::before {
   color: var(--cpr-color-light-grey);
 }
-[data-cpr-theme="darkmode"] .theme-dark .application[data-cpr-theme="darkmode"] input[type="checkbox"]:checked::before {
+.theme-dark:is(.application, .window-app) .actor-sheet input[type="checkbox"]:checked::before {
   color: var(--cpr-color-faded-black);
 }
 /*
@@ -4547,8 +4547,7 @@ code {
  *
  * All css variable must be prefixed with '--cpr-' to avoid namespace issues
  */
-:root,
-.application[data-cpr-theme="default"] {
+:root {
   --cpr-font-primary: "Jost";
   --cpr-font-hero: "Rubik";
   --cpr-font-pause: "Tektur";
@@ -4655,8 +4654,18 @@ code {
   --cpr-icon-actor-image-overlay: var(--cpr-color-white);
   --cpr-icon-actor-image-overlay-border: var(--cpr-color-red);
 }
-html[data-cpr-theme="darkmode"],
-.application[data-cpr-theme="darkmode"] {
+:where(
+  .theme-dark:is(.application, .window-app):has(.actor-sheet, .item-sheet, .mook-sheet, .mook-sheet-limited, .container-sheet, .demon-sheet, .blackice-sheet, .dialog-sheet, .active-effects-sheet),
+  :is(.application, .window-app).theme-dark.actor-sheet,
+  :is(.application, .window-app).theme-dark.item-sheet,
+  :is(.application, .window-app).theme-dark.mook-sheet,
+  :is(.application, .window-app).theme-dark.mook-sheet-limited,
+  :is(.application, .window-app).theme-dark.container-sheet,
+  :is(.application, .window-app).theme-dark.demon-sheet,
+  :is(.application, .window-app).theme-dark.blackice-sheet,
+  :is(.application, .window-app).theme-dark.dialog-sheet,
+  :is(.application, .window-app).theme-dark.active-effects-sheet
+) {
   --cpr-darkmode-main: #52606d;
   --cpr-darkmode-background: #232b2b;
   --cpr-darkmode-text-main: #eaeaea;
@@ -4675,10 +4684,6 @@ html[data-cpr-theme="darkmode"],
   --cpr-background-tab-inactive: #0e1111;
   --cpr-background-tab-underlay: #495057;
   --cpr-background-code: #3b3b3b;
-  --cpr-background-chat-card: var(--cpr-darkmode-background);
-  --cpr-background-chat-card-block: var(--cpr-darkmode-main);
-  --cpr-background-chat-card-block-before: #3b3b3b;
-  --cpr-background-chat-border: #999999;
   --cpr-background-foundry-input: #454b50;
   --cpr-background-input-border: #707070;
   --cpr-background-editor-button: var(--cpr-darkmode-bluish-grey);
@@ -4708,9 +4713,6 @@ html[data-cpr-theme="darkmode"],
   --cpr-text-icon-normal: #c0c0c5;
   --cpr-text-icon-dimmed: #a0a0a5;
   --cpr-text-icon-highlight: var(--cpr-darkmode-red);
-  --cpr-text-chat-normal: var(--cpr-darkmode-text-main);
-  --cpr-text-chat-failure: var(--cpr-darkmode-red);
-  --cpr-text-chat-success: #9acb74;
   --cpr-text-mook-normal: var(--cpr-darkmode-text-main);
   --cpr-text-foundry-input: var(--cpr-darkmode-text-main);
   --cpr-text-hint: #c0c0c0;
@@ -4721,6 +4723,14 @@ html[data-cpr-theme="darkmode"],
   --cpr-text-dir-list: var(--cpr-darkmode-text-main);
   --cpr-icon-actor-image-overlay: var(--cpr-color-white);
   --cpr-icon-actor-image-overlay-border: #3b444b;
+}
+:root[data-cpr-chat-theme="black"] {
+  --cpr-background-chat-card: #0d0b0c;
+  --cpr-background-chat-card-block: #222222;
+  --cpr-background-chat-card-block-before: #3b3b3b;
+  --cpr-background-chat-border: #999999;
+  --cpr-background-chat: #0d0b0c;
+  --cpr-text-chat-normal: #eaeaea;
 }
 .weapon-list {
   height: 100%;
@@ -4887,19 +4897,16 @@ div,
 section {
   scrollbar-width: thin;
 }
-:is(.window-app, .application):has(.actor-sheet, .blackice-sheet, .container-sheet, .demon-sheet, .dialog-sheet, .item-sheet, .mook-sheet, .active-effects-sheet, .cpr-sheet-nd, .cpr-nd-dialog, .cpr-nd-weapon-replacement-dialog) .window-content,
-:is(.window-app, .application).cpr-sheet-nd .window-content {
+:is(.window-app, .application):has(.actor-sheet, .blackice-sheet, .container-sheet, .demon-sheet, .dialog-sheet, .item-sheet, .mook-sheet, .active-effects-sheet, .cpr-nd-dialog, .cpr-nd-weapon-replacement-dialog) .window-content {
   font-family: var(--cpr-font-primary) !important;
   color: var(--cpr-text-normal);
   background: var(--cpr-background-window);
 }
-:is(.window-app, .application):has(.actor-sheet, .blackice-sheet, .container-sheet, .demon-sheet, .dialog-sheet, .item-sheet, .mook-sheet, .active-effects-sheet, .cpr-sheet-nd, .cpr-nd-dialog, .cpr-nd-weapon-replacement-dialog) .window-content button,
-:is(.window-app, .application).cpr-sheet-nd .window-content button {
+:is(.window-app, .application):has(.actor-sheet, .blackice-sheet, .container-sheet, .demon-sheet, .dialog-sheet, .item-sheet, .mook-sheet, .active-effects-sheet, .cpr-nd-dialog, .cpr-nd-weapon-replacement-dialog) .window-content button {
   color: var(--cpr-text-foundry-input);
   background-color: var(--cpr-background-foundry-input);
 }
-:is(.window-app, .application):has(.actor-sheet, .blackice-sheet, .container-sheet, .demon-sheet, .dialog-sheet, .item-sheet, .mook-sheet, .active-effects-sheet, .cpr-sheet-nd, .cpr-nd-dialog, .cpr-nd-weapon-replacement-dialog) .window-content select,
-:is(.window-app, .application).cpr-sheet-nd .window-content select {
+:is(.window-app, .application):has(.actor-sheet, .blackice-sheet, .container-sheet, .demon-sheet, .dialog-sheet, .item-sheet, .mook-sheet, .active-effects-sheet, .cpr-nd-dialog, .cpr-nd-weapon-replacement-dialog) .window-content select {
   color: var(--cpr-text-foundry-input);
   background: var(--cpr-background-foundry-input);
 }
@@ -4980,26 +4987,4 @@ section {
  */
 .actor-sheet .bottom-content-section > .tab[data-tab].active {
   display: block;
-}
-/*
- * Use the CPR charcoal palette only inside CPR-themed applications, not across Foundry.
- */
-body.theme-dark .application[data-cpr-theme="darkmode"] {
-  --color-warm-2: #71879c;
-  --color-warm-3: #2b2d32;
-  --color-cool-3: #34373d;
-  --color-cool-4: #1b1d21;
-  --color-cool-5: #111214;
-  --color-cool-5-25: rgba(17, 18, 20, 0.25);
-  --color-cool-5-50: rgba(17, 18, 20, 0.5);
-  --color-cool-5-75: rgba(17, 18, 20, 0.75);
-  --color-cool-5-90: rgba(17, 18, 20, 0.9);
-  --color-light-1: #f1f3f5;
-  --color-light-2: #d7dce2;
-  --color-light-3: #b6c0ca;
-  --color-light-4: #8195a9;
-  --color-light-5: #4a535d;
-  --color-light-6: #3b424a;
-  --color-scrollbar: #536273;
-  --color-shadow-primary: #71879c;
 }

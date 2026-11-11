@@ -131,10 +131,6 @@ export default class CPRCharacterActorSheetND extends CPRCharacterActorSheetV2 {
     },
   };
 
-  _applyCprSheetTheme() {
-    delete this.element.dataset.cprTheme;
-  }
-
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
     const actor = this.document;

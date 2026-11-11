@@ -8,7 +8,7 @@ A community-maintained continuation of the **Cyberpunk RED** system, modernized 
 
 > **Unofficial Fan Build:** This repository is an independent community project and is not an official Foundry VTT or R. Talsorian Games product.
 
-**Current release: [v0.1.0](https://github.com/HeiseiRei/FVTT-Cyberpunk-RED---next/releases/tag/v0.1.0)** — the first public GitHub release. It targets Foundry VTT 14 and is verified on 14.369.
+**Current release: [v0.1.1](https://github.com/HeiseiRei/FVTT-Cyberpunk-RED---next/releases/tag/v0.1.1)** — a patch release for Foundry VTT 14, verified on 14.369.
 
 ---
 
@@ -26,15 +26,15 @@ https://github.com/HeiseiRei/FVTT-Cyberpunk-RED---next/releases/latest/download/
 
 ---
 
-## What's Included in v0.1.0
+## What's Included in v0.1.1
 
-This initial public release packages the current CPR Core — Next project for Foundry VTT 14.
+This patch release updates the current CPR Core — Next project for Foundry VTT 14.
 
 * **Foundry v14 support:** The package targets Foundry 14 and is verified on 14.369.
 * **Updated system:** Includes the project's accumulated bug fixes, interface and usability refinements, and optimizations.
 * **Compendiums:** Includes Core, DLC, Black Chrome, and Other content, with an in-game **Changelog** compendium.
 
-See the [v0.1.0 release](https://github.com/HeiseiRei/FVTT-Cyberpunk-RED---next/releases/tag/v0.1.0) for the installable archive and checksums. Future release notes are published on the [Releases page](https://github.com/HeiseiRei/FVTT-Cyberpunk-RED---next/releases).
+See the [v0.1.1 release](https://github.com/HeiseiRei/FVTT-Cyberpunk-RED---next/releases/tag/v0.1.1) for the installable archive and checksums. Future release notes are published on the [Releases page](https://github.com/HeiseiRei/FVTT-Cyberpunk-RED---next/releases).
 
 ---
 

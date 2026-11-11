@@ -646,7 +646,6 @@ export class CPRCharacterActorSheetV2 extends CPRCharacterActorSheetMixin(
 
     async _onRender(context, options) {
       await super._onRender(context, options);
-      this._applyCprSheetTheme();
 
       for (const [group, tab] of Object.entries(this.tabGroups)) {
         if (tab) this.changeTab(tab, group, { force: true, updatePosition: false });
@@ -663,11 +662,6 @@ export class CPRCharacterActorSheetV2 extends CPRCharacterActorSheetMixin(
       this._cprScrollPositions = undefined;
       this._activateCprListeners($(this.element));
       this._activateCharacterListeners(this.element);
-    }
-
-    _applyCprSheetTheme() {
-      const theme = game.settings.get(game.system.id, "theme") || "default";
-      this.element.dataset.cprTheme = theme;
     }
 
     _onDragStart(event) {

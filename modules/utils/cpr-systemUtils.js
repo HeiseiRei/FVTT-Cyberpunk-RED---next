@@ -87,53 +87,14 @@ export default class CPRSystemUtils {
   }
 
   /**
-   * Take a default object of themes and gather them from other modules which can
-   * register them with:
-   * game.modules.get("module-name").cprcThemes = { foo: "bar" };
-   *
-   * @static
-   * @themes {Object} - Themes to be merged with module themes
-   *                    In this case likely `CPR.themes` from config.js
-   * @returns {Object} - Merged choices of themes
-   */
-  static GetThemes(themes) {
-    const defaultThemes = themes;
-    const moduleThemes = {};
-
-    // Filter modules that have 'cprcThemes' defined
-    const themeModules = game.modules.filter((module) => {
-      return module.active && module && module.cprcThemes;
-    });
-
-    // Loop over any modules registering 'cprcThemes' and build a new object
-    for (const module of themeModules) {
-      const moduleChoices = module.cprcThemes;
-      Object.assign(moduleThemes, moduleChoices);
-    }
-
-    // Merge them all together with the system provided themes
-    const mergedChoices = { ...defaultThemes, ...moduleThemes };
-
-    return mergedChoices;
-  }
-
-  /**
-   * Set the selected theme
+   * Set the CPR chat card color scheme without changing Foundry's application theme.
    *
    * @static
    */
-  static SetTheme(node) {
-    const theme = game.settings.get(game.system.id, "theme")
-      ? game.settings.get(game.system.id, "theme")
-      : "default";
-
-    // `node` is passed from the `PopOut:popout` hook, so if we have that set the
-    // theme in the popped out window, else just set it in the primary window
-    if (node) {
-      node.ownerDocument.documentElement.setAttribute("data-cpr-theme", theme);
-    } else {
-      document.documentElement.setAttribute("data-cpr-theme", theme);
-    }
+  static SetChatTheme(node) {
+    const theme = game.settings.get(game.system.id, "chatTheme") || "white";
+    const root = node?.ownerDocument?.documentElement ?? document.documentElement;
+    root.setAttribute("data-cpr-chat-theme", theme);
   }
 
   /**

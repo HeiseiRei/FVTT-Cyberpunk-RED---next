@@ -63,11 +63,6 @@
   filter: none;
 }
 
-.cpr-sheet-nd-2077 .cpr-nd-vitals-portrait:hover img,
-.cpr-sheet-nd-2077 .cpr-nd-vitals-portrait:focus-visible img {
-  filter: contrast(1.12) saturate(0.85) drop-shadow(0 0 12px rgb(255 200 87 / 45%)) drop-shadow(0 0 20px rgb(255 200 87 / 24%));
-}
-
 .cpr-sheet-nd-2077 .cpr-nd-stat,
 .cpr-sheet-nd-2077 .cpr-nd-stat-value {
   background: transparent;

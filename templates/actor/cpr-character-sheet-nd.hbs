@@ -167,9 +167,12 @@
     <section class="cpr-nd-column cpr-nd-center">
       <section class="cpr-nd-panel cpr-nd-vitals {{#if seriouslyWounded}}is-seriously-wounded{{/if}}">
         <div class="cpr-nd-panel-label"><span>00 // BIOMETRIC READOUT</span><span>SYNC {{actor.system.derivedStats.currentWoundState}}</span></div>
-        <button class="cpr-nd-vitals-portrait" type="button" data-cpr-nd-action="portrait" aria-label="Edit character token art" {{#unless isEditable}}disabled{{/unless}}>
-          <img src="{{actor.img}}" alt="{{actor.name}}">
-        </button>
+        <div class="cpr-nd-vitals-art">
+          <button class="cpr-nd-vitals-portrait" type="button" data-cpr-nd-action="portrait" aria-label="Edit character token art" {{#unless isEditable}}disabled{{/unless}}>
+            <img src="{{actor.img}}" alt="{{actor.name}}">
+          </button>
+          <span class="cpr-nd-vitals-glow" aria-hidden="true"></span>
+        </div>
         <div class="cpr-nd-vital cpr-nd-vital-hp">
           <small>VITALS / HP</small>
           <div><input type="number" name="system.derivedStats.hp.value" value="{{actor.system.derivedStats.hp.value}}" data-dtype="Number" {{#unless isEditable}}disabled{{/unless}}><span>/ {{actor.system.derivedStats.hp.max}}</span></div>

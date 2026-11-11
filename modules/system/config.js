@@ -868,11 +868,6 @@ CPR.defaultSituationalMods = {
   },
 };
 
-CPR.themes = {
-  default: "CPR.settings.theme.name.default",
-  darkmode: "CPR.settings.theme.name.darkmode",
-};
-
 CPR.migrationDocTypes = {
   items: "CPR.migration.docType.items",
   actors: "CPR.migration.docType.actors",

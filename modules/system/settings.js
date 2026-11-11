@@ -11,19 +11,22 @@ const registerSystemSettings = () => {
   /*
    *  Display / User Settings
    */
-  game.settings.register(game.system.id, "theme", {
-    name: "CPR.settings.theme.title",
-    hint: "CPR.settings.theme.hint",
+  game.settings.register(game.system.id, "chatTheme", {
+    name: "CPR.settings.chatTheme.title",
+    hint: "CPR.settings.chatTheme.hint",
     scope: "client",
     config: true,
     type: new foundry.data.fields.StringField({
       required: true,
-      choices: () => SystemUtils.GetThemes(CPR.themes),
-      initial: "default",
+      choices: () => ({
+        white: "CPR.settings.chatTheme.name.white",
+        black: "CPR.settings.chatTheme.name.black",
+      }),
+      initial: "white",
     }),
-    default: "default",
+    default: "white",
     onChange: () => {
-      SystemUtils.SetTheme();
+      SystemUtils.SetChatTheme();
     },
   });
 
