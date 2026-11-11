@@ -939,31 +939,154 @@
   background-color: var(--cpr-background-box);
   min-height: 2rem;
 }
-.chat-message:has(.rollcard) {
-  font-family: var(--cpr-font-primary);
-  background: var(--cpr-background-chat-card);
-  color: var(--cpr-text-chat-normal);
+.chat-log .chat-message {
+  font-family: var(--cpr-chat-font-body);
+  background: var(--cpr-chat-message-background) !important;
+  border-color: var(--cpr-chat-border) !important;
+  color: var(--cpr-chat-text-primary) !important;
 }
-.chat-message:has(.rollcard) .message-header {
-  color: var(--cpr-text-chat-normal) !important;
+.chat-log .chat-message .message-header {
+  color: var(--cpr-chat-text-primary) !important;
+  background: var(--cpr-chat-header-bg) !important;
+  border-bottom: 1px solid var(--cpr-chat-border) !important;
+  font-family: var(--cpr-chat-font-heading);
 }
-.chat-message:has(.rollcard) img {
+.chat-log .chat-message .message-content {
+  color: var(--cpr-chat-text-primary) !important;
+}
+.chat-log .chat-message button {
+  border-color: var(--cpr-chat-accent) !important;
+  border-radius: var(--cpr-chat-radius);
+  background: var(--cpr-chat-action-bg) !important;
+  color: var(--cpr-chat-action-text) !important;
+  font-family: var(--cpr-chat-font-body);
+}
+.chat-log .chat-message button:hover:not(:disabled) {
+  background: var(--cpr-chat-action-hover) !important;
+}
+.chat-log .chat-message img {
   border: none;
 }
-.chat-message:has(.rollcard) footer {
-  color: var(--cpr-text-foundry-hint);
+.chat-log .chat-message footer {
+  color: var(--cpr-chat-text-muted) !important;
 }
-.chat-message:has(.rollcard) .table-description {
-  color: var(--cpr-text-foundry-hint) !important;
+.chat-log .chat-message .table-description {
+  color: var(--cpr-chat-text-muted) !important;
 }
-.chat-message:has(.rollcard) :is(h1, h2, h3, h4, h5, h6) {
-  color: var(--cpr-text-chat-normal);
+.chat-log .chat-message :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--cpr-chat-text-primary) !important;
+  font-family: var(--cpr-chat-font-heading);
 }
-#chat-log .chat-message:has(.rollcard) .message-content :is(h1, h2, h3, h4, h5, h6) {
-  color: var(--cpr-text-chat-normal);
+.chat-log .chat-message .rollcard-subtitle {
+  color: var(--cpr-chat-text-secondary) !important;
+}
+.chat-log .chat-message .message-content :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--cpr-chat-text-primary) !important;
+}
+.chat-log .chat-message .cpr-block {
+  color: var(--cpr-chat-text-primary);
 }
 .rollcard-top {
   padding-bottom: 0.313rem;
+  border-bottom: 1px solid var(--cpr-chat-accent);
+}
+.chat-log .chat-message :is(.generic-number-div, .d10-number-div, .d6-number-div) {
+  color: var(--cpr-chat-accent-alt);
+  font-family: var(--cpr-chat-font-mono);
+}
+.chat-log .chat-message .rollcard-bottom {
+  padding-top: var(--cpr-chat-spacing);
+}
+.chat-form {
+  color: var(--cpr-chat-text-primary);
+  font-family: var(--cpr-chat-font-body);
+}
+#chat-message {
+  background: var(--cpr-chat-message-background) !important;
+  border: 1px solid var(--cpr-chat-border) !important;
+  color: var(--cpr-chat-text-primary) !important;
+  font-family: var(--cpr-chat-font-body) !important;
+}
+#chat-message > .editor-container {
+  background: var(--cpr-chat-message-background) !important;
+}
+#chat-message > .editor-container .editor-content {
+  background: transparent !important;
+  caret-color: var(--cpr-chat-accent);
+  color: var(--cpr-chat-text-primary) !important;
+  font-family: var(--cpr-chat-font-body) !important;
+}
+#chat-message > .editor-container .editor-content :is(h1, h2) {
+  border: 0 !important;
+}
+#chat-message > .editor-container .editor-content :is(h1, h2)::after {
+  content: none !important;
+  display: none !important;
+}
+#chat-message ::selection {
+  background: var(--cpr-chat-accent);
+  color: var(--cpr-chat-action-text);
+}
+.chat-form button {
+  border-color: var(--cpr-chat-border);
+  background: var(--cpr-chat-panel-bg);
+  color: var(--cpr-chat-text-primary);
+}
+.chat-form button:hover:not(:disabled) {
+  border-color: var(--cpr-chat-accent);
+  background: var(--cpr-chat-action-hover);
+  color: var(--cpr-chat-action-text);
+}
+.cpr-chat-theme-settings {
+  color: var(--cpr-chat-text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+#cpr-chat-theme-settings .window-content {
+  background: var(--cpr-chat-message-background);
+  color: var(--cpr-chat-text-primary);
+}
+#cpr-chat-theme-settings .window-header {
+  background: var(--cpr-chat-header-bg);
+  color: var(--cpr-chat-text-primary);
+}
+.cpr-chat-theme-settings fieldset {
+  border-color: var(--cpr-chat-border);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.375rem 0.75rem;
+}
+.cpr-chat-theme-settings legend {
+  color: var(--cpr-chat-accent);
+  grid-column: 1 / -1;
+}
+.cpr-chat-theme-color-field,
+.cpr-chat-theme-font-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.cpr-chat-theme-color-field input {
+  width: 2.5rem;
+  height: 1.75rem;
+  padding: 0;
+}
+.cpr-chat-theme-font-field {
+  grid-column: 1 / -1;
+}
+.cpr-chat-theme-font-field select,
+.cpr-chat-theme-font-field input[type="number"] {
+  background: var(--cpr-chat-panel-inner-bg);
+  border: 1px solid var(--cpr-chat-border);
+  color: var(--cpr-chat-text-primary);
+  max-width: 55%;
+}
+#cpr-chat-theme-settings .window-content button[type="submit"] {
+  background: var(--cpr-chat-action-bg);
+  border-color: var(--cpr-chat-accent);
+  color: var(--cpr-chat-action-text);
 }
 .rollcard-critinjury-icon {
   width: 3.25rem;
@@ -4573,12 +4696,36 @@ code {
   --cpr-color-white: #eaeaea;
   --cpr-background-border: var(--cpr-color-red);
   --cpr-background-box: #f3f3f3;
-  --cpr-background-chat-border: var(--cpr-color-light-grey);
-  --cpr-background-chat-card-block-before: var(--cpr-color-white);
-  --cpr-background-chat-card-block: var(--cpr-color-red);
-  --cpr-background-chat-card: var(--cpr-color-white);
-  --cpr-background-chat: var(--cpr-color-faded-black);
-  --cpr-background-chat-inline-roll: rgba(0, 0, 0, 0.1);
+  --cpr-chat-bg: var(--cpr-color-white);
+  --cpr-chat-message-background: var(--cpr-chat-bg);
+  --cpr-chat-header-bg: #f3f3f3;
+  --cpr-chat-panel-bg: var(--cpr-color-red);
+  --cpr-chat-panel-inner-bg: var(--cpr-color-white);
+  --cpr-chat-text-primary: var(--cpr-color-near-black);
+  --cpr-chat-text-secondary: var(--cpr-color-dark-grey);
+  --cpr-chat-text-muted: var(--cpr-color-medium-grey);
+  --cpr-chat-border: var(--cpr-color-light-grey);
+  --cpr-chat-accent: var(--cpr-color-red);
+  --cpr-chat-accent-alt: var(--cpr-color-pink);
+  --cpr-chat-success: #609040;
+  --cpr-chat-failure: var(--cpr-color-red);
+  --cpr-chat-action-bg: var(--cpr-color-red);
+  --cpr-chat-action-hover: #8c0202;
+  --cpr-chat-action-text: var(--cpr-color-white);
+  --cpr-chat-font-body: var(--cpr-font-primary);
+  --cpr-chat-font-heading: var(--cpr-font-hero);
+  --cpr-chat-font-mono: "Courier New", monospace;
+  --cpr-chat-spacing: 0.5rem;
+  --cpr-chat-radius: 0.125rem;
+  --cpr-background-chat-card-block-before: var(--cpr-chat-panel-inner-bg);
+  --cpr-background-chat-card-block: var(--cpr-chat-panel-bg);
+  --cpr-background-chat-card: var(--cpr-chat-message-background);
+  --cpr-background-chat: var(--cpr-chat-message-background);
+  --cpr-background-chat-inline-roll: color-mix(in srgb, var(--cpr-chat-accent) 12%, transparent);
+  --cpr-background-chat-border: var(--cpr-chat-border);
+  --cpr-text-chat-normal: var(--cpr-chat-text-primary);
+  --cpr-text-chat-success: var(--cpr-chat-success);
+  --cpr-text-chat-failure: var(--cpr-chat-failure);
   --cpr-background-code: var(--cpr-color-light-grey);
   --cpr-background-cyberdeck-section-header: var(--cpr-color-pink);
   --cpr-background-dialog-border: var(--cpr-color-red);
@@ -4622,9 +4769,6 @@ code {
   --cpr-migration-overlay-error: rgba(156, 18, 18, 0.7);
   --cpr-migration-overlay-success: rgba(30, 125, 34, 0.7);
   --cpr-migration-overlay-warning: rgba(156, 123, 30, 0.7);
-  --cpr-text-chat-failure: var(--cpr-color-red);
-  --cpr-text-chat-normal: var(--cpr-color-near-black);
-  --cpr-text-chat-success: #609040;
   --cpr-text-content-link-icon: #dddddd;
   --cpr-text-editor-button: var(--cpr-color-black);
   --cpr-text-editor-header: var(--cpr-color-black);
@@ -4725,12 +4869,104 @@ code {
   --cpr-icon-actor-image-overlay-border: #3b444b;
 }
 :root[data-cpr-chat-theme="black"] {
-  --cpr-background-chat-card: #0d0b0c;
-  --cpr-background-chat-card-block: #222222;
-  --cpr-background-chat-card-block-before: #3b3b3b;
-  --cpr-background-chat-border: #999999;
-  --cpr-background-chat: #0d0b0c;
-  --cpr-text-chat-normal: #eaeaea;
+  --cpr-chat-bg: #0d0b0c;
+  --cpr-chat-header-bg: #171717;
+  --cpr-chat-panel-bg: #222222;
+  --cpr-chat-panel-inner-bg: #3b3b3b;
+  --cpr-chat-text-primary: #eaeaea;
+  --cpr-chat-text-secondary: #c8c8c8;
+  --cpr-chat-text-muted: #999999;
+  --cpr-chat-border: #999999;
+  --cpr-chat-accent: #ff003c;
+  --cpr-chat-accent-alt: #3b3b3b;
+  --cpr-chat-success: #00ff66;
+  --cpr-chat-failure: #ff3c57;
+  --cpr-chat-action-bg: #3b3b3b;
+  --cpr-chat-action-hover: #555555;
+  --cpr-chat-action-text: #eaeaea;
+  --cpr-chat-font-body: "CPR ND Mono", monospace;
+  --cpr-chat-font-heading: "CPR ND Oswald", Impact, sans-serif;
+  --cpr-chat-font-mono: "CPR ND Mono", monospace;
+}
+:root[data-cpr-chat-theme="nightCity"] {
+  --cpr-chat-bg: #0a0a0c;
+  --cpr-chat-header-bg: #121218;
+  --cpr-chat-panel-bg: #1a1a24;
+  --cpr-chat-panel-inner-bg: #0a0a0c;
+  --cpr-chat-text-primary: #f0f0f2;
+  --cpr-chat-text-secondary: #d8d8e0;
+  --cpr-chat-text-muted: #a0a0aa;
+  --cpr-chat-border: #41414d;
+  --cpr-chat-accent: #fcee0a;
+  --cpr-chat-accent-alt: #00f0ff;
+  --cpr-chat-success: #00ff66;
+  --cpr-chat-failure: #ff003c;
+  --cpr-chat-action-bg: #fcee0a;
+  --cpr-chat-action-hover: #d4c900;
+  --cpr-chat-action-text: #0a0a0c;
+  --cpr-chat-font-body: "CPR ND Mono", monospace;
+  --cpr-chat-font-heading: "CPR ND Oswald", Impact, sans-serif;
+  --cpr-chat-font-mono: "CPR ND Mono", monospace;
+}
+:root[data-cpr-chat-theme="nightCity2077"] {
+  --cpr-chat-bg: #050b11;
+  --cpr-chat-header-bg: #111720;
+  --cpr-chat-panel-bg: #0a141d;
+  --cpr-chat-panel-inner-bg: #050b11;
+  --cpr-chat-text-primary: #ffffff;
+  --cpr-chat-text-secondary: #b8c5d2;
+  --cpr-chat-text-muted: #7890a0;
+  --cpr-chat-border: #2b3749;
+  --cpr-chat-accent: #ffc857;
+  --cpr-chat-accent-alt: #00f0ff;
+  --cpr-chat-success: #00f0ff;
+  --cpr-chat-failure: #ff3c57;
+  --cpr-chat-action-bg: #00f0ff;
+  --cpr-chat-action-hover: #00bdd0;
+  --cpr-chat-action-text: #050b11;
+  --cpr-chat-font-body: "CPR ND Mono", monospace;
+  --cpr-chat-font-heading: "CPR ND Oswald", Impact, sans-serif;
+  --cpr-chat-font-mono: "CPR ND Mono", monospace;
+}
+:root[data-cpr-chat-theme="arasaka"] {
+  --cpr-chat-bg: #f3f1ef;
+  --cpr-chat-header-bg: #ffffff;
+  --cpr-chat-panel-bg: #b90202;
+  --cpr-chat-panel-inner-bg: #ffffff;
+  --cpr-chat-text-primary: #171717;
+  --cpr-chat-text-secondary: #454545;
+  --cpr-chat-text-muted: #777777;
+  --cpr-chat-border: #c8c1be;
+  --cpr-chat-accent: #b90202;
+  --cpr-chat-accent-alt: #e5d8d5;
+  --cpr-chat-success: #387a46;
+  --cpr-chat-failure: #b90202;
+  --cpr-chat-action-bg: #b90202;
+  --cpr-chat-action-hover: #8c0202;
+  --cpr-chat-action-text: #ffffff;
+  --cpr-chat-font-body: var(--cpr-font-primary);
+  --cpr-chat-font-heading: "CPR ND Oswald", Impact, sans-serif;
+  --cpr-chat-font-mono: "CPR ND Mono", monospace;
+}
+:root[data-cpr-chat-theme="militech"] {
+  --cpr-chat-bg: #07131d;
+  --cpr-chat-header-bg: #0d2535;
+  --cpr-chat-panel-bg: #102a3a;
+  --cpr-chat-panel-inner-bg: #07131d;
+  --cpr-chat-text-primary: #e5f4ff;
+  --cpr-chat-text-secondary: #b4cfe0;
+  --cpr-chat-text-muted: #7895a8;
+  --cpr-chat-border: #1d5f86;
+  --cpr-chat-accent: #19c8ff;
+  --cpr-chat-accent-alt: #3b82f6;
+  --cpr-chat-success: #49e28e;
+  --cpr-chat-failure: #ff5470;
+  --cpr-chat-action-bg: #124767;
+  --cpr-chat-action-hover: #1a6891;
+  --cpr-chat-action-text: #e5f4ff;
+  --cpr-chat-font-body: "CPR ND Mono", monospace;
+  --cpr-chat-font-heading: "CPR ND Oswald", Impact, sans-serif;
+  --cpr-chat-font-mono: "CPR ND Mono", monospace;
 }
 .weapon-list {
   height: 100%;

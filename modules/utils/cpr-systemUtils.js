@@ -2,6 +2,81 @@
 
 import LOGGER from "./cpr-logger.js";
 
+export const CHAT_THEME_CUSTOM_DEFAULTS = {
+  background: "#0a0a0c",
+  backgroundMode: "solid",
+  backgroundOpacity: 100,
+  gradientColor: "#1a1a24",
+  gradientDirection: "135deg",
+  headerBackground: "#121218",
+  panelBackground: "#1a1a24",
+  panelInnerBackground: "#0a0a0c",
+  textPrimary: "#f0f0f2",
+  textSecondary: "#d8d8e0",
+  textMuted: "#a0a0aa",
+  border: "#41414d",
+  accent: "#fcee0a",
+  accentAlt: "#00f0ff",
+  success: "#00ff66",
+  failure: "#ff003c",
+  buttonBackground: "#fcee0a",
+  buttonHover: "#d4c900",
+  buttonText: "#0a0a0c",
+  bodyFont: "ndMono",
+  headingFont: "ndOswald",
+  monoFont: "ndMono",
+};
+
+const CHAT_THEME_COLOR_PROPERTIES = {
+  background: "--cpr-chat-bg",
+  headerBackground: "--cpr-chat-header-bg",
+  panelBackground: "--cpr-chat-panel-bg",
+  panelInnerBackground: "--cpr-chat-panel-inner-bg",
+  textPrimary: "--cpr-chat-text-primary",
+  textSecondary: "--cpr-chat-text-secondary",
+  textMuted: "--cpr-chat-text-muted",
+  border: "--cpr-chat-border",
+  accent: "--cpr-chat-accent",
+  accentAlt: "--cpr-chat-accent-alt",
+  success: "--cpr-chat-success",
+  failure: "--cpr-chat-failure",
+  buttonBackground: "--cpr-chat-action-bg",
+  buttonHover: "--cpr-chat-action-hover",
+  buttonText: "--cpr-chat-action-text",
+};
+
+const CHAT_THEME_FONT_PROPERTIES = {
+  bodyFont: "--cpr-chat-font-body",
+  headingFont: "--cpr-chat-font-heading",
+  monoFont: "--cpr-chat-font-mono",
+};
+
+const CHAT_THEME_FONT_STACKS = {
+  jost: '"Jost", sans-serif',
+  rubik: '"Rubik", sans-serif',
+  ndMono: '"CPR ND Mono", monospace',
+  ndOswald: '"CPR ND Oswald", Impact, sans-serif',
+  system: "system-ui, sans-serif",
+  systemMono: "monospace",
+};
+
+const CHAT_THEME_BACKGROUND_MODES = ["solid", "gradient"];
+const CHAT_THEME_GRADIENT_DIRECTIONS = [
+  "0deg",
+  "45deg",
+  "90deg",
+  "135deg",
+  "180deg",
+  "225deg",
+  "270deg",
+  "315deg",
+];
+
+const hexToRgba = (hex, opacity) => {
+  const channels = hex.match(/[\da-f]{2}/gi).map((channel) => Number.parseInt(channel, 16));
+  return `rgb(${channels.join(" ")} / ${opacity / 100})`;
+};
+
 /**
  * CPR-C utilities that are meant to have broad application across the whole system module.
  */
@@ -95,6 +170,68 @@ export default class CPRSystemUtils {
     const theme = game.settings.get(game.system.id, "chatTheme") || "white";
     const root = node?.ownerDocument?.documentElement ?? document.documentElement;
     root.setAttribute("data-cpr-chat-theme", theme);
+
+    for (const property of [
+      "--cpr-chat-message-background",
+      ...Object.values(CHAT_THEME_COLOR_PROPERTIES),
+      ...Object.values(CHAT_THEME_FONT_PROPERTIES),
+    ]) {
+      root.style.removeProperty(property);
+    }
+
+    if (theme !== "custom") return;
+
+    const customTheme = foundry.utils.mergeObject(
+      CHAT_THEME_CUSTOM_DEFAULTS,
+      game.settings.get(game.system.id, "chatThemeCustom"),
+      { inplace: false }
+    );
+    for (const [settingKey, property] of Object.entries(CHAT_THEME_COLOR_PROPERTIES)) {
+      const value = customTheme[settingKey];
+      if (!/^#[\da-f]{6}$/i.test(value)) {
+        LOGGER.warn(`Invalid custom chat theme color for "${settingKey}": ${value}`);
+        continue;
+      }
+      root.style.setProperty(property, value);
+    }
+
+    const opacity = Number(customTheme.backgroundOpacity);
+    if (!Number.isInteger(opacity) || opacity < 0 || opacity > 100) {
+      LOGGER.warn(`Invalid custom chat theme background opacity: ${customTheme.backgroundOpacity}`);
+    }
+    const safeOpacity =
+      Number.isInteger(opacity) && opacity >= 0 && opacity <= 100 ? opacity : 100;
+    const backgroundColor = /^#[\da-f]{6}$/i.test(customTheme.background)
+      ? customTheme.background
+      : CHAT_THEME_CUSTOM_DEFAULTS.background;
+    let messageBackground = hexToRgba(backgroundColor, safeOpacity);
+
+    if (customTheme.backgroundMode === "gradient") {
+      const gradientColor = /^#[\da-f]{6}$/i.test(customTheme.gradientColor)
+        ? customTheme.gradientColor
+        : CHAT_THEME_CUSTOM_DEFAULTS.gradientColor;
+      const direction = CHAT_THEME_GRADIENT_DIRECTIONS.includes(
+        customTheme.gradientDirection
+      )
+        ? customTheme.gradientDirection
+        : CHAT_THEME_CUSTOM_DEFAULTS.gradientDirection;
+      messageBackground = `linear-gradient(${direction}, ${hexToRgba(
+        backgroundColor,
+        safeOpacity
+      )}, ${hexToRgba(gradientColor, safeOpacity)})`;
+    } else if (!CHAT_THEME_BACKGROUND_MODES.includes(customTheme.backgroundMode)) {
+      LOGGER.warn(`Invalid custom chat theme background mode: ${customTheme.backgroundMode}`);
+    }
+    root.style.setProperty("--cpr-chat-message-background", messageBackground);
+
+    for (const [settingKey, property] of Object.entries(CHAT_THEME_FONT_PROPERTIES)) {
+      const font = CHAT_THEME_FONT_STACKS[customTheme[settingKey]];
+      if (!font) {
+        LOGGER.warn(`Invalid custom chat theme font for "${settingKey}": ${customTheme[settingKey]}`);
+        continue;
+      }
+      root.style.setProperty(property, font);
+    }
   }
 
   /**

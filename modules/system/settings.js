@@ -1,7 +1,10 @@
 import CPR from "./config.js";
+import CPRChatThemeSettings from "../apps/cpr-chat-theme-settings.js";
 import CPRCompendiaSettings from "../apps/cpr-compendia-settings.js";
 import LOGGER from "../utils/cpr-logger.js";
-import SystemUtils from "../utils/cpr-systemUtils.js";
+import SystemUtils, {
+  CHAT_THEME_CUSTOM_DEFAULTS,
+} from "../utils/cpr-systemUtils.js";
 import ModuleMigrationSettings from "./migrate/module-migration-settings.js";
 
 /**
@@ -21,10 +24,33 @@ const registerSystemSettings = () => {
       choices: () => ({
         white: "CPR.settings.chatTheme.name.white",
         black: "CPR.settings.chatTheme.name.black",
+        nightCity: "CPR.settings.chatTheme.name.nightCity",
+        nightCity2077: "CPR.settings.chatTheme.name.nightCity2077",
+        arasaka: "CPR.settings.chatTheme.name.arasaka",
+        militech: "CPR.settings.chatTheme.name.militech",
+        custom: "CPR.settings.chatTheme.name.custom",
       }),
       initial: "white",
     }),
     default: "white",
+    onChange: () => {
+      SystemUtils.SetChatTheme();
+    },
+  });
+
+  game.settings.registerMenu(game.system.id, "chatThemeCustomSettingsMenu", {
+    name: "CPR.settings.chatTheme.customSettings.name",
+    label: "CPR.settings.chatTheme.customSettings.button",
+    hint: "CPR.settings.chatTheme.customSettings.hint",
+    icon: "fa-solid fa-palette",
+    type: CPRChatThemeSettings,
+  });
+
+  game.settings.register(game.system.id, "chatThemeCustom", {
+    scope: "client",
+    config: false,
+    type: Object,
+    default: CHAT_THEME_CUSTOM_DEFAULTS,
     onChange: () => {
       SystemUtils.SetChatTheme();
     },
