@@ -24,7 +24,7 @@ export default class CPRMod {
     this.source = effect.name;
     this.value = Number.parseInt(change.value, 10);
     this.key = change.key;
-    this.changeMode = change.mode; // Right now, only ADD (const = 2) is supported. Change modes come from Foundry)
+    this.changeMode = change.type;
   }
 
   /**

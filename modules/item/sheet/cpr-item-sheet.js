@@ -7,12 +7,14 @@ import createImageContextMenu from "../../utils/cpr-imageContextMenu.js";
 import CPRDialog from "../../dialog/cpr-dialog-application.js";
 import RoleAbilitySchema from "../../datamodels/item/components/role-ability-schema.js";
 
+const TextEditor = foundry.applications.ux.TextEditor.implementation;
+
 /**
  * Extend the basic ActorSheet.
  * @extends {ItemSheet}
  */
 
-export default class CPRItemSheet extends ItemSheet {
+export default class CPRItemSheet extends foundry.appv1.sheets.ItemSheet {
   /* -------------------------------------------- */
   /** @override */
   static get defaultOptions() {

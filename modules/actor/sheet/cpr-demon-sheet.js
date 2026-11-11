@@ -2,13 +2,15 @@ import CPRChat from "../../chat/cpr-chat.js";
 import SystemUtils from "../../utils/cpr-systemUtils.js";
 import createImageContextMenu from "../../utils/cpr-imageContextMenu.js";
 
+const TextEditor = foundry.applications.ux.TextEditor.implementation;
+
 /**
  * Implement the Demon sheet, which extends ActorSheet directly from Foundry. This does
  * not extend CPRActor, as there is very little overlap between Demons and mooks/characters.
  *
  * @extends {ActorSheet}
  */
-export default class CPRDemonActorSheet extends ActorSheet {
+export default class CPRDemonActorSheet extends foundry.appv1.sheets.ActorSheet {
   /** @override */
   static get defaultOptions() {
     const resizeCPRSheets = game.settings.get(

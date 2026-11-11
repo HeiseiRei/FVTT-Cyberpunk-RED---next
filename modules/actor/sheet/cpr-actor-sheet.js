@@ -9,6 +9,7 @@ import CPRMod from "../../rolls/cpr-modifiers.js";
 import CPRDialog from "../../dialog/cpr-dialog-application.js";
 import { ContainerUtils } from "../../item/mixins/cpr-container.js";
 
+const TextEditor = foundry.applications.ux.TextEditor.implementation;
 const ActorSheetV2 = foundry.applications.sheets.ActorSheetV2;
 const HandlebarsApplicationMixin =
   foundry.applications.api.HandlebarsApplicationMixin;
@@ -1722,7 +1723,9 @@ function CPRActorSheetMixin(Base, isV2 = false) {
   };
 }
 
-export default class CPRActorSheet extends CPRActorSheetMixin(ActorSheet) {}
+export default class CPRActorSheet extends CPRActorSheetMixin(
+  foundry.appv1.sheets.ActorSheet
+) {}
 
 export class CPRActorSheetV2 extends CPRActorSheetMixin(
   HandlebarsApplicationMixin(ActorSheetV2),

@@ -815,13 +815,13 @@ export default class CPRSystemUtils {
    * @param {String} datum - the field we are interested in getting
    * @returns {String} - the value of the field passed in the event data
    */
-  static GetEventDatum(event, datum) {
-    let id = $(event.currentTarget).attr(datum);
+  static GetEventDatum(event, datum, currentTarget = event.currentTarget) {
+    let id = $(currentTarget).attr(datum);
     if (typeof id === "undefined") {
       LOGGER.debug(
         `Could not find ${datum} in currentTarget trying .item parents`
       );
-      id = $(event.currentTarget).parents(".item").attr(datum);
+      id = $(currentTarget).parents(".item").attr(datum);
       if (typeof id === "undefined") {
         LOGGER.debug(`Could not find ${datum} in the event data!`);
       }

@@ -6,15 +6,13 @@ const AddGlyphs = () => {
    *
    * @public
    * @memberof hookEvents
-   * @param {ChatMessageData} (unused) - an instance of the ChatMessageData object
-   * @param {object} html              - the HTML DOM of the chat card
-   * @param {string} msg               - our simulation of the ChatData object
-   *                                     that provides options and flags about
-   *                                     the chat message
+   * @param {ChatMessage} message - the chat message document
+   * @param {HTMLElement} html    - the HTML DOM of the chat card
+   * @param {object} data          - the data used to render the chat message
    */
-  Hooks.on("renderChatMessage", async (_, html, msg) => {
+  Hooks.on("renderChatMessageHTML", async (_message, html, data) => {
     CPRChat.chatListeners(html);
-    CPRChat.addMessageTags(html, msg);
+    CPRChat.addMessageTags(html, data);
   });
 };
 

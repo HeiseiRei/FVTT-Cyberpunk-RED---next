@@ -4,13 +4,15 @@ import SystemUtils from "../../utils/cpr-systemUtils.js";
 import createImageContextMenu from "../../utils/cpr-imageContextMenu.js";
 import CPRDialog from "../../dialog/cpr-dialog-application.js";
 
+const TextEditor = foundry.applications.ux.TextEditor.implementation;
+
 /**
  * Implement the Black-ICE sheet, which extends ActorSheet directly from Foundry. This does
  * not extend CPRActor, as there is very little overlap between Black-ICE and mooks/characters.
  *
  * @extends {ActorSheet}
  */
-export default class CPRBlackIceActorSheet extends ActorSheet {
+export default class CPRBlackIceActorSheet extends foundry.appv1.sheets.ActorSheet {
   /**
    * Set up the default options for this Foundry "app".
    * See https://foundryvtt.com/api/v12/classes/client.Application.html for the complete list of options available.

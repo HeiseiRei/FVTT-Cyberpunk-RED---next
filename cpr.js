@@ -60,70 +60,108 @@ Hooks.once("init", async () => {
   LOGGER.log("THANK YOU TO EVERYONE WHO HELPED!!!!");
   LOGGER.credits();
   // Removes "Default Actor Sheet" option from sheet style selection and prevents users from breaking blackICE, containers, and demons
-  Actors.unregisterSheet("core", ActorSheet);
+  foundry.documents.collections.Actors.unregisterSheet(
+    "core",
+    foundry.appv1.sheets.ActorSheet
+  );
   // Register Actor Sheet Application Classes
-  Actors.registerSheet(game.system.id, CPRCharacterActorSheetV2, {
-    label: SystemUtils.Localize("CPR.sheets.characterSheet"),
-    types: ["character"],
-    makeDefault: true,
-    themes: {},
-  });
-  Actors.registerSheet(game.system.id, CPRCharacterActorSheetND2077, {
-    label: SystemUtils.Localize("CPR.sheets.characterSheetND2077"),
-    types: ["character"],
-    makeDefault: false,
-    themes: {},
-  });
-  Actors.registerSheet(game.system.id, CPRCharacterActorSheetNDEdgerunners, {
-    label: SystemUtils.Localize("CPR.sheets.characterSheetNDEdgerunners"),
-    types: ["character"],
-    makeDefault: false,
-    themes: {},
-  });
-  Actors.registerSheet(game.system.id, CPRMookActorSheet, {
-    label: SystemUtils.Localize("CPR.sheets.mookSheet"),
-    types: ["mook"],
-    makeDefault: true,
-    canConfigure: false,
-  });
-  Actors.registerSheet(game.system.id, CPRBlackIceActorSheet, {
-    label: SystemUtils.Localize("CPR.sheets.blackiceSheet"),
-    types: ["blackIce"],
-    makeDefault: true,
-  });
-  Actors.registerSheet(game.system.id, CPRContainerActorSheet, {
-    label: SystemUtils.Localize("CPR.sheets.containerSheet"),
-    types: ["container"],
-    makeDefault: true,
-  });
-  Actors.registerSheet(game.system.id, CPRDemonActorSheet, {
-    label: SystemUtils.Localize("CPR.sheets.demonSheet"),
-    types: ["demon"],
-    makeDefault: true,
-  });
+  foundry.documents.collections.Actors.registerSheet(
+    game.system.id,
+    CPRCharacterActorSheetV2,
+    {
+      label: SystemUtils.Localize("CPR.sheets.characterSheet"),
+      types: ["character"],
+      makeDefault: true,
+      themes: {},
+    }
+  );
+  foundry.documents.collections.Actors.registerSheet(
+    game.system.id,
+    CPRCharacterActorSheetND2077,
+    {
+      label: SystemUtils.Localize("CPR.sheets.characterSheetND2077"),
+      types: ["character"],
+      makeDefault: false,
+      themes: {},
+    }
+  );
+  foundry.documents.collections.Actors.registerSheet(
+    game.system.id,
+    CPRCharacterActorSheetNDEdgerunners,
+    {
+      label: SystemUtils.Localize("CPR.sheets.characterSheetNDEdgerunners"),
+      types: ["character"],
+      makeDefault: false,
+      themes: {},
+    }
+  );
+  foundry.documents.collections.Actors.registerSheet(
+    game.system.id,
+    CPRMookActorSheet,
+    {
+      label: SystemUtils.Localize("CPR.sheets.mookSheet"),
+      types: ["mook"],
+      makeDefault: true,
+      canConfigure: false,
+    }
+  );
+  foundry.documents.collections.Actors.registerSheet(
+    game.system.id,
+    CPRBlackIceActorSheet,
+    {
+      label: SystemUtils.Localize("CPR.sheets.blackiceSheet"),
+      types: ["blackIce"],
+      makeDefault: true,
+    }
+  );
+  foundry.documents.collections.Actors.registerSheet(
+    game.system.id,
+    CPRContainerActorSheet,
+    {
+      label: SystemUtils.Localize("CPR.sheets.containerSheet"),
+      types: ["container"],
+      makeDefault: true,
+    }
+  );
+  foundry.documents.collections.Actors.registerSheet(
+    game.system.id,
+    CPRDemonActorSheet,
+    {
+      label: SystemUtils.Localize("CPR.sheets.demonSheet"),
+      types: ["demon"],
+      makeDefault: true,
+    }
+  );
 
   // Register Item Sheet Application Classes
-  Items.unregisterSheet("core", ItemSheet);
-  Items.registerSheet(game.system.id, CPRItemSheet, {
-    types: [
-      "ammo",
-      "armor",
-      "clothing",
-      "criticalInjury",
-      "cyberdeck",
-      "cyberware",
-      "drug",
-      "gear",
-      "itemUpgrade",
-      "netarch",
-      "program",
-      "role",
-      "skill",
-      "vehicle",
-      "weapon",
-    ],
-    makeDefault: true,
-  });
+  foundry.documents.collections.Items.unregisterSheet(
+    "core",
+    foundry.appv1.sheets.ItemSheet
+  );
+  foundry.documents.collections.Items.registerSheet(
+    game.system.id,
+    CPRItemSheet,
+    {
+      types: [
+        "ammo",
+        "armor",
+        "clothing",
+        "criticalInjury",
+        "cyberdeck",
+        "cyberware",
+        "drug",
+        "gear",
+        "itemUpgrade",
+        "netarch",
+        "program",
+        "role",
+        "skill",
+        "vehicle",
+        "weapon",
+      ],
+      makeDefault: true,
+    }
+  );
 
   game.cpr = {
     apps: {
@@ -144,7 +182,7 @@ Hooks.once("init", async () => {
 
   // Assign the actor class to the CONFIG
   CONFIG.ActiveEffect.documentClass = CPRActiveEffect;
-  DocumentSheetConfig.registerSheet(
+  foundry.applications.apps.DocumentSheetConfig.registerSheet(
     CPRActiveEffect,
     game.system.id,
     CPRActiveEffectSheet,

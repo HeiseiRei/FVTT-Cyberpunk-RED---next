@@ -26,5 +26,15 @@ export default function createImageContextMenu(
       },
     },
   ];
-  return new ContextMenu(html, contextMenuTargetSelector, menuItems);
+  const element = html instanceof HTMLElement ? html : html?.[0];
+  if (!(element instanceof HTMLElement)) {
+    throw new TypeError("Image context menu requires an HTMLElement root.");
+  }
+
+  return new foundry.applications.ux.ContextMenu.implementation(
+    element,
+    contextMenuTargetSelector,
+    menuItems,
+    { jQuery: false }
+  );
 }

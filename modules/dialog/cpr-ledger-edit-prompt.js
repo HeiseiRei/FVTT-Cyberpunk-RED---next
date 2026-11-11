@@ -3,7 +3,7 @@ import SystemUtils from "../utils/cpr-systemUtils.js";
 export default class LedgerEditPrompt {
   static async RenderPrompt(title) {
     return new Promise((resolve, reject) => {
-      renderTemplate(
+      foundry.applications.handlebars.renderTemplate(
         `systems/${game.system.id}/templates/dialog/cpr-ledger-edit-prompt.hbs`
       ).then((html) => {
         const _onCancel = () => {

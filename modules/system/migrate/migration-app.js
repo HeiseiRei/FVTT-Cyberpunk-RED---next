@@ -675,7 +675,7 @@ export default class MigrationApp extends HandlebarsApplicationMixin(
     userConfirmButtons.remove();
 
     // Replace compendia selection form with progress section.
-    const progressTemplate = await renderTemplate(
+    const progressTemplate = await foundry.applications.handlebars.renderTemplate(
       `systems/${game.system.id}/templates/migration/migration-progress.hbs`,
       { progress: this.progress }
     );
@@ -910,7 +910,7 @@ export default class MigrationApp extends HandlebarsApplicationMixin(
    */
   async addButtons() {
     if (!this.buttons) return;
-    const buttonsTemplate = await renderTemplate(
+    const buttonsTemplate = await foundry.applications.handlebars.renderTemplate(
       `systems/${game.system.id}/templates/migration/migration-buttons.hbs`,
       this.buttons
     );

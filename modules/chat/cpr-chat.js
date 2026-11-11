@@ -64,25 +64,27 @@ export default class CPRChat {
       cprRoll.criticalCard = false;
     }
 
-    return renderTemplate(cprRoll.rollCard, cprRoll).then((html) => {
-      const chatOptions = this.ChatDataSetup(html);
+    return foundry.applications.handlebars
+      .renderTemplate(cprRoll.rollCard, cprRoll)
+      .then((html) => {
+        const chatOptions = this.ChatDataSetup(html);
 
-      if (cprRoll.entityData !== undefined && cprRoll.entityData !== null) {
-        let actor;
-        const actorId = cprRoll.entityData.actor;
-        const tokenId = cprRoll.entityData.token;
-        if (tokenId) {
-          actor = Object.keys(game.actors.tokens).includes(tokenId)
-            ? game.actors.tokens[tokenId]
-            : game.actors.find((a) => a.id === actorId);
-        } else {
-          [actor] = game.actors.filter((a) => a.id === actorId);
+        if (cprRoll.entityData !== undefined && cprRoll.entityData !== null) {
+          let actor;
+          const actorId = cprRoll.entityData.actor;
+          const tokenId = cprRoll.entityData.token;
+          if (tokenId) {
+            actor = Object.keys(game.actors.tokens).includes(tokenId)
+              ? game.actors.tokens[tokenId]
+              : game.actors.find((a) => a.id === actorId);
+          } else {
+            [actor] = game.actors.filter((a) => a.id === actorId);
+          }
+          const alias = actor.name;
+          chatOptions.speaker = { actor, alias };
         }
-        const alias = actor.name;
-        chatOptions.speaker = { actor, alias };
-      }
-      return ChatMessage.create(chatOptions);
-    });
+        return ChatMessage.create(chatOptions);
+      });
   }
 
   /**
@@ -127,23 +129,25 @@ export default class CPRChat {
       )}…`;
     }
 
-    return renderTemplate(itemTemplate, trimmedItem).then((html) => {
-      const chatOptions = this.ChatDataSetup(html);
-      if (item.entityData !== undefined && item.entityData !== null) {
-        const actor = game.actors.filter(
-          (a) => a.id === item.entityData.actor
-        )[0];
-        let alias = actor.name;
-        if (item.entityData.token !== null) {
-          const token = game.actors.tokens[item.entityData.token];
-          if (token !== undefined) {
-            alias = token.name;
+    return foundry.applications.handlebars
+      .renderTemplate(itemTemplate, trimmedItem)
+      .then((html) => {
+        const chatOptions = this.ChatDataSetup(html);
+        if (item.entityData !== undefined && item.entityData !== null) {
+          const actor = game.actors.filter(
+            (a) => a.id === item.entityData.actor
+          )[0];
+          let alias = actor.name;
+          if (item.entityData.token !== null) {
+            const token = game.actors.tokens[item.entityData.token];
+            if (token !== undefined) {
+              alias = token.name;
+            }
           }
+          chatOptions.speaker = { actor, alias };
         }
-        chatOptions.speaker = { actor, alias };
-      }
-      return ChatMessage.create(chatOptions, false);
-    });
+        return ChatMessage.create(chatOptions, false);
+      });
   }
 
   /**
@@ -156,8 +160,9 @@ export default class CPRChat {
   static RenderDamageApplicationCard(damageData) {
     const damageApplicationTemplate = `systems/${game.system.id}/templates/chat/cpr-damage-application-card.hbs`;
 
-    return renderTemplate(damageApplicationTemplate, damageData).then(
-      (html) => {
+    return foundry.applications.handlebars
+      .renderTemplate(damageApplicationTemplate, damageData)
+      .then((html) => {
         const chatOptions = this.ChatDataSetup(html);
 
         if (
@@ -246,31 +251,29 @@ export default class CPRChat {
    * @param {*} html - html DOM
    */
   static async chatListeners(html) {
-    html.on("click", ".clickable", async (event) => {
-      const clickAction = SystemUtils.GetEventDatum(event, "data-action");
+    html.addEventListener("click", async (event) => {
+      const clickable = event.target.closest?.(".clickable");
+      if (!clickable || !html.contains(clickable)) return;
+      const getEventDatum = (datum) =>
+        SystemUtils.GetEventDatum(event, datum, clickable);
+
+      const clickAction = getEventDatum("data-action");
 
       switch (clickAction) {
         case "toggleVisibility": {
-          const elementName = SystemUtils.GetEventDatum(
-            event,
-            "data-visible-element"
-          );
-          $(html).find(`.${elementName}`).toggleClass("hide");
+          const elementName = getEventDatum("data-visible-element");
+          html.querySelectorAll(`.${elementName}`).forEach((element) => {
+            element.classList.toggle("hide");
+          });
           break;
         }
         case "rollDamage": {
           // This will let us click a damage link off of the attack card
-          const actorId = SystemUtils.GetEventDatum(event, "data-actor-id");
-          const itemId = SystemUtils.GetEventDatum(event, "data-item-id");
-          const tokenId = SystemUtils.GetEventDatum(event, "data-token-id");
-          const location = SystemUtils.GetEventDatum(
-            event,
-            "data-damage-location"
-          );
-          const attackType = SystemUtils.GetEventDatum(
-            event,
-            "data-attack-type"
-          );
+          const actorId = getEventDatum("data-actor-id");
+          const itemId = getEventDatum("data-item-id");
+          const tokenId = getEventDatum("data-token-id");
+          const location = getEventDatum("data-damage-location");
+          const attackType = getEventDatum("data-attack-type");
           const actor = Object.keys(game.actors.tokens).includes(tokenId)
             ? game.actors.tokens[tokenId]
             : game.actors.find((a) => a.id === actorId);
@@ -296,10 +299,7 @@ export default class CPRChat {
               damageType: attackType,
             });
           } else {
-            const programId = SystemUtils.GetEventDatum(
-              event,
-              "data-program-id"
-            );
+            const programId = getEventDatum("data-program-id");
             // Warn if no damage is configured.
             const program = actor.getOwnedItem(programId);
             if (
@@ -355,9 +355,9 @@ export default class CPRChat {
           break;
         }
         case "itemEdit": {
-          const itemId = SystemUtils.GetEventDatum(event, "data-item-id");
-          const actorId = SystemUtils.GetEventDatum(event, "data-actor-id");
-          const tokenId = SystemUtils.GetEventDatum(event, "data-token-id");
+          const itemId = getEventDatum("data-item-id");
+          const actorId = getEventDatum("data-actor-id");
+          const tokenId = getEventDatum("data-token-id");
           const actor = Object.keys(game.actors.tokens).includes(tokenId)
             ? game.actors.tokens[tokenId]
             : game.actors.find((a) => a.id === actorId);
@@ -368,8 +368,8 @@ export default class CPRChat {
 
         // Gets injury item ID and compendium value, searches compendium pack for value and renders an item card
         case "displayInjury": {
-          const injuryName = SystemUtils.GetEventDatum(event, "data-item-name");
-          const injuryComp = SystemUtils.GetEventDatum(event, "data-item-comp");
+          const injuryName = getEventDatum("data-item-name");
+          const injuryComp = getEventDatum("data-item-comp");
           const injury = await SystemUtils.GetCompendiumDoc(
             injuryComp,
             injuryName
@@ -379,24 +379,24 @@ export default class CPRChat {
         }
 
         case "applyDamage": {
-          this.damageApplication(event);
+          this.damageApplication(event, clickable);
           break;
         }
 
         case "reverseDamage": {
-          const actorId = SystemUtils.GetEventDatum(event, "data-actor-id");
-          const tokenId = SystemUtils.GetEventDatum(event, "data-token-id");
+          const actorId = getEventDatum("data-actor-id");
+          const tokenId = getEventDatum("data-token-id");
           const hpReduction = parseInt(
-            SystemUtils.GetEventDatum(event, "data-hp-reduction"),
+            getEventDatum("data-hp-reduction"),
             10
           );
-          const location = SystemUtils.GetEventDatum(event, "data-location");
+          const location = getEventDatum("data-location");
           const ablation = parseInt(
-            SystemUtils.GetEventDatum(event, "data-ablation"),
+            getEventDatum("data-ablation"),
             10
           );
           const shieldAblation = parseInt(
-            SystemUtils.GetEventDatum(event, "data-shield-ablation"),
+            getEventDatum("data-shield-ablation"),
             10
           );
           const actor = Object.keys(game.actors.tokens).includes(tokenId)
@@ -424,7 +424,8 @@ export default class CPRChat {
    * @param {*} messageData - an object with a bunch of chat message data (see ChatDataSetup above)
    */
   static addMessageTags(html, messageData) {
-    const timestampTag = html.find(".message-timestamp");
+    const timestampTag = html.querySelector(".message-timestamp");
+    if (!timestampTag) return;
     const whisperTargets = messageData.message.whisper;
     const isBlind = messageData.message.blind || false;
     const isWhisper = whisperTargets?.length > 0 || false;
@@ -432,18 +433,18 @@ export default class CPRChat {
       isWhisper &&
       whisperTargets.length === 1 &&
       whisperTargets[0] === messageData.message.author;
-    const indicatorElement = $("<span>");
-    indicatorElement.addClass("chat-mode-indicator");
+    const indicatorElement = document.createElement("span");
+    indicatorElement.classList.add("chat-mode-indicator");
 
     // Inject tag to the left of the timestamp
     if (isBlind) {
-      indicatorElement.text(SystemUtils.Localize("CPR.chat.blind"));
+      indicatorElement.textContent = SystemUtils.Localize("CPR.chat.blind");
       timestampTag.before(indicatorElement);
     } else if (isSelf) {
-      indicatorElement.text(SystemUtils.Localize("CPR.chat.self"));
+      indicatorElement.textContent = SystemUtils.Localize("CPR.chat.self");
       timestampTag.before(indicatorElement);
     } else if (isWhisper) {
-      indicatorElement.text(SystemUtils.Localize("CPR.chat.whisper"));
+      indicatorElement.textContent = SystemUtils.Localize("CPR.chat.whisper");
       timestampTag.before(indicatorElement);
     }
   }
@@ -453,53 +454,54 @@ export default class CPRChat {
    *
    * @param {*} event - event data from the chat message
    */
-  static async damageApplication(event) {
+  static async damageApplication(event, clickable) {
+    const getEventDatum = (datum) =>
+      SystemUtils.GetEventDatum(event, datum, clickable);
+
     // Define a bunch of constants to be used in the rest of the function.
     const totalDamage = SystemUtils.isNumeric(
-      parseInt(SystemUtils.GetEventDatum(event, "data-total-damage"), 10)
+      parseInt(getEventDatum("data-total-damage"), 10)
     )
-      ? parseInt(SystemUtils.GetEventDatum(event, "data-total-damage"), 10)
+      ? parseInt(getEventDatum("data-total-damage"), 10)
       : 0;
 
     const bonusDamage = SystemUtils.isNumeric(
-      parseInt(SystemUtils.GetEventDatum(event, "data-bonus-damage"), 10)
+      parseInt(getEventDatum("data-bonus-damage"), 10)
     )
-      ? parseInt(SystemUtils.GetEventDatum(event, "data-bonus-damage"), 10)
+      ? parseInt(getEventDatum("data-bonus-damage"), 10)
       : 0;
 
     const damageLethal = /true/i.test(
-      SystemUtils.GetEventDatum(event, "data-damage-lethal")
+      getEventDatum("data-damage-lethal")
     );
-    const ammoVariety = SystemUtils.GetEventDatum(event, "data-ammo-variety");
-    let location = SystemUtils.GetEventDatum(event, "data-damage-location");
+    const ammoVariety = getEventDatum("data-ammo-variety");
+    let location = getEventDatum("data-damage-location");
     if (location !== "head" && location !== "brain") {
       location = "body";
     }
 
     const ablation = SystemUtils.isNumeric(
-      parseInt(SystemUtils.GetEventDatum(event, "data-ablation"), 10)
+      parseInt(getEventDatum("data-ablation"), 10)
     )
-      ? parseInt(SystemUtils.GetEventDatum(event, "data-ablation"), 10)
+      ? parseInt(getEventDatum("data-ablation"), 10)
       : 0;
 
     const ignoreArmorPercent = SystemUtils.isNumeric(
-      parseFloat(SystemUtils.GetEventDatum(event, "data-ignore-armor-percent"))
+      parseFloat(getEventDatum("data-ignore-armor-percent"))
     )
-      ? parseFloat(
-          SystemUtils.GetEventDatum(event, "data-ignore-armor-percent")
-        )
+      ? parseFloat(getEventDatum("data-ignore-armor-percent"))
       : 0;
 
     const ignoreBelowSP = SystemUtils.isNumeric(
-      parseInt(SystemUtils.GetEventDatum(event, "data-ignore-below-sp"), 10)
+      parseInt(getEventDatum("data-ignore-below-sp"), 10)
     )
-      ? parseInt(SystemUtils.GetEventDatum(event, "data-ignore-below-sp"), 10)
+      ? parseInt(getEventDatum("data-ignore-below-sp"), 10)
       : 0;
     const damageContext = {
-      weaponType: SystemUtils.GetEventDatum(event, "data-weapon-type"),
-      weaponSkill: SystemUtils.GetEventDatum(event, "data-weapon-skill"),
-      ammoType: SystemUtils.GetEventDatum(event, "data-ammo-type"),
-      specialMove: SystemUtils.GetEventDatum(event, "data-special-move"),
+      weaponType: getEventDatum("data-weapon-type"),
+      weaponSkill: getEventDatum("data-weapon-skill"),
+      ammoType: getEventDatum("data-ammo-type"),
+      specialMove: getEventDatum("data-special-move"),
     };
 
     // Whether or not to show Brain Damage Reduction as an option in the DamageApplicationPrompt
@@ -509,7 +511,7 @@ export default class CPRChat {
       "CPR.chat.damageApplication.prompt.allowedTypes",
       { location }
     )}`;
-    const scope = SystemUtils.GetEventDatum(event, "data-scope");
+    const scope = getEventDatum("data-scope");
 
     // Define dialog information.
     const dialogOptions = {
@@ -533,8 +535,8 @@ export default class CPRChat {
     // check if the button is on a single token (aka local; the list at the bottom of the damage Roll Card)
     // If not local, it can apply to multiple tokens (disregarding the list at the bottom of the damage Roll Card)
     if (scope === "local") {
-      const actorId = SystemUtils.GetEventDatum(event, "data-actor-id");
-      const tokenId = SystemUtils.GetEventDatum(event, "data-token-id");
+      const actorId = getEventDatum("data-actor-id");
+      const tokenId = getEventDatum("data-token-id");
       const actor = Object.keys(game.actors.tokens).includes(tokenId)
         ? game.actors.tokens[tokenId]
         : game.actors.find((a) => a.id === actorId);
