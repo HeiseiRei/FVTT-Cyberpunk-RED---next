@@ -1249,7 +1249,7 @@
   "CPR.system.message.toBeDeprecated": "L'utilisation de '{functionName}' sera dépréciée dans une prochaine version. Voir le changelog pour plus de détails.",
   "CPR.tooltip.isTooLargeForThisField": "est trop grand pour ce champ",
   "CPR.tooltip.maxOf": "maximum de",
-  "CPR.tooltip.nameChangeWarning": "Changer le nom de CPR-Core Items (Roles & Role Abilities) peut affecter d'autres traductions dans le jeu",
+  "CPR.tooltip.nameChangeWarning": "Changer le nom des objets de Cyberpunk RED - ND Core (Roles & Role Abilities) peut affecter d'autres traductions dans le jeu",
   "CPR.tooltip.valueOf": "valeur de",
   "CPR.universalBonuses.attack": "Bonus à l'attaque",
   "CPR.universalBonuses.damage": "Bonus aux Dégâts",

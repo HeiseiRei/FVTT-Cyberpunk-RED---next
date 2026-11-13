@@ -22,10 +22,12 @@
     <a class="cpr-nd-primary-tab" data-action="tab" data-group="primary" data-tab="dossier">
       {{localize "CPR.characterSheetND.dossier.dossierTab"}}
     </a>
+    <a class="cpr-nd-primary-tab" data-action="tab" data-group="primary" data-tab="inventory">
+      {{localize "CPR.characterSheetND.dossier.inventoryTab"}}
+    </a>
   </nav>
 
-  <div class="tab active cpr-nd-dashboard" data-group="primary" data-tab="dashboard">
-  <div class="cpr-nd-inventory-drawer">
+  <section class="tab cpr-nd-inventory-tab" data-group="primary" data-tab="inventory" aria-label="{{localize "CPR.characterSheetND.dossier.inventoryTab"}}">
     <div class="cpr-nd-inventory-view" id="cpr-nd-inventory-view" role="region" aria-label="Field inventory">
       <div class="cpr-nd-inventory-heading">
         <div><small>PERSONAL STORAGE // {{actor.name}}</small><h2>FIELD INVENTORY <span>/// FULL MANIFEST</span></h2></div>
@@ -107,8 +109,8 @@
         </section>
       </div>
     </div>
-    <button type="button" class="cpr-nd-inventory-back" data-cpr-nd-action="close-inventory" aria-label="Back to dossier" aria-controls="cpr-nd-inventory-view" aria-expanded="{{inventoryOpen}}">[ /// BACK ]</button>
-  </div>
+  </section>
+  <div class="tab active cpr-nd-dashboard" data-group="primary" data-tab="dashboard">
   <div class="cpr-nd-columns">
     <aside class="cpr-nd-column cpr-nd-left">
       <section class="cpr-nd-panel cpr-nd-lifepath">
@@ -295,7 +297,6 @@
 
       <section class="cpr-nd-panel cpr-nd-gear">
         <div class="cpr-nd-panel-label"><span>08 // STREET MANIFEST</span><span>{{pinnedItems.length}} PINNED</span></div>
-        <button type="button" class="cpr-nd-inventory-trigger" data-cpr-nd-action="toggle-inventory" aria-controls="cpr-nd-inventory-view" aria-expanded="{{inventoryOpen}}">INVENTORY</button>
         <div class="cpr-nd-gear-list">
           {{#each pinnedItems as |item|}}
             <button type="button" data-cpr-nd-action="open-item" data-item-id="{{item.id}}"><span><i class="fa-solid fa-thumbtack"></i> {{item.name}}</span><b>{{#if item.system.amount}}×{{item.system.amount}}{{else}}OPEN{{/if}}</b></button>

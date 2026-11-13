@@ -1,4 +1,4 @@
-name: Validate CPR Core
+name: Validate Cyberpunk RED - ND Core
 
 on:
   push:

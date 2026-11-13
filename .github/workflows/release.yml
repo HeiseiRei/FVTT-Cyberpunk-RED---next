@@ -1,4 +1,4 @@
-name: Release CPR Core
+name: Release Cyberpunk RED - ND Core
 
 on:
   push:
@@ -49,7 +49,7 @@ jobs:
           rm -rf "$staging/.github" "$staging/scripts"
 
           manifest_url="https://github.com/${GITHUB_REPOSITORY}/releases/latest/download/system.json"
-          download_url="https://github.com/${GITHUB_REPOSITORY}/releases/download/${tag}/cyberpunk-red-core-${tag}.zip"
+          download_url="https://github.com/${GITHUB_REPOSITORY}/releases/download/${tag}/cyberpunk-red-nd-core-${tag}.zip"
           jq --arg manifest "$manifest_url" --arg download "$download_url" \
             '.manifest = $manifest | .download = $download' \
             "$staging/system.json" > "$staging/system.json.tmp"
@@ -59,9 +59,8 @@ jobs:
           cp "$staging/system.json" dist/system.json
           (
             cd "$staging"
-            zip -qr "$GITHUB_WORKSPACE/dist/cyberpunk-red-core-${tag}.zip" .
+            zip -qr "$GITHUB_WORKSPACE/dist/cyberpunk-red-nd-core-${tag}.zip" .
           )
-          sha256sum "dist/cyberpunk-red-core-${tag}.zip" > dist/SHA256SUMS
 
       - name: Publish GitHub Release
         env:
@@ -69,9 +68,8 @@ jobs:
         run: |
           gh release create "$GITHUB_REF_NAME" \
             "dist/system.json" \
-            "dist/cyberpunk-red-core-${GITHUB_REF_NAME}.zip" \
-            "dist/SHA256SUMS" \
-            --title "Cyberpunk RED Core $GITHUB_REF_NAME" \
+            "dist/cyberpunk-red-nd-core-${GITHUB_REF_NAME}.zip" \
+            --title "Cyberpunk RED - ND Core $GITHUB_REF_NAME" \
             --generate-notes \
             --verify-tag \
             --repo "$GITHUB_REPOSITORY"

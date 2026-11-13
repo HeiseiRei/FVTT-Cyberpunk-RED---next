@@ -1465,48 +1465,6 @@
   min-height: 120px;
 }
 
-.cpr-nd-gear .cpr-nd-panel-label {
-  padding-right: 28px;
-}
-
-.cpr-nd-gear .cpr-nd-gear-list {
-  width: calc(100% - 28px);
-  padding-right: 0;
-}
-
-.cpr-nd-inventory-trigger {
-  position: absolute;
-  z-index: 1;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  height: 100%;
-  min-height: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  padding: 6px 4px;
-  border: 0;
-  border-left: 1px solid var(--cpr-nd-cyan);
-  border-radius: 0;
-  color: var(--cpr-nd-cyan);
-  background: repeating-linear-gradient(135deg, rgb(0 240 255 / 8%) 0 1px, transparent 1px 9px), rgb(0 240 255 / 5%);
-  font: 700 0.75rem "CPR ND Mono", monospace;
-  letter-spacing: 0.08em;
-  line-height: 1;
-  text-align: center;
-  white-space: nowrap;
-  overflow-wrap: normal;
-  word-break: keep-all;
-  writing-mode: vertical-rl;
-}
-
-.cpr-nd-inventory-trigger:hover:not(:disabled) {
-  background: repeating-linear-gradient(135deg, rgb(0 240 255 / 12%) 0 1px, transparent 1px 9px), rgb(0 240 255 / 20%);
-  box-shadow: 0 0 8px var(--cpr-nd-cyan);
-}
-
 .cpr-nd-gear-list button {
   font-size: 0.66rem;
 }
@@ -1884,32 +1842,12 @@
   }
 }
 
-.cpr-nd-inventory-drawer {
-  position: absolute;
-  z-index: 6;
-  inset: 0 0 0 auto;
+.cpr-nd-inventory-tab.tab.active {
   display: flex;
-  width: min(calc(94% + 30px), 1130px);
-  max-width: 100%;
+  flex: 1 1 auto;
+  flex-direction: column;
   min-width: 0;
   min-height: 0;
-  clip-path: inset(0 0 0 100%);
-  pointer-events: none;
-  visibility: hidden;
-  transition: clip-path 260ms ease, visibility 0s linear 260ms;
-}
-
-.cpr-nd-inventory-open .cpr-nd-inventory-drawer {
-  clip-path: inset(0);
-  pointer-events: auto;
-  visibility: visible;
-  transition: clip-path 260ms ease;
-}
-
-.cpr-nd-inventory-dragging .cpr-nd-inventory-drawer {
-  opacity: 0.03;
-  pointer-events: none;
-  transition: opacity 120ms ease-out;
 }
 
 .cpr-nd-weapons.cpr-drop-target-active,
@@ -1919,11 +1857,11 @@
 }
 
 .cpr-nd-inventory-view {
-  position: absolute;
-  inset: 0 30px 0 auto;
+  position: relative;
   display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
-  width: min(calc(100% - 30px), 1100px);
+  width: 100%;
   min-width: 0;
   min-height: 0;
   padding: 14px;
@@ -1976,38 +1914,6 @@
 .cpr-nd-inventory-heading h2 span {
   color: var(--cpr-nd-cyan);
   font-size: 0.7em;
-}
-
-.cpr-nd-inventory-back {
-  position: absolute;
-  z-index: 7;
-  inset: 0 0 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 41px;
-  height: 100%;
-  min-height: 0;
-  padding: 6px 4px;
-  border: 0;
-  border-left: 1px solid var(--cpr-nd-cyan);
-  border-radius: 0;
-  color: var(--cpr-nd-cyan);
-  background: rgb(10 10 13 / 98%);
-  box-shadow: -4px 0 10px rgb(0 0 0 / 70%);
-  font: 700 0.75rem "CPR ND Mono", monospace;
-  letter-spacing: 0.08em;
-  line-height: 1;
-  white-space: nowrap;
-  overflow-wrap: normal;
-  word-break: keep-all;
-  text-align: center;
-  writing-mode: vertical-rl;
-}
-
-.cpr-nd-inventory-back:hover:not(:disabled) {
-  background: rgb(10 10 13 / 100%);
-  box-shadow: 0 0 8px var(--cpr-nd-cyan);
 }
 
 .cpr-nd-inventory-grid {
@@ -2711,6 +2617,7 @@
 }
 
 .cpr-nd-dashboard.tab.active,
+.cpr-nd-inventory-tab.tab.active,
 .cpr-nd-dossier.tab.active {
   display: flex;
   flex: 1 1 auto;

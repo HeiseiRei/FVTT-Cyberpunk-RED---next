@@ -1249,7 +1249,7 @@
   "CPR.system.message.toBeDeprecated": "'{functionName}' の使用は、今後のリリースでは非推奨となります。詳細については、changelog を参照してください。",
   "CPR.tooltip.isTooLargeForThisField": "はこの欄には大きすぎます",
   "CPR.tooltip.maxOf": "最大",
-  "CPR.tooltip.nameChangeWarning": "CPR-コアアイテムの名前を変更する(役割と役割能力) ゲーム内の他の翻訳に影響を与える可能性があります",
+  "CPR.tooltip.nameChangeWarning": "Cyberpunk RED - ND Coreアイテムの名前を変更すると（役割と役割能力）、ゲーム内の他の翻訳に影響を与える可能性があります",
   "CPR.tooltip.valueOf": "値",
   "CPR.universalBonuses.attack": "命中ボーナス",
   "CPR.universalBonuses.damage": "ダメージボーナス",

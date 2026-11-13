@@ -391,13 +391,11 @@
   background: var(--cpr-nd-orange);
 }
 
-.cpr-sheet-nd-2077 .cpr-nd-inventory-trigger,
 .cpr-sheet-nd-2077 .cpr-nd-drawer-trigger {
   border-color: var(--cpr-nd-cyan);
   background: rgb(50 215 255 / 8%);
 }
 
-.cpr-sheet-nd-2077 .cpr-nd-inventory-trigger:hover:not(:disabled),
 .cpr-sheet-nd-2077 .cpr-nd-drawer-trigger:hover:not(:disabled) {
   background: rgb(50 215 255 / 16%);
   box-shadow: 0 0 8px rgb(50 215 255 / 40%);

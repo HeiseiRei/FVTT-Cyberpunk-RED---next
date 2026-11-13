@@ -3,7 +3,7 @@ import { dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const repository = "https://github.com/HeiseiRei/FVTT-Cyberpunk-RED---next";
+const repository = "https://github.com/HeiseiRei/FVTT-Cyberpunk-RED-ND-Core";
 const excludedDirectories = new Set([".git", ".github", "dist", "node_modules"]);
 const errors = [];
 let jsonFileCount = 0;
@@ -131,7 +131,7 @@ const normalizedVersion =
 const releaseTag = `v${normalizedVersion}`;
 report(
   normalizedVersion.length > 0 &&
-    manifest.download === `${repository}/releases/download/${releaseTag}/cyberpunk-red-core-${releaseTag}.zip`,
+    manifest.download === `${repository}/releases/download/${releaseTag}/cyberpunk-red-nd-core-${releaseTag}.zip`,
   "system.json download must point to the versioned archive matching its version",
 );
 

@@ -126,7 +126,7 @@ export default class CPRCharacterActorSheetND extends CPRCharacterActorSheetV2 {
 
   static TABS = {
     primary: {
-      tabs: [{ id: "dashboard" }, { id: "dossier" }],
+      tabs: [{ id: "dashboard" }, { id: "dossier" }, { id: "inventory" }],
       initial: "dashboard",
     },
   };
@@ -322,8 +322,6 @@ export default class CPRCharacterActorSheetND extends CPRCharacterActorSheetV2 {
       hasOpenCriticalInjuries: criticalInjuries.length > 0,
       pinnedItems,
       inventoryRows,
-      inventoryOpen: this._inventoryOpen ?? false,
-      inventoryFilter: this._inventoryFilter ?? "all",
       inventorySearch: this._inventorySearch ?? "",
       role,
       lifePathModules,
@@ -344,7 +342,6 @@ export default class CPRCharacterActorSheetND extends CPRCharacterActorSheetV2 {
     this.element.classList.toggle("cpr-nd-dossier-active", this.tabGroups.primary === "dossier");
     const surface = this.element.querySelector(".cpr-nd-surface");
     if (!surface) throw new Error("Unable to initialize the CPR ND controls.");
-    this.#setInventoryOpen(this._inventoryOpen ?? false);
     if (this.element.classList.contains("cpr-nd-wounds-open")) this.#positionCriticalWoundsDrawer();
 
     surface.addEventListener("click", (event) => {
@@ -356,13 +353,6 @@ export default class CPRCharacterActorSheetND extends CPRCharacterActorSheetV2 {
       clickTarget
         ?.closest(".cpr-nd-inventory-item-name .gear-name-toggle")
         ?.blur();
-      if (
-        this.element.classList.contains("cpr-nd-inventory-open")
-        && clickTarget
-        && !clickTarget.closest(".cpr-nd-inventory-drawer, [data-cpr-nd-action='toggle-inventory']")
-      ) {
-        this.#setInventoryOpen(false);
-      }
       if (
         this.element.classList.contains("cpr-nd-skills-open")
         && clickTarget
@@ -484,7 +474,6 @@ export default class CPRCharacterActorSheetND extends CPRCharacterActorSheetV2 {
 
     surface.addEventListener("dragend", (event) => {
       if (!(event.target instanceof Element)) return;
-      this.element.classList.remove("cpr-nd-inventory-dragging");
       this._draggedInventoryItemId = null;
       event.target.closest(".cpr-nd-weapon")?.classList.remove("is-dragging");
       surface.querySelectorAll(".cpr-nd-weapon.is-drop-target")
@@ -589,7 +578,6 @@ export default class CPRCharacterActorSheetND extends CPRCharacterActorSheetV2 {
       })
     );
     this._draggedInventoryItemId = inventoryRow.dataset.itemId;
-    this.element.classList.add("cpr-nd-inventory-dragging");
   }
 
   _onDragStart(event) {
@@ -619,7 +607,7 @@ export default class CPRCharacterActorSheetND extends CPRCharacterActorSheetV2 {
   async #equipInventoryItem(item) {
     if (item.system.equipped === "equipped") return;
 
-    if (item.type === "weapon") return this.#equipWeapon(item, true);
+    if (item.type === "weapon") return this.#equipWeapon(item);
 
     if (item.type === "armor") {
       if (item.system.isHeadLocation) {
@@ -637,7 +625,7 @@ export default class CPRCharacterActorSheetND extends CPRCharacterActorSheetV2 {
     await this.render({ force: true });
   }
 
-  async #equipWeapon(item, closeInventoryOnSuccess = false) {
+  async #equipWeapon(item) {
     if (!this.isEditable || item.system.equipped === "equipped") return false;
 
     let replacementIds = [];
@@ -669,7 +657,6 @@ export default class CPRCharacterActorSheetND extends CPRCharacterActorSheetV2 {
     }));
     updates.push({ _id: item.id, "system.equipped": "equipped" });
     await this.document.updateEmbeddedDocuments("Item", updates);
-    if (closeInventoryOnSuccess) this.#setInventoryOpen(false);
     await this.render({ force: true });
     return true;
   }
@@ -747,24 +734,6 @@ export default class CPRCharacterActorSheetND extends CPRCharacterActorSheetV2 {
     if (count) count.textContent = `${Array.from(rows).filter((row) => !row.hidden).length} ITEMS`;
   }
 
-  #setInventoryOpen(open) {
-    this._inventoryOpen = open;
-    this.element.classList.toggle("cpr-nd-inventory-open", open);
-    const inventoryDrawer = this.element.querySelector(".cpr-nd-inventory-drawer");
-    const inventoryView = this.element.querySelector(".cpr-nd-inventory-view");
-    const trigger = this.element.querySelector(".cpr-nd-inventory-trigger");
-    const closeButton = this.element.querySelector(".cpr-nd-inventory-back");
-    if (!inventoryDrawer || !inventoryView || !trigger || !closeButton) {
-      throw new Error("Unable to update the Field Inventory drawer.");
-    }
-    inventoryDrawer.inert = !open;
-    inventoryDrawer.setAttribute("aria-hidden", String(!open));
-    trigger.setAttribute("aria-expanded", String(open));
-    closeButton.inert = !open;
-    closeButton.setAttribute("aria-hidden", String(!open));
-    closeButton.setAttribute("aria-expanded", String(open));
-  }
-
   async #reorderWeapons(draggedId, targetId, clientY, targetCard) {
     const weaponIds = Array.from(this.document.itemTypes.weapon ?? [])
       .sort((a, b) => Number(b.system.equipped === "equipped") - Number(a.system.equipped === "equipped"))
@@ -794,13 +763,6 @@ export default class CPRCharacterActorSheetND extends CPRCharacterActorSheetV2 {
     const action = target.dataset.cprNdAction;
     const id = target.dataset.itemId;
 
-    if (action === "toggle-inventory" || action === "close-inventory") {
-      this.#setInventoryOpen(action === "toggle-inventory" ? !this._inventoryOpen : false);
-      if (action === "close-inventory") {
-        this.element.querySelector(".cpr-nd-inventory-trigger")?.focus();
-      }
-      return;
-    }
     if (action === "inventory-filter") {
       this._inventoryFilter = target.dataset.filter ?? "all";
       this.#filterInventory();
